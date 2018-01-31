@@ -51,4 +51,16 @@ class RoomController extends Controller
         //$all_student = $room->_student()->where('room', $room->room)->get();
         return view('room.room_edit', compact('room', 'all_student'));
     }
+
+    public function save_new_student(Request $request)
+    {
+        $student = new Students();
+        if($request->student_id == 'new'){
+            $student->create($request->except(['_token']));
+        }else{
+            $student = $student->where('students', $request->student_id);
+            $student->update($request->except(['_token', 'student_id']));
+        }
+
+    }
 }

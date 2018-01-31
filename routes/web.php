@@ -23,3 +23,4 @@ Route::get('/', 'HomeController@index')->name('home');
 Route::get('/add-room', 'RoomController@add_room');
 Route::post('/add-room', 'RoomController@post_add_room');
 Route::get('/room/{room}/edit', 'RoomController@room_view_edit');
+Route::post('room/save-student', 'RoomController@save_new_student');

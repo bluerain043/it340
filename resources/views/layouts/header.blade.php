@@ -18,6 +18,7 @@
     <link href="{{asset('global/plugins/bootstrap-fileinput/bootstrap-fileinput.css')}}" rel="stylesheet">
     <link href="{{asset('layout/css/themes/default.min.css')}}" rel="stylesheet">
     <link href="{{asset('layout/css/custom.min.css')}}" rel="stylesheet">
+    <link href="{{asset('css/jquery-ui.css')}}" rel="stylesheet">
     <link href="{{asset('css/style.css')}}" rel="stylesheet">
 
     <!-- Script -->
@@ -1234,6 +1235,8 @@
 <script src="{{asset('assets/layouts/global/scripts/quick-sidebar.min.js')}}" type="text/javascript"></script>
 <script src="{{asset('assets/layouts/global/scripts/quick-nav.min.js')}}" type="text/javascript"></script>
 <script src="{{asset('global/plugins/bootstrap-fileinput/bootstrap-fileinput.js')}}" type="text/javascript"></script>
+<script src="{{asset('global/plugins/jquery-ui/jquery-ui.min.js')}}" type="text/javascript"></script>
+<script src="{{asset('js/jquery-ui.js')}}" type="text/javascript"></script>
 @yield('page_script')
 <!-- END THEME LAYOUT SCRIPTS -->
 <script>
