@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Student;
 use Storage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Room;
+use App\Students;
 
 class RoomController extends Controller
 {
@@ -23,7 +25,7 @@ class RoomController extends Controller
     public function post_add_room(Request $request)
     {
         $this->validate($request, [
-           'room_name' => 'required|unique',
+           'room_name' => 'required',
            'room_number' => 'required|numeric',
            'facilitator' => 'required',
            'seatplan_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:8000',
@@ -45,6 +47,8 @@ class RoomController extends Controller
 
     public function room_view_edit(Room $room)
     {
-        return view('room.room_edit', compact('room'));
+        $all_student = Students::query()->where('room', $room->room)->get();
+        //$all_student = $room->_student()->where('room', $room->room)->get();
+        return view('room.room_edit', compact('room', 'all_student'));
     }
 }

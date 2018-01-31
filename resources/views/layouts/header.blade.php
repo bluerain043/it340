@@ -492,6 +492,22 @@
                             </li>
                         </ul>
                     </li>
+
+                    <li class="nav-item open">
+                        <a href="javascript:;" class="nav-link nav-toggle">
+                            <i class="icon-folder"></i>
+                            <span class="title">Schedule</span>
+                            <span class="arrow  open"></span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li class="nav-item">
+                                <a href="javascript:;" class="nav-link nav-toggle">
+                                    <i class="icon-graph"></i> List of Schedule
+                                    <span class="arrow"></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
                     <li class="nav-item  ">
                         <a href="javascript:;" class="nav-link nav-toggle">
                             <i class="icon-puzzle"></i>

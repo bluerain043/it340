@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\App;
 
 class Room extends Model
 {
@@ -31,4 +32,9 @@ class Room extends Model
         }
         return $all_rooms;
     }
+
+    public function _student()
+    {
+        return $this->belongsToMany('App\Students', 'students', 'students');
+     }
 }
