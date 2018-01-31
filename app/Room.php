@@ -1,0 +1,34 @@
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Room extends Model
+{
+    protected $table = "room";
+    protected $primaryKey = "room";
+    protected $fillable = [
+        'room_number',
+        'room_name',
+        'facilitator',
+        'cover_image',
+        'seatplan_image',
+        'status'
+    ];
+
+    public function get_all_rooms()
+    {
+        return $this->where('status', 1)->pluck('room_name');
+    }
+
+    public static function getAllRooms($columns = ['*'])
+    {
+        $rooms = parent::all($columns);
+        $all_rooms = [];
+        foreach ($rooms as $room){
+            $all_rooms = $room->where('status', 'Active')->get();
+        }
+        return $all_rooms;
+    }
+}

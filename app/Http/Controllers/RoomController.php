@@ -1,0 +1,50 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Storage;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Room;
+
+class RoomController extends Controller
+{
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    public function add_room()
+    {
+        $allRooms = Room::getAllRooms('room_name');
+        return view('room.add_room', compact('allRooms'));
+    }
+
+    public function post_add_room(Request $request)
+    {
+        $this->validate($request, [
+           'room_name' => 'required|unique',
+           'room_number' => 'required|numeric',
+           'facilitator' => 'required',
+           'seatplan_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:8000',
+           'status' => 'required'
+        ]);
+        $seat = $request->file('seatplan_image');
+        $seat_name = 'seat_'.time().'.'.$seat->getClientOriginalExtension();
+
+        $room = new Room;
+        $room->room_name = $request->room_name;
+        $room->room_number = $request->room_number;
+        $room->facilitator = $request->facilitator;
+        $room->seatplan_image = "/images/".$seat_name;
+        $room->status = isset($request->status) ? 'Active' : 'Inactive';
+        $room->save();
+        $request->file('seatplan_image')->move(public_path('images'), $seat_name);
+        return back()->with('success', 'Room added successfully!');
+    }
+
+    public function room_view_edit(Room $room)
+    {
+        return view('room.room_edit', compact('room'));
+    }
+}
