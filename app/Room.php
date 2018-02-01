@@ -36,5 +36,11 @@ class Room extends Model
     public function _student()
     {
         return $this->belongsToMany('App\Students', 'students', 'students');
-     }
+    }
+
+    public function _schedule()
+    {
+        return $this->belongsToMany('App\Schedule', 'schedule', 'schedule');
+    }
+
 }

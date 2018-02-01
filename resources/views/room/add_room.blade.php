@@ -1,8 +1,20 @@
 @extends('layouts.header')
+@section('breadcrumbs')
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="javascript;">Rooms</a>
+            <i class="fa fa-circle"></i>
+        </li>
+        <li>
+            <span>Add Rooms</span>
+        </li>
+    </ul>
+@endsection
 @section('content')
     <h1 class="page-title"> Add Room</h1>
     <div class="row">
-        <div class="col-md-6 offset-md-3">
+        {{--<div class="col-md-6 offset-md-3">--}}
+        <div class="col-md-12">
             <!-- BEGIN VALIDATION STATES-->
             <div class="portlet light portlet-fit portlet-form bordered">
                 <div class="portlet-title">

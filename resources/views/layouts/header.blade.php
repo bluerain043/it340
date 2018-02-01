@@ -425,11 +425,11 @@
                         </form>
                         <!-- END RESPONSIVE QUICK SEARCH FORM -->
                     </li>
-                    <li class="nav-item start active open">
+                    <li class="nav-item start {{--active open--}}">
                         <a href="javascript:;" class="nav-link nav-toggle">
                             <i class="icon-home"></i>
                             <span class="title">Dashboard</span>
-                            <span class="selected"></span>
+                            {{--<span class="selected"></span>--}}
                             <span class="arrow open"></span>
                         </a>
                         <ul class="sub-menu">
@@ -439,7 +439,7 @@
                                         <a href="{{action('RoomController@room_view_edit', compact('room'))}}" class="nav-link ">
                                             <i class="icon-bar-chart"></i>
                                             <span class="title">{{$room->room_name}}</span>
-                                            <span class="selected"></span>
+                                           {{-- <span class="selected"></span>--}}
                                         </a>
                                     </li>
                                 @endforeach
@@ -494,17 +494,26 @@
                         </ul>
                     </li>
 
-                    <li class="nav-item open">
+                    <li class="nav-item {{$bActive ? 'active open' : ''}}">
                         <a href="javascript:;" class="nav-link nav-toggle">
                             <i class="icon-folder"></i>
                             <span class="title">Schedule</span>
-                            <span class="arrow  open"></span>
+                            @if($bActive)
+                                <span class="selected"></span>
+                            @else
+                                <span class="arrow open"></span>
+                            @endif
+
                         </a>
                         <ul class="sub-menu">
-                            <li class="nav-item">
-                                <a href="javascript:;" class="nav-link nav-toggle">
+                            <li class="nav-item {{$bActive ? 'open' : ''}}">
+                                <a href="{{action('RoomController@schedule')}}" class="nav-link nav-toggle">
                                     <i class="icon-graph"></i> List of Schedule
-                                    <span class="arrow"></span>
+                                    @if($bActive)
+                                        <span class="selected"></span>
+                                    @else
+                                        <span class="arrow open"></span>
+                                    @endif
                                 </a>
                             </li>
                         </ul>
@@ -596,15 +605,7 @@
                 <!-- BEGIN PAGE HEADER-->
                 <!-- BEGIN PAGE BAR -->
                 <div class="page-bar">
-                    <ul class="page-breadcrumb">
-                        <li>
-                            <a href="index.html">Home</a>
-                            <i class="fa fa-circle"></i>
-                        </li>
-                        <li>
-                            <span>Dashboard</span>
-                        </li>
-                    </ul>
+                    @yield('breadcrumbs')
                     <div class="page-toolbar">
                         <div id="dashboard-report-range" class="pull-right tooltips btn btn-sm" data-container="body" data-placement="bottom" data-original-title="Change dashboard date range">
                             <i class="icon-calendar"></i>&nbsp;
@@ -1221,7 +1222,7 @@
 <script src="{{asset('global/plugins/counterup/jquery.counterup.min.js')}}" type="text/javascript"></script>
 <script src="{{asset('global/plugins/fullcalendar/fullcalendar.min.js')}}" type="text/javascript"></script>
 <script src="{{asset('global/plugins/horizontal-timeline/horizontal-timeline.js')}}" type="text/javascript"></script>
-<script src="{{asset('plugins/bootstrap-modal/js/bootstrap-modal.js')}}" type="text/javascript"></script>
+
 <!-- END PAGE LEVEL PLUGINS -->
 <!-- BEGIN THEME GLOBAL SCRIPTS -->
 <script src="{{asset('global/scripts/app.min.js')}}" type="text/javascript"></script>
@@ -1236,7 +1237,9 @@
 <script src="{{asset('assets/layouts/global/scripts/quick-nav.min.js')}}" type="text/javascript"></script>
 <script src="{{asset('global/plugins/bootstrap-fileinput/bootstrap-fileinput.js')}}" type="text/javascript"></script>
 <script src="{{asset('global/plugins/jquery-ui/jquery-ui.min.js')}}" type="text/javascript"></script>
+<script src="{{asset('js/ui-modals.min.js')}}" type="text/javascript"></script>
 <script src="{{asset('js/jquery-ui.js')}}" type="text/javascript"></script>
+
 @yield('page_script')
 <!-- END THEME LAYOUT SCRIPTS -->
 <script>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Schedule;
 use App\Student;
 use Storage;
 use Illuminate\Http\Request;
@@ -19,7 +20,8 @@ class RoomController extends Controller
     public function add_room()
     {
         $allRooms = Room::getAllRooms('room_name');
-        return view('room.add_room', compact('allRooms'));
+        $bActive = true;
+        return view('room.add_room', compact('allRooms', 'bActive'));
     }
 
     public function post_add_room(Request $request)
@@ -48,8 +50,9 @@ class RoomController extends Controller
     public function room_view_edit(Room $room)
     {
         $all_student = Students::query()->where('room', $room->room)->get();
+        $bActive = true;
         //$all_student = $room->_student()->where('room', $room->room)->get();
-        return view('room.room_edit', compact('room', 'all_student'));
+        return view('room.room_edit', compact('room', 'all_student', 'bActive'));
     }
 
     public function save_new_student(Request $request)
@@ -61,6 +64,25 @@ class RoomController extends Controller
             $student = $student->where('students', $request->student_id);
             $student->update($request->except(['_token', 'student_id']));
         }
+    }
+    public function schedule()
+    {
+        $allRooms = Room::getAllRooms('room_name');
+        $bActive = true;
+        return view('room.schedule', compact('allRooms','bActive'));
+    }
 
+    public function post_schedule(Request $request)
+    {
+        $this->validate($request, [
+            'subject' => 'required',
+            'day' => 'required',
+            'room' => 'required',
+            'teacher' => 'required',
+            'status' => 'required'
+        ]);
+        $schedule = new Schedule();
+        $schedule->create($request->except(['_token']));
+        return back()->with('success', 'Schedule added successfully!');
     }
 }
