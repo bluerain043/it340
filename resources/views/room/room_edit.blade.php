@@ -3,11 +3,23 @@
     <div class="room-title-box">
         <h1 class="page-title"> {{$room->room_name}}</h1>
         <div class="btn-group dp-schedule">
-            <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="javascript:;" aria-expanded="false"> Rooms
+            <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="javascript:;" aria-expanded="false"> Select Schedule
                 <i class="fa fa-angle-down"></i>
             </a>
             <ul class="dropdown-menu">
-                <li>
+                @if(count($schedules) > 0)
+                    @foreach($schedules as $schedule)
+                        <li>
+                            @foreach(\App\Schedule::$time as $key=>$val)
+                                @if($key == $schedule->time)
+                                    <a href="{{action('RoomController@room_view_edit_schedule', compact('room', 'key'))}}> {{$schedule->day .' - '. $val}} </a>
+                                @endif
+                            @endforeach
+
+                        </li>
+                    @endforeach
+                @endif
+                {{--<li>
                     <a href="javascript:;"> Settings
                         <span class="badge badge-success"> 3 </span>
                     </a>
@@ -22,7 +34,7 @@
                     <a href="javascript:;"> Help
                         <span class="badge badge-danger"> 7 </span>
                     </a>
-                </li>
+                </li>--}}
             </ul>
         </div>
         <div class="actions">

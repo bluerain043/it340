@@ -51,9 +51,6 @@ class RoomController extends Controller
     {
         $all_student = $room->_student()->where('room', $room->room)->get();
         $schedules = $room->_schedule()->where('status', '1')->get();//dd($schedules);
-        /*foreach($schedules as $s){
-            echo $s->day;
-        }die;*/
         return view('room.room_edit', compact('room', 'all_student', 'schedules'));
     }
 
@@ -86,5 +83,12 @@ class RoomController extends Controller
         $schedule = new Schedule();
         $schedule->create($request->except(['_token']));
         return back()->with('success', 'Schedule added successfully!');
+    }
+
+    public function room_view_edit_schedule(Room $room, Schedule $schedule)
+    {
+        $all_student = $room->_student()->where('room', $room->room)->where('schedule', $schedule->schedule)->get();dd($all_student);
+        $schedules = $room->_schedule()->where('status', '1')->get();
+        return view('room.room_edit', compact('room', 'all_student', 'schedules'));
     }
 }
