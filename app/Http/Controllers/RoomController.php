@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Schedule;
-use App\Student;
 use Storage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Room;
+use App\Schedule;
 use App\Students;
+
 
 class RoomController extends Controller
 {
@@ -49,10 +49,12 @@ class RoomController extends Controller
 
     public function room_view_edit(Room $room)
     {
-        $all_student = Students::query()->where('room', $room->room)->get();
-        $bActive = true;
-        //$all_student = $room->_student()->where('room', $room->room)->get();
-        return view('room.room_edit', compact('room', 'all_student', 'bActive'));
+        $all_student = $room->_student()->where('room', $room->room)->get();
+        $schedules = $room->_schedule()->where('status', '1')->get();//dd($schedules);
+        /*foreach($schedules as $s){
+            echo $s->day;
+        }die;*/
+        return view('room.room_edit', compact('room', 'all_student', 'schedules'));
     }
 
     public function save_new_student(Request $request)
@@ -68,8 +70,8 @@ class RoomController extends Controller
     public function schedule()
     {
         $allRooms = Room::getAllRooms('room_name');
-        $bActive = true;
-        return view('room.schedule', compact('allRooms','bActive'));
+        $schedules = Schedule::query()->where('status', 1)->orderBy('created_at')->get();
+        return view('room.schedule', compact('allRooms', 'schedules'));
     }
 
     public function post_schedule(Request $request)

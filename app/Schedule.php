@@ -23,7 +23,7 @@ class Schedule extends Model
 
     public function _room()
     {
-        return $this->hasOne('App\Room', 'room', 'room');
+        return $this->belongsTo('App\Room', 'room');
     }
 
 

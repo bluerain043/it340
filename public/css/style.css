@@ -41,3 +41,11 @@
 .jquery-draggable {
     position: absolute;
 }
+.tbl-pad{
+    padding: 50px !important;
+}
+.dp-schedule{
+    position: absolute;
+    top: 61px;
+    left: 430px;
+}

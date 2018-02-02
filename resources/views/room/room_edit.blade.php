@@ -2,7 +2,32 @@
 @section('content')
     <div class="room-title-box">
         <h1 class="page-title"> {{$room->room_name}}</h1>
+        <div class="btn-group dp-schedule">
+            <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="javascript:;" aria-expanded="false"> Rooms
+                <i class="fa fa-angle-down"></i>
+            </a>
+            <ul class="dropdown-menu">
+                <li>
+                    <a href="javascript:;"> Settings
+                        <span class="badge badge-success"> 3 </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:;"> Preferences </a>
+                </li>
+                <li>
+                    <a href="javascript:;"> Window Options </a>
+                </li>
+                <li>
+                    <a href="javascript:;"> Help
+                        <span class="badge badge-danger"> 7 </span>
+                    </a>
+                </li>
+            </ul>
+        </div>
         <div class="actions">
+
+
             <a class="btn btn-circle btn-icon-only btn-default add-student-btn popovers" href="javascript:;" data-container="body" data-trigger="hover" data-placement="left" data-content="Add student on seat plan" data-original-title="Dashboard">
                 <i class="fa fa-plus"></i>
             </a>
@@ -12,8 +37,14 @@
             <a class="btn btn-circle btn-icon-only btn-default popovers" href="javascript:;" data-container="body" data-trigger="hover" data-placement="left" data-content="Delete this room entry" data-original-title="Dashboard">
                 <i class="icon-trash"></i>
             </a>
+
+            {{--<select class="form-control" id="form_control_1" name="room">
+                <option value=""></option>
+                @foreach($schedules as $schedule)
+                    <option value="{{$schedule->day}}">{{$schedule->day}}</option>
+                @endforeach
+            </select>--}}
         </div>
-    </div>
     <div class="row">
         <div class="col-md-12">
             <!-- BEGIN VALIDATION STATES-->

@@ -36,7 +36,7 @@
                         <span class="caption-subject font-green sbold uppercase">List of Schedule</span>
                     </div>
                 </div>
-                <div class="portlet-body">
+                <div class="portlet-body tbl-pad">
                     <!-- BEGIN TABLE-->
                     <div class="table-scrollable">
                         <table class="table table-hover">
@@ -52,74 +52,30 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td> 1 </td>
-                                <td> Mark </td>
-                                <td> Otto </td>
-                                <td> makr124 </td>
-                                <td> makr124 </td>
-                                <td>
-                                    <span class="label label-sm label-info"> Pending </span>
-                                </td>
-                                <td>
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-default">Left</button>
-                                        <button type="button" class="btn btn-default">Middle</button>
-                                        <button type="button" class="btn btn-default">Right</button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td> 2 </td>
-                                <td> Jacob </td>
-                                <td> Nilson </td>
-                                <td> jac123 </td>
-                                <td> jac123 </td>
-                                <td>
-                                    <span class="label label-sm label-info"> Pending </span>
-                                </td>
-                                <td>
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-default">Left</button>
-                                        <button type="button" class="btn btn-default">Middle</button>
-                                        <button type="button" class="btn btn-default">Right</button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td> 3 </td>
-                                <td> Larry </td>
-                                <td> Cooper </td>
-                                <td> lar </td>
-                                <td> lar </td>
-                                <td>
-                                    <span class="label label-sm label-warning"> Suspended </span>
-                                </td>
-                                <td>
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-default">Left</button>
-                                        <button type="button" class="btn btn-default">Middle</button>
-                                        <button type="button" class="btn btn-default">Right</button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td> 4 </td>
-                                <td> Sandy </td>
-                                <td> Lim </td>
-                                <td> sanlim </td>
-                                <td> sanlim </td>
-                                <td>
-                                    <span class="label label-sm label-danger"> Blocked </span>
-                                </td>
-                                <td>
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-default">Left</button>
-                                        <button type="button" class="btn btn-default">Middle</button>
-                                        <button type="button" class="btn btn-default">Right</button>
-                                    </div>
-                                </td>
-                            </tr>
+                            @if(count($schedules) > 0)
+                                @foreach($schedules as $schedule)
+                                    <tr>
+                                        <td>{{ucwords($schedule->subject)}}</td>
+                                        <td> {{$schedule->day}} </td>
+                                        <td> {{$schedule->time}} </td>
+                                        <td> {{$schedule->room}} </td>
+                                        <td> {{$schedule->teacher}} </td>
+                                        <td>
+                                            <span class="label label-sm {{($schedule->status == 1) ? 'label-info' : 'label-warning'}}"> {{($schedule->status == 1) ? 'Active' : 'Inactive'}} </span>
+                                        </td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-default">Edit</button>
+                                                <button type="button" class="btn btn-default">Delete</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                             @else
+                                <tr style="text-align: center">
+                                    <td colspan="7"> No Schedule Entry</td>
+                                </tr>
+                            @endif
                             </tbody>
                         </table>
                     </div>

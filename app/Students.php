@@ -19,4 +19,8 @@ class Students extends Model
         'pos_y',
         'room'
     ];
+
+    public function _room(){
+        return $this->hasMany('App\Room', 'room', 'room');
+    }
 }

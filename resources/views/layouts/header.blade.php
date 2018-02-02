@@ -450,15 +450,19 @@
                         <h3 class="uppercase">Features</h3>
                     </li>
 
-                    <li class="nav-item  ">
+                    <li class="nav-item  {{(Route::getFacadeRoot()->current()->uri() == 'add-room') ? 'active open' : ''}}">
                         <a href="javascript:;" class="nav-link nav-toggle">
                             <i class="icon-diamond"></i>
                             <span class="title">Rooms</span>
-                            <span class="arrow"></span>
+                            @if((Route::getFacadeRoot()->current()->uri() == 'add-room'))
+                                <span class="selected"></span>
+                            @else
+                                <span class="arrow open"></span>
+                            @endif
                         </a>
                         <ul class="sub-menu">
-                            <li class="nav-item  ">
-                                <a href="{{action('RoomController@add_room')}}" class="nav-link ">
+                            <li class="nav-item  {{(Route::getFacadeRoot()->current()->uri() == 'add-room') ? 'active open' : ''}}">
+                                <a href="{{action('RoomController@add_room')}}" class="nav-link">
                                     <span class="title">Add Rooms</span>
                                 </a>
                             </li>
@@ -494,11 +498,11 @@
                         </ul>
                     </li>
 
-                    <li class="nav-item {{$bActive ? 'active open' : ''}}">
+                    <li class="nav-item {{(Route::getFacadeRoot()->current()->uri() == 'schedule') ? 'active open' : ''}}">
                         <a href="javascript:;" class="nav-link nav-toggle">
                             <i class="icon-folder"></i>
                             <span class="title">Schedule</span>
-                            @if($bActive)
+                            @if((Route::getFacadeRoot()->current()->uri() == 'schedule'))
                                 <span class="selected"></span>
                             @else
                                 <span class="arrow open"></span>
@@ -506,10 +510,10 @@
 
                         </a>
                         <ul class="sub-menu">
-                            <li class="nav-item {{$bActive ? 'open' : ''}}">
+                            <li class="nav-item {{(Route::getFacadeRoot()->current()->uri() == 'schedule') ? 'open' : ''}}">
                                 <a href="{{action('RoomController@schedule')}}" class="nav-link nav-toggle">
                                     <i class="icon-graph"></i> List of Schedule
-                                    @if($bActive)
+                                    @if((Route::getFacadeRoot()->current()->uri() == 'schedule'))
                                         <span class="selected"></span>
                                     @else
                                         <span class="arrow open"></span>

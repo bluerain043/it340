@@ -11,7 +11,7 @@
     </ul>
 @endsection
 @section('content')
-    <h1 class="page-title"> Add Room</h1>
+    <h1 class="page-title"> Add Room {{Route::getFacadeRoot()->current()->uri()}}</h1>
     <div class="row">
         {{--<div class="col-md-6 offset-md-3">--}}
         <div class="col-md-12">
@@ -55,10 +55,10 @@
                                 </div>
                             @endif
                             <div class="form-group form-md-line-input">
-                                <label class="col-md-3 control-label" for="form_control_1">Name
+                                <label class="col-md-2 control-label" for="form_control_1">Name
                                     <span class="required" aria-required="true">*</span>
                                 </label>
-                                <div class="col-md-9">
+                                <div class="col-md-8">
                                     <input type="text" class="form-control" placeholder="" name="room_name">
                                     <div class="form-control-focus"> </div>
                                     <span class="help-block">enter room name</span>
@@ -66,10 +66,10 @@
                             </div>
 
                             <div class="form-group form-md-line-input">
-                                <label class="col-md-3 control-label" for="form_control_1">Room Number
+                                <label class="col-md-2 control-label" for="form_control_1">Room Number
                                     <span class="required" aria-required="true">*</span>
                                 </label>
-                                <div class="col-md-9">
+                                <div class="col-md-8">
                                     <div class="input-icon">
                                         <input type="text" class="form-control" placeholder="Enter digits" name="room_number">
                                         <div class="form-control-focus"> </div>
@@ -79,10 +79,10 @@
                             </div>
 
                             <div class="form-group form-md-line-input">
-                                <label class="col-md-3 control-label" for="form_control_1">Facilitor
+                                <label class="col-md-2 control-label" for="form_control_1">Facilitor
                                     <span class="required" aria-required="true">*</span>
                                 </label>
-                                <div class="col-md-9">
+                                <div class="col-md-8">
                                     <input type="text" class="form-control" placeholder="" name="facilitator">
                                     <div class="form-control-focus"> </div>
                                     <span class="help-block">enter name of room facilitor</span>
@@ -90,9 +90,9 @@
                             </div>
 
                             <div class="form-group form-md-line-input">
-                                <label class="col-md-3 control-label" for="form_control_1">Seatplan image</label>
-                                <div class="col-md-9">
-                                    <div class="col-md-9">
+                                <label class="col-md-2 control-label" for="form_control_1">Seatplan image</label>
+                                <div class="col-md-8">
+                                    <div class="col-md-8">
                                         <div class="fileinput fileinput-new" data-provides="fileinput">
                                             <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 200px; height: 150px;"> </div>
                                             <div>
@@ -110,8 +110,8 @@
                                 </div>
                             </div>
                             <div class="form-group form-md-checkboxes">
-                                <label class="col-md-3 control-label" for="form_control_1">Status</label>
-                                <div class="col-md-9">
+                                <label class="col-md-2 control-label" for="form_control_1">Status</label>
+                                <div class="col-md-8">
                                     <div class="md-checkbox-inline">
                                         <div class="md-checkbox">
                                             <input type="checkbox" id="checkbox1_3" name="status" value="1" class="md-check">

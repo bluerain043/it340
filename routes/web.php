@@ -26,5 +26,5 @@ Route::get('/room/{room}/edit', 'RoomController@room_view_edit');
 Route::post('room/save-student', 'RoomController@save_new_student');
 
 //Schedule
-Route::get('/schedule', 'RoomController@schedule');
+Route::get('/schedule', 'RoomController@schedule')->name('schedule');
 Route::post('/schedule/add', 'RoomController@post_schedule');
