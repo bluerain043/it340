@@ -7,6 +7,7 @@
                 <i class="fa fa-angle-down"></i>
             </a>
             <ul class="dropdown-menu">
+
                 @if(count($schedules) > 0)
                     @foreach($schedules as $schedule)
                         <li>
@@ -15,10 +16,10 @@
                                     <a href="{{action('RoomController@room_view_edit_schedule', compact('room', 'key'))}}> {{$schedule->day .' - '. $val}} </a>
                                 @endif
                             @endforeach
-
                         </li>
                     @endforeach
                 @endif
+
                 {{--<li>
                     <a href="javascript:;"> Settings
                         <span class="badge badge-success"> 3 </span>
