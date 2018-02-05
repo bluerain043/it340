@@ -49,3 +49,20 @@
     top: 61px;
     left: 430px;
 }
+.student-box .modal-full.modal-dialog{
+    width: 80%;
+}
+.student-box .form-actions{
+    border-top: none;
+}
+/*
+.student-box .seatplan_img{
+    border: 1px solid #e7ecf1;
+    background-color: #fff;
+    z-index: 1;
+    position: absolute;
+}
+.student-box .seatplan_img img{}*/
+.student-box .form-horizontal .form-group.form-md-line-input{
+    margin: 0 -15px 20px 15px;
+}

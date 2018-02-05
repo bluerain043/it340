@@ -18,12 +18,6 @@
                data-content="Add schedule" data-original-title="Schedule" data-toggle="modal" href="#addSchedule">
                 <i class="fa fa-plus"></i>
             </a>
-            {{--<a class="btn btn-circle btn-icon-only btn-default popovers" href="javascript:;" data-container="body" data-trigger="hover" data-placement="left" data-content="Edit Settings" data-original-title="Dashboard">
-                <i class="icon-wrench"></i>
-            </a>
-            <a class="btn btn-circle btn-icon-only btn-default popovers" href="javascript:;" data-container="body" data-trigger="hover" data-placement="left" data-content="Delete this room entry" data-original-title="Dashboard">
-                <i class="icon-trash"></i>
-            </a>--}}
         </div>
     </div>
     <div class="row">

@@ -7,36 +7,17 @@
                 <i class="fa fa-angle-down"></i>
             </a>
             <ul class="dropdown-menu">
-
                 @if(count($schedules) > 0)
                     @foreach($schedules as $schedule)
-                        <li>
-                            @foreach(\App\Schedule::$time as $key=>$val)
-                                @if($key == $schedule->time)
-                                    <a href="{{action('RoomController@room_view_edit_schedule', compact('room', 'key'))}}> {{$schedule->day .' - '. $val}} </a>
-                                @endif
-                            @endforeach
-                        </li>
+                        @foreach(\App\Schedule::$time as $key=>$val)
+                            @if($key == $schedule->time)
+                                <li><a href="{{action('RoomController@room_view_edit_schedule', compact('room', 'key'))}}"> {{$schedule->day .' - '. $val}} </a></li>
+                            @endif
+                        @endforeach
                     @endforeach
                 @endif
-
-                {{--<li>
-                    <a href="javascript:;"> Settings
-                        <span class="badge badge-success"> 3 </span>
-                    </a>
-                </li>
-                <li>
-                    <a href="javascript:;"> Preferences </a>
-                </li>
-                <li>
-                    <a href="javascript:;"> Window Options </a>
-                </li>
-                <li>
-                    <a href="javascript:;"> Help
-                        <span class="badge badge-danger"> 7 </span>
-                    </a>
-                </li>--}}
             </ul>
+
         </div>
         <div class="actions">
 
@@ -59,14 +40,307 @@
             </select>--}}
         </div>
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12 student-box">
             <!-- BEGIN VALIDATION STATES-->
             <div class="portlet light portlet-fit portlet-form bordered vertical-center" style="z-index:1;">
+            {{--<div class="seatplan_img" style="z-index:1;">--}}
                 <img src="{{asset($room->seatplan_image)}}" alt="#" class="seat-image">
 
                 @foreach($all_student as $student)
-                    <div id="jquery-draggable-{{$student->students}}" onMouseOver="showStudentInfo({{$student->students}});" onMouseOut="hideStudentInfo({{$student->students}});" onClick="setStudentId({{$student->students}});" class="student-chair jquery-draggable department-{{str_replace(['/', ' '],'-',$student->department)}}" style="left:{{$student->pos_x}}px;top:{{$student->pos_y}}px;z-index:1;">
+                    <div id="jquery-draggable-{{$student->students}}" onMouseOver="showStudentInfo({{$student->students}});" onMouseOut="hideStudentInfo({{$student->students}});"
+                         data-toggle="modal" href="#full"
+                         onClick="setStudentId({{$student->students}});" class="student-chair jquery-draggable department-{{str_replace(['/', ' '],'-',$student->department)}}" style="left:{{$student->pos_x}}px;top:{{$student->pos_y}}px;z-index:1;">
                         <div id="student-info-{{$student->students}}" class="student-info">{{$student->seat_number}} - {{$student->student_name}}</div>
+                    </div>
+                    <!-- /.modal-Student Info -->
+                    <div class="modal fade" id="full" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-full">
+                            <div class="modal-content">
+                                <div class="modal-body">
+
+                                    <div class="portlet light bordered">
+                                        <div class="portlet-title tabbable-line">
+                                            <div class="caption">
+                                                <i class="icon-globe font-green"></i>
+                                                <span class="caption-subject font-green bold uppercase">Add Details</span>
+                                            </div>
+                                            <ul class="nav nav-tabs">
+                                                <li class="">
+                                                    <a href="#student-tab" data-toggle="tab" aria-expanded="true"> Student </a>
+                                                </li>
+                                                <li class="">
+                                                    <a href="#specification" data-toggle="tab" aria-expanded="false"> Specification </a>
+                                                </li>
+                                                <li class="">
+                                                    <a href="#software" data-toggle="tab" aria-expanded="false"> Software </a>
+                                                </li>
+                                                <li class="">
+                                                    <a href="#hardware" data-toggle="tab" aria-expanded="false"> Hardware </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="portlet-body form">
+                                            <div class="tab-content">
+                                                <div class="tab-pane active" id="student-tab">
+                                                    <div class="skin skin-minimal">
+                                                        <form action="{{action('RoomController@ajax_save_new_student')}}" class="form-horizontal" id="addStudentForm" novalidate="novalidate" method="POST">
+                                                                {{ csrf_field() }}
+                                                                <div class="form-body">
+                                                                    <div class="student-error alert alert-danger hide">
+                                                                        <button class="close" data-close="alert"></button> You have some form errors. Please check below. <br/>
+                                                                        <ul class="slist">
+
+                                                                        </ul>
+                                                                    </div>
+                                                                    <div class="student-success alert alert-success hide">
+                                                                        <button class="close" data-close="alert"></button> <p class="msg"></p>
+                                                                    </div>
+                                                                    <input type="hidden" name="students" value="{{$student->students}}">
+                                                                    <div class="form-group form-md-line-input">
+                                                                        <label class="col-md-3 control-label" for="form_control_1">Student Name
+                                                                            <span class="required" aria-required="true">*</span>
+                                                                        </label>
+                                                                        <div class="col-md-5">
+                                                                            <input type="text" class="form-control" placeholder="" name="student_name" value="{{$student->student_name}}">
+                                                                            <div class="form-control-focus"> </div>
+                                                                            <span class="help-block">enter student name</span>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="form-group form-md-line-input">
+                                                                        <label class="col-md-3 control-label" for="form_control_1">Department
+                                                                        </label>
+                                                                        <div class="col-md-5">
+                                                                            <input type="text" class="form-control" placeholder="" name="department" value="{{$student->department}}">
+                                                                            <div class="form-control-focus"> </div>
+                                                                            <span class="help-block">enter department</span>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="form-group form-md-line-input">
+                                                                        <label class="col-md-3 control-label" for="form_control_1">Course
+                                                                        </label>
+                                                                        <div class="col-md-5">
+                                                                            <input type="text" class="form-control" placeholder="" name="course" value="{{$student->course}}">
+                                                                            <div class="form-control-focus"> </div>
+                                                                            <span class="help-block">enter course</span>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="form-group form-md-line-input">
+                                                                        <label class="col-md-3 control-label" for="form_control_1">Year
+                                                                        </label>
+                                                                        <div class="col-md-5">
+                                                                            <input type="text" class="form-control" placeholder="" name="year" value="{{$student->year}}">
+                                                                            <div class="form-control-focus"> </div>
+                                                                            <span class="help-block">enter year</span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            <div class="form-actions">
+                                                                <button type="button" class="btn green addStudent-btn">Submit</button>
+                                                                <button type="button" class="btn default" data-dismiss="modal">Cancel</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                                <div class="tab-pane" id="specification">
+                                                    <div class="skin skin-square">
+                                                        <form action="{{action('RoomController@post_schedule')}}" class="form-horizontal" id="form_sample_1" novalidate="novalidate" method="POST">
+                                                            {{ csrf_field() }}
+                                                            <div class="form-body">
+                                                                @if (count($errors) > 0)
+                                                                    <div class="alert alert-danger">
+                                                                        <button class="close" data-close="alert"></button> You have some form errors. Please check below. <br/>
+                                                                        <ul>
+                                                                            @foreach ($errors->all() as $error)
+                                                                                <li>{{ $error }}</li>
+                                                                            @endforeach
+                                                                        </ul>
+                                                                    </div>
+                                                                @endif
+                                                                @if ($message = Session::get('success'))
+                                                                    <div class="alert alert-success">
+                                                                        <button class="close" data-close="alert"></button> {{ $message }}
+                                                                    </div>
+                                                                @endif
+                                                                <div class="form-group form-md-line-input">
+                                                                    <label class="col-md-3 control-label" for="form_control_1">Unit Type
+                                                                        <span class="required" aria-required="true">*</span>
+                                                                    </label>
+                                                                    <div class="col-md-5">
+                                                                        <input type="text" class="form-control" placeholder="" name="student_name" value="{{$student->student_name}}">
+                                                                        <div class="form-control-focus"> </div>
+                                                                        <span class="help-block">enter unit type</span>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-group form-md-line-input">
+                                                                    <label class="col-md-3 control-label" for="form_control_1">Processor
+                                                                    </label>
+                                                                    <div class="col-md-5">
+                                                                        <input type="text" class="form-control" placeholder="" name="department" value="{{$student->department}}">
+                                                                        <div class="form-control-focus"> </div>
+                                                                        <span class="help-block">enter processor</span>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-group form-md-line-input">
+                                                                    <label class="col-md-3 control-label" for="form_control_1">Board
+                                                                    </label>
+                                                                    <div class="col-md-5">
+                                                                        <input type="text" class="form-control" placeholder="" name="course" value="{{$student->course}}">
+                                                                        <div class="form-control-focus"> </div>
+                                                                        <span class="help-block">enter board</span>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-group form-md-line-input">
+                                                                    <label class="col-md-3 control-label" for="form_control_1">HDD
+                                                                    </label>
+                                                                    <div class="col-md-5">
+                                                                        <input type="text" class="form-control" placeholder="" name="year" value="{{$student->year}}">
+                                                                        <div class="form-control-focus"> </div>
+                                                                        <span class="help-block">enter hdd</span>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-group form-md-line-input">
+                                                                    <label class="col-md-3 control-label" for="form_control_1">Memory
+                                                                    </label>
+                                                                    <div class="col-md-5">
+                                                                        <input type="text" class="form-control" placeholder="" name="year" value="{{$student->year}}">
+                                                                        <div class="form-control-focus"> </div>
+                                                                        <span class="help-block">enter memory</span>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-group form-md-line-input">
+                                                                    <label class="col-md-3 control-label" for="form_control_1">Graphics Card
+                                                                    </label>
+                                                                    <div class="col-md-5">
+                                                                        <input type="text" class="form-control" placeholder="" name="year" value="{{$student->year}}">
+                                                                        <div class="form-control-focus"> </div>
+                                                                        <span class="help-block">enter graphics card</span>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-group form-md-line-input">
+                                                                    <label class="col-md-3 control-label" for="form_control_1">End of Life
+                                                                    </label>
+                                                                    <div class="col-md-5">
+                                                                        <input type="text" class="form-control" placeholder="" name="year" value="{{$student->year}}">
+                                                                        <div class="form-control-focus"> </div>
+                                                                        <span class="help-block">enter end of life</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-actions">
+                                                                <button type="submit" class="btn green">Submit</button>
+                                                                <button type="button" class="btn default" data-dismiss="modal">Cancel</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+
+                                                <div class="tab-pane" id="software">
+                                                    <div class="skin skin-flat">
+                                                        <form action="{{action('RoomController@post_schedule')}}" class="form-horizontal mt-repeater form-horizontal" id="form_sample_1" novalidate="novalidate" method="POST">
+                                                            {{ csrf_field() }}
+                                                            <div data-repeater-list="group-a">
+                                                                <div data-repeater-item="" class="mt-repeater-item">
+                                                                    <!-- jQuery Repeater Container -->
+                                                                    <div class="mt-repeater-input">
+                                                                        <label class="control-label">Software</label>
+                                                                        <br>
+                                                                        <input type="text" name="group-a[0][text-input]" class="form-control" value="John Smith">
+                                                                    </div>
+
+                                                                    <div class="mt-repeater-input">
+                                                                        <label class="control-label">Purchase Date</label>
+                                                                        <br>
+                                                                        <input type="text" name="group-a[0][Brand]" class="form-control" value="LG 22M35">
+                                                                    </div>
+
+                                                                    <div class="mt-repeater-input">
+                                                                        <label class="control-label">End of Life</label>
+                                                                        <br>
+                                                                        <input type="text" name="group-a[0][Sticker]" class="form-control" value="31646">
+                                                                    </div>
+                                                                    <div class="mt-repeater-input">
+                                                                        <a href="javascript:;" data-repeater-delete="" class="btn btn-danger mt-repeater-delete">
+                                                                            <i class="fa fa-close"></i> Delete</a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <a href="javascript:;" data-repeater-create="" class="btn btn-success mt-repeater-add">
+                                                                <i class="fa fa-plus"></i> Add</a>
+                                                            <div class="form-actions">
+                                                                <button type="submit" class="btn green">Submit</button>
+                                                                <button type="button" class="btn default" data-dismiss="modal">Cancel</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                                <div class="tab-pane" id="hardware">
+                                                    <div class="skin skin-flat">
+                                                        <form action="{{action('RoomController@post_schedule')}}" class="form-horizontal mt-repeater form-horizontal" id="form_sample_1" novalidate="novalidate" method="POST">
+                                                            {{ csrf_field() }}
+                                                            <div data-repeater-list="group-a">
+                                                                <div data-repeater-item="" class="mt-repeater-item">
+                                                                    <!-- jQuery Repeater Container -->
+                                                                    <div class="mt-repeater-input">
+                                                                        <label class="control-label">Device</label>
+                                                                        <br>
+                                                                        <input type="text" name="group-a[0][text-input]" class="form-control" value="John Smith">
+                                                                    </div>
+
+                                                                    <div class="mt-repeater-input">
+                                                                        <label class="control-label">Brand</label>
+                                                                        <br>
+                                                                        <input type="text" name="group-a[0][Brand]" class="form-control" value="LG 22M35">
+                                                                    </div>
+
+                                                                    <div class="mt-repeater-input">
+                                                                        <label class="control-label">Sticker</label>
+                                                                        <br>
+                                                                        <input type="text" name="group-a[0][Sticker]" class="form-control" value="31646">
+                                                                    </div>
+                                                                    <div class="mt-repeater-input">
+                                                                        <label class="control-label">Serial</label>
+                                                                        <br>
+                                                                        <input type="text" name="group-a[0][Sticker]" class="form-control" value="31646">
+                                                                    </div>
+                                                                    <div class="mt-repeater-input">
+                                                                        <label class="control-label">End of Life</label>
+                                                                        <br>
+                                                                        <input type="text" name="group-a[0][Sticker]" class="form-control" value="31646">
+                                                                    </div>
+                                                                    <div class="mt-repeater-input">
+                                                                        <a href="javascript:;" data-repeater-delete="" class="btn btn-danger mt-repeater-delete">
+                                                                            <i class="fa fa-close"></i> Delete</a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <a href="javascript:;" data-repeater-create="" class="btn btn-success mt-repeater-add">
+                                                                <i class="fa fa-plus"></i> Add</a>
+                                                            <div class="form-actions">
+                                                                <button type="submit" class="btn green">Submit</button>
+                                                                <button type="button" class="btn default" data-dismiss="modal">Cancel</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                            <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
                     </div>
                 @endforeach
             </div>
@@ -77,6 +351,8 @@
 
 @section('page_script')
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js" type="text/javascript"></script>
+    <script src="{{asset('assets/pages/scripts/form-repeater.js')}}" type="text/javascript"></script>
+    <script src="{{asset('global/plugins/jquery-repeater/jquery.repeater.min.js')}}" type="text/javascript"></script>
     <script type="application/x-javascript">
         var x_axis = -1, y_axis = -1, total_draggable = {{ count($all_student) }}, div_pos_x = -1, div_pos_y = -1;
         var glow_color = "black";
@@ -94,8 +370,9 @@
             });
             var fnScript = {
                 onLoad: function(){
-                  this._addStudent();
+                  this._ajxAddStudent();
                   this._removeBoxShadow();
+                  this._addEditStudent();
                   $('.student-info').hide();
                 },
                 _removeBoxShadow: function(){
@@ -106,26 +383,62 @@
                         }
                     });
                 },
-                _addStudent: function(){
+                _ajxAddStudent: function(){
                     $('.add-student-btn').on('click', function(e){
                         e.preventDefault();
                         total_draggable++;
                         div_pos_x = x_axis - 15;
                         div_pos_y = y_axis + 35;
-                        this._addChair('new');
+                        $.post("{{action('RoomController@save_new_student')}}", {_token:'{{ csrf_token() }}', pos_x:div_pos_x, pos_y:div_pos_y, room:room}, function(result){
+                            temp_student_id = result.id;
+                            fnScript._addChair(result.id);
+                            $('#jquery-draggable-'+result.id).draggable({
+                                stop:function() {fnScript.saveData}
+                            });
+
+                        });
                     });
                 },
-                _addChair: function(id){
-                    htmlChair = '<div id="jquery-draggable-'+id+'" onMouseOver="showStudentInfo('+id+');" onMouseOut="hideStudentInfo('+id+');" onClick="setStudentId('+id+');" class="student-chair jquery-draggable" style="left:50%;top:50%;"><div id="student-info-'+id+'" class="student-info"></div></div>';
+                _addChair: function(student_id){ console.log('char');
+                    htmlChair = '<div id="jquery-draggable-'+student_id+'" onMouseOver="showStudentInfo('+student_id+');" onMouseOut="hideStudentInfo('+student_id+');" onClick="setStudentId('+student_id+');" class="student-chair jquery-draggable" style="left:50%;top:50%;"><div id="student-info-'+student_id+'" class="student-info"></div></div>';
                     $('body').append(htmlChair);
+                    $('#jquery-draggable-'+student_id).draggable({
+                        stop:function() {fnScript.saveData}
+                    });
                 },
                 saveData: function(){
-                  if(temp_student_id != -1){
+                 if(temp_student_id != -1){
                       temp_div = $('#jquery-draggable-'+temp_student_id);
                       $.post("{{ action('RoomController@save_new_student') }}", {_token:'{{ csrf_token() }}', student_id:temp_student_id, pos_x:temp_div.position().left, pos_y:temp_div.position().top, room:room}, function(result){
-
+                          $('#jquery-draggable-'+total_draggable).data('student_id', result.id);
+                          if(result.seat_number == null){
+                              $('#student-info-'+result.id).html("");
+                          }else{
+                              $('#student-info-'+result.id).html(result.seat_number + " - " + result.name);
+                          }
                       });
                   }
+                },
+                _addEditStudent: function(){
+                    $('.addStudent-btn').on('click', function(e){
+                        $form = $('#addStudentForm');
+                        url = $form.attr('action');
+                        data = $form.serialize()  + '&ajaxReturn=TRUE';
+                        $.post(url, data, function(result){
+                            if(result.errors){
+                                $('.student-error').removeClass('hide');
+                                html = '';
+                                $.each(result.errors, function (index, data) {
+                                    html += '<li>'+data+'</li>';
+                                });
+                                $('.student-error ul').html(html);
+                            }else if(result.status == 'ok'){
+                                $('.student-success').removeClass('hide');
+                                $('.student-success .msg').html('Student Record is Updated Successfully');
+                            }
+                           console.log(result.errors);
+                        });
+                    });
                 },
                 showStudentInfo: function(){
                     alert('sdgsg');
