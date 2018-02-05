@@ -48,12 +48,12 @@
 
                 @foreach($all_student as $student)
                     <div id="jquery-draggable-{{$student->students}}" onMouseOver="showStudentInfo({{$student->students}});" onMouseOut="hideStudentInfo({{$student->students}});"
-                         data-toggle="modal" href="#full"
+                         data-toggle="modal" href="#full-{{$student->students}}"
                          onClick="setStudentId({{$student->students}});" class="student-chair jquery-draggable department-{{str_replace(['/', ' '],'-',$student->department)}}" style="left:{{$student->pos_x}}px;top:{{$student->pos_y}}px;z-index:1;">
                         <div id="student-info-{{$student->students}}" class="student-info">{{$student->seat_number}} - {{$student->student_name}}</div>
                     </div>
                     <!-- /.modal-Student Info -->
-                    <div class="modal fade" id="full" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal fade" id="full-{{$student->students}}" tabindex="-1" role="dialog" aria-hidden="true">
                         <div class="modal-dialog modal-full">
                             <div class="modal-content">
                                 <div class="modal-body">
@@ -66,22 +66,22 @@
                                             </div>
                                             <ul class="nav nav-tabs">
                                                 <li class="">
-                                                    <a href="#student-tab" data-toggle="tab" aria-expanded="true"> Student </a>
+                                                    <a href="#student-tab-{{$student->students}}" data-toggle="tab" aria-expanded="true"> Student </a>
                                                 </li>
                                                 <li class="">
-                                                    <a href="#specification" data-toggle="tab" aria-expanded="false"> Specification </a>
+                                                    <a href="#specification-{{$student->students}}" data-toggle="tab" aria-expanded="false"> Specification </a>
                                                 </li>
                                                 <li class="">
-                                                    <a href="#software" data-toggle="tab" aria-expanded="false"> Software </a>
+                                                    <a href="#software-{{$student->students}}" data-toggle="tab" aria-expanded="false"> Software </a>
                                                 </li>
                                                 <li class="">
-                                                    <a href="#hardware" data-toggle="tab" aria-expanded="false"> Hardware </a>
+                                                    <a href="#hardware-{{$student->students}}" data-toggle="tab" aria-expanded="false"> Hardware </a>
                                                 </li>
                                             </ul>
                                         </div>
                                         <div class="portlet-body form">
                                             <div class="tab-content">
-                                                <div class="tab-pane active" id="student-tab">
+                                                <div class="tab-pane active" id="student-tab-{{$student->students}}">
                                                     <div class="skin skin-minimal">
                                                         <form action="{{action('RoomController@ajax_save_new_student')}}" class="form-horizontal" id="addStudentForm" novalidate="novalidate" method="POST">
                                                                 {{ csrf_field() }}
@@ -144,7 +144,7 @@
                                                         </form>
                                                     </div>
                                                 </div>
-                                                <div class="tab-pane" id="specification">
+                                                <div class="tab-pane" id="specification-{{$student->students}}">
                                                     <div class="skin skin-square">
                                                         <form action="{{action('RoomController@post_schedule')}}" class="form-horizontal" id="form_sample_1" novalidate="novalidate" method="POST">
                                                             {{ csrf_field() }}
@@ -243,7 +243,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="tab-pane" id="software">
+                                                <div class="tab-pane" id="software-{{$student->students}}">
                                                     <div class="skin skin-flat">
                                                         <form action="{{action('RoomController@post_schedule')}}" class="form-horizontal mt-repeater form-horizontal" id="form_sample_1" novalidate="novalidate" method="POST">
                                                             {{ csrf_field() }}
@@ -282,7 +282,7 @@
                                                         </form>
                                                     </div>
                                                 </div>
-                                                <div class="tab-pane" id="hardware">
+                                                <div class="tab-pane" id="hardware-{{$student->students}}">
                                                     <div class="skin skin-flat">
                                                         <form action="{{action('RoomController@post_schedule')}}" class="form-horizontal mt-repeater form-horizontal" id="form_sample_1" novalidate="novalidate" method="POST">
                                                             {{ csrf_field() }}

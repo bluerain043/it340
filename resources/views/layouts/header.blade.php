@@ -613,8 +613,7 @@
                     <div class="page-toolbar">
                         <div id="dashboard-report-range" class="pull-right tooltips btn btn-sm" data-container="body" data-placement="bottom" data-original-title="Change dashboard date range">
                             <i class="icon-calendar"></i>&nbsp;
-                            <span class="thin uppercase hidden-xs">January 1, 2018 - January 30, 2018</span>&nbsp;
-                            <i class="fa fa-angle-down"></i>
+                            <span class="thin uppercase hidden-xs">{{  \Carbon\Carbon::now()->format('l j F Y')  }}</span>&nbsp;
                         </div>
                     </div>
                 </div>

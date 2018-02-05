@@ -61,7 +61,7 @@ class RoomController extends Controller
                 'student_name' => 'required',
                 'department' => 'required',
                 'course' => 'required',
-                'year' => 'required',
+                'year' => 'required|numeric',
             ]
         );
 
@@ -113,6 +113,7 @@ class RoomController extends Controller
 
     public function room_view_edit_schedule(Room $room, Schedule $schedule)
     {
+
         $all_student = $room->_student()->where('room', $room->room)->where('schedule', $schedule->schedule)->get();dd($all_student);
         $schedules = $room->_schedule()->where('status', '1')->get();
         return view('room.room_edit', compact('room', 'all_student', 'schedules'));

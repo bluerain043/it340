@@ -26,5 +26,11 @@ class Schedule extends Model
         return $this->belongsTo('App\Room', 'room');
     }
 
+    /*public function _students()
+    {
+        return $this->belongsToMany(Students::class, 'student_schedule', 'student', 'schedule')
+            ->withPivot('student')
+            ->withTimestamps();
+    }*/
 
 }
