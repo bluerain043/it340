@@ -50,19 +50,45 @@ class RoomController extends Controller
     public function room_view_edit(Room $room)
     {
         $all_student = $room->_student()->where('room', $room->room)->get();
-        $schedules = $room->_schedule()->where('status', '1')->get();//dd($schedules);
-        return view('room.room_edit', compact('room', 'all_student', 'schedules'));
+        $schedules = $room->_schedule()->where('status', '1')->get();
+        $allRooms = Room::getAllRooms('room_name');
+        return view('room.room_edit', compact('room', 'all_student', 'schedules', 'allRooms'));
+    }
+
+    public function ajax_save_new_student(Request $request)
+    {
+        $validator = \Validator::make($request->except(['_token', 'students', 'ajaxReturn']),[
+                'student_name' => 'required',
+                'department' => 'required',
+                'course' => 'required',
+                'year' => 'required',
+            ]
+        );
+
+        if ($validator->fails() && (isset($request->ajaxReturn) && $request->ajaxReturn == TRUE)) {
+            return response()->json(['errors' => $validator->errors()]);
+        }else{
+            $student = new Students();
+            $student = $student->where('students', $request->students);
+            $save = $student->update($request->except(['_token', 'student', 'ajaxReturn']));
+            return ($save)
+                ? response(['status' => 'ok', 'data' => $student])
+                : response(['status' => 'failed']);
+        }
+
     }
 
     public function save_new_student(Request $request)
     {
         $student = new Students();
-        if($request->student_id == 'new'){
+        if(!isset($request->student_id)){
             $student->create($request->except(['_token']));
         }else{
             $student = $student->where('students', $request->student_id);
             $student->update($request->except(['_token', 'student_id']));
         }
+
+
     }
     public function schedule()
     {

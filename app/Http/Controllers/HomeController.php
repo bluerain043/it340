@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Room;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,7 +26,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('dashboard.index');
+        $allRooms = Room::getAllRooms('room_name');
+        return view('dashboard.index', compact('allRooms'));
         //return view('home');
     }
 }
