@@ -16,12 +16,14 @@ class CreateTableSpecifications extends Migration
         Schema::create('specifications', function (Blueprint $table) {
             $table->increments('specifications');
             $table->integer('students')->references('students')->on('students');
+            $table->string('seat_number', 5);
+            $table->string('unit_type', 255)->nullable();
             $table->string('processor', 255)->nullable();
             $table->string('memory', 255)->nullable();
             $table->string('board', 255)->nullable();
             $table->string('hdd', 255)->nullable();
             $table->string('graphics_card', 255)->nullable();
-            $table->string('end_of_life', 255)->nullable();
+            $table->dateTime('end_of_life', 255)->nullable();
             $table->text('others')->nullable();
             $table->text('in_used')->nullable();
             $table->timestamps();

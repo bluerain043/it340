@@ -10,6 +10,8 @@ class Specifications extends Model
     protected $primaryKey = "specifications";
     protected $fillable = [
         'students',
+        'seat_number',
+        'unit_type',
         'processor',
         'memory',
         'board',

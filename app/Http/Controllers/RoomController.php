@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Room;
 use App\Schedule;
 use App\Students;
+use App\Specifications;
 
 
 class RoomController extends Controller
@@ -120,6 +121,12 @@ class RoomController extends Controller
     {
 
         $all_student = $schedule->_students()->where('status', 'Active')->get();
+        $all_specs = [];
+        $specs = new Specifications();
+        foreach ($all_student as $student){
+            $all_specs = $specs->where('students', $student->student)->get();
+
+        }dd($all_specs);
         /*$students = $room->_room()->where('room', $room->room)->toSql();dd($students);*/
         /*$all_student = [];
         foreach ($students as $student){
@@ -127,6 +134,7 @@ class RoomController extends Controller
         }*/
         //$all_student = $room->_student()->where('room', $room->room)->where('schedule', $schedule->schedule)->get();dd($all_student);
         $schedules_list = $room->_schedule()->where('status', '1')->get();
+
         return view('room.room_edit', compact('room', 'all_student', 'schedules_list' , 'schedule'));
     }
 
