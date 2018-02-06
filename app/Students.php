@@ -24,10 +24,10 @@ class Students extends Model
         return $this->hasMany('App\Room', 'room', 'room');
     }
 
-   /* public function _schedule()
+    public function _schedule()
     {
-        return $this->belongsToMany(Schedule::class, 'student_schedule', 'students', 'schedule')
-            ->withPivot('student')
+        return $this->belongsToMany(Schedule::class, 'student_schedule', 'student', 'schedule')
+            ->withPivot('status')
             ->withTimestamps();
-    }*/
+    }
 }

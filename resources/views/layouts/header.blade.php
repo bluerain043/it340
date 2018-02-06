@@ -37,8 +37,9 @@
         <div class="page-header-inner ">
             <!-- BEGIN LOGO -->
             <div class="page-logo">
-                <a href="index.html">
+                <a href="/">
                     <img src="../assets/layouts/layout/img/logo.png" alt="logo" class="logo-default"> </a>
+                   {{-- <p class="logo-default mlast">Jabagat<span class="mlogo">MaryGale</span></p>--}}
                 <div class="menu-toggler sidebar-toggler">
                     <span></span>
                 </div>
@@ -1217,14 +1218,14 @@
 <script src="{{ asset('plugins/bootstrap-switch/js/bootstrap-switch.min.js') }}" type="text/javascript"></script>
 <!-- END CORE PLUGINS -->
 <!-- BEGIN PAGE LEVEL PLUGINS -->
-<script src="{{asset('global/plugins/moment.min.js')}}" type="text/javascript"></script>
-<script src="{{asset('global/plugins/bootstrap-daterangepicker/daterangepicker.min.js')}}" type="text/javascript"></script>
+{{--<script src="{{asset('global/plugins/moment.min.js')}}" type="text/javascript"></script>--}}
+{{--<script src="{{asset('global/plugins/bootstrap-daterangepicker/daterangepicker.min.js')}}" type="text/javascript"></script>--}}
 <script src="{{asset('global/plugins/morris/morris.min.js')}}" type="text/javascript"></script>
 <script src="{{asset('global/plugins/morris/raphael-min.js')}}" type="text/javascript"></script>
 <script src="{{asset('global/plugins/counterup/jquery.waypoints.min.js')}}" type="text/javascript"></script>
 <script src="{{asset('global/plugins/counterup/jquery.counterup.min.js')}}" type="text/javascript"></script>
-<script src="{{asset('global/plugins/fullcalendar/fullcalendar.min.js')}}" type="text/javascript"></script>
-<script src="{{asset('global/plugins/horizontal-timeline/horizontal-timeline.js')}}" type="text/javascript"></script>
+{{--<script src="{{asset('global/plugins/fullcalendar/fullcalendar.min.js')}}" type="text/javascript"></script>
+<script src="{{asset('global/plugins/horizontal-timeline/horizontal-timeline.js')}}" type="text/javascript"></script>--}}
 
 <!-- END PAGE LEVEL PLUGINS -->
 <!-- BEGIN THEME GLOBAL SCRIPTS -->
@@ -1233,6 +1234,11 @@
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
 <script src="{{asset('assets/pages/scripts/dashboard.min.js')}}" type="text/javascript"></script>
 <!-- END PAGE LEVEL SCRIPTS -->
+
+<!--added -->
+<script src="{{asset('global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js')}}" type="text/javascript"></script>
+<script src="{{asset('assets/pages/scripts/components-date-time-pickers.min.js')}}" type="text/javascript"></script>
+<!-- end added -->
 <!-- BEGIN THEME LAYOUT SCRIPTS -->
 <script src="{{asset('assets/layouts/layout/scripts/layout.min.js')}}" type="text/javascript"></script>
 <script src="{{asset('assets/layouts/layout/scripts/demo.min.js')}}" type="text/javascript"></script>

@@ -23,14 +23,20 @@ class Schedule extends Model
 
     public function _room()
     {
-        return $this->belongsTo('App\Room', 'room');
+        //return $this->belongsToMany(Room::class, 'room');
+        return $this->belongsToMany(Room::class, 'student_schedule', 'schedule', 'student')
+            ->withPivot('student_schedule')
+            ->withTimestamps();
     }
 
-    /*public function _students()
-    {
-        return $this->belongsToMany(Students::class, 'student_schedule', 'student', 'schedule')
-            ->withPivot('student')
-            ->withTimestamps();
-    }*/
+    public function _students()
+{
+        /*return $this->belongsToMany(Students::class, 'student_schedule', 'student', 'schedule')
+            ->withPivot('student', 'schedule')
+            ->withTimestamps();*/
+    return $this->belongsToMany(Students::class, 'student_schedule', 'schedule', 'student')
+        ->withPivot('student', 'schedule')
+        ->withTimestamps();
+    }
 
 }

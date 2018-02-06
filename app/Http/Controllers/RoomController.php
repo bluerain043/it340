@@ -50,9 +50,9 @@ class RoomController extends Controller
     public function room_view_edit(Room $room)
     {
         $all_student = $room->_student()->where('room', $room->room)->get();
-        $schedules = $room->_schedule()->where('status', '1')->get();
+        $schedules_list = $room->_schedule()->where('status', '1')->get();
         $allRooms = Room::getAllRooms('room_name');
-        return view('room.room_edit', compact('room', 'all_student', 'schedules', 'allRooms'));
+        return view('room.room_edit', compact('room', 'all_student', 'allRooms', 'schedules_list'));
     }
 
     public function ajax_save_new_student(Request $request)
@@ -81,8 +81,13 @@ class RoomController extends Controller
     public function save_new_student(Request $request)
     {
         $student = new Students();
+        $request->seat_number = $this->generateRandomSeatNumber(4); //gale
         if(!isset($request->student_id)){
-            $student->create($request->except(['_token']));
+            $student = $student->create($request->except(['_token']));
+            $schedule = new Schedule();
+            $schedule = $schedule->where('schedule', $request->schedule)->first();
+            $student->_schedule()->attach($schedule->schedule, ['status' => 'Active', 'schedule' => $request->schedule, 'student' => $student->students]);
+
         }else{
             $student = $student->where('students', $request->student_id);
             $student->update($request->except(['_token', 'student_id']));
@@ -114,8 +119,27 @@ class RoomController extends Controller
     public function room_view_edit_schedule(Room $room, Schedule $schedule)
     {
 
-        $all_student = $room->_student()->where('room', $room->room)->where('schedule', $schedule->schedule)->get();dd($all_student);
-        $schedules = $room->_schedule()->where('status', '1')->get();
-        return view('room.room_edit', compact('room', 'all_student', 'schedules'));
+        $all_student = $schedule->_students()->where('status', 'Active')->get();
+        /*$students = $room->_room()->where('room', $room->room)->toSql();dd($students);*/
+        /*$all_student = [];
+        foreach ($students as $student){
+            $all_student = $student->where('room', $student->room)->get();
+        }*/
+        //$all_student = $room->_student()->where('room', $room->room)->where('schedule', $schedule->schedule)->get();dd($all_student);
+        $schedules_list = $room->_schedule()->where('status', '1')->get();
+        return view('room.room_edit', compact('room', 'all_student', 'schedules_list' , 'schedule'));
     }
+
+    private function generateRandomSeatNumber($length=16)
+    {
+        $characters = '0123456789AB';
+        /*$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';*/
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
+    }
+
 }
