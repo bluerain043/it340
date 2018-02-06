@@ -460,6 +460,7 @@
                         });
                     });
                 },
+
                 showStudentInfo: function(){
                     alert('sdgsg');
                 },

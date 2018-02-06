@@ -53,7 +53,7 @@ class RoomController extends Controller
         $all_student = $room->_student()->where('room', $room->room)->get();
         $schedules_list = $room->_schedule()->where('status', '1')->get();
         $allRooms = Room::getAllRooms('room_name');
-        return view('room.room_edit', compact('room', 'all_student', 'allRooms', 'schedules_list'));
+        return view('room.room_view', compact('room', 'all_student', 'allRooms', 'schedules_list'));
     }
 
     public function ajax_save_new_student(Request $request)

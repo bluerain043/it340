@@ -32,3 +32,8 @@ Route::post('room/ajax-save-specification', 'RoomController@ajax_save_specificat
 //Schedule
 Route::get('/schedule', 'RoomController@schedule')->name('schedule');
 Route::post('/schedule/add', 'RoomController@post_schedule');
+
+//Users
+Route::get('/user/create', 'UserController@create_user')->name('create_user');
+Route::post('/user/create', 'UserController@post_create_user')->name('register_user');
+Route::get('/user/list', 'UserController@user_list')->name('user_list');

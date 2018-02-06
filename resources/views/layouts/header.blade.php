@@ -486,13 +486,13 @@
                                     <span class="title">Profile</span>
                                 </a>
                             </li>
-                            <li class="nav-item  ">
-                                <a href="ui_colors.html" class="nav-link ">
+                            {{--<li class="nav-item  ">
+                                <a href="{{ route('create_user') }}" class="nav-link ">
                                     <span class="title">Create User</span>
                                 </a>
-                            </li>
+                            </li>--}}
                             <li class="nav-item">
-                                <a href="ui_colors.html" class="nav-link ">
+                                <a href="{{ route('user_list') }}" class="nav-link ">
                                     <span class="title">User's List</span>
                                 </a>
                             </li>
