@@ -126,7 +126,7 @@ class RoomController extends Controller
         foreach ($all_student as $student){
             $all_specs = $specs->where('students', $student->student)->get();
 
-        }dd($all_specs);
+        }
         /*$students = $room->_room()->where('room', $room->room)->toSql();dd($students);*/
         /*$all_student = [];
         foreach ($students as $student){
