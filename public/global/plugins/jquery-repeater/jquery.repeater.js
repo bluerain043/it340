@@ -799,7 +799,8 @@ $.fn.repeater = function (fig) {
 
     $(this).each(function () {
 
-        var $self = $(this);
+        //var $self = $(this);
+        var $self = $('#full-new');
 
         var show = fig.show || function () {
             $(this).show();

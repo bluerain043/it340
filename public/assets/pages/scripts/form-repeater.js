@@ -3,6 +3,7 @@ var FormRepeater = function () {
     return {
         //main function to initiate the module
         init: function () {
+            //$('#full-new').each('.mt-repeater', function(){
         	$('.mt-repeater').each(function(){
                 $(this).repeater({
         			show: function () {
