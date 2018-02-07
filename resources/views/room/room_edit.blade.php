@@ -162,15 +162,17 @@
                                                         <form action="{{action('RoomController@ajax_save_specification')}}" class="form-horizontal"  id="addSpecs-{{$student->students}}" novalidate="novalidate" method="POST">
                                                             {{ csrf_field() }}
                                                             <div class="form-body">
-                                                                <div class="student-error alert alert-danger hide">
+                                                                <div class="specs-error alert alert-danger hide">
                                                                     <button class="close" data-close="alert"></button> You have some form errors. Please check below. <br/>
                                                                     <ul class="slist">
 
                                                                     </ul>
                                                                 </div>
-                                                                <div class="student-success alert alert-success hide">
+                                                                <div class="specs-success alert alert-success hide">
                                                                     <button class="close" data-close="alert"></button> <p class="msg"></p>
                                                                 </div>
+
+
                                                                 <input type="hidden" name="students" value="{{$student->students}}">
                                                                 <input type="hidden" name="seat_number" value="{{$student->seat_number}}">
                                                                 <input type="hidden" name="in_used" value="yes">
@@ -179,10 +181,10 @@
                                                                         <span class="required" aria-required="true">*</span>
                                                                     </label>
                                                                     <div class="col-md-5">
-                                                                        <select class="form-control" id="form_control_1" name="processor">
+                                                                        <select class="form-control" id="form_control_1" name="unit_type">
                                                                             <option value=""></option>
                                                                             @foreach(\App\Specifications::$unitType as $key=>$val)
-                                                                                <option value="{{$key}}">{{$val}}</option>
+                                                                                <option value="{{$key}}" {{$student->specifications->unit_type == $val ? 'Selected' : ''}}>{{$val}}</option>
                                                                             @endforeach
                                                                         </select>
                                                                         <div class="form-control-focus"> </div>
@@ -194,7 +196,7 @@
                                                                     <label class="col-md-3 control-label" for="form_control_1">Processor
                                                                     </label>
                                                                     <div class="col-md-5">
-                                                                        <input type="text" class="form-control" placeholder="" name="processor" value="{{$student->department}}">
+                                                                        <input type="text" class="form-control" placeholder="" name="processor" value="{{$student->specifications->processor}}">
                                                                         <div class="form-control-focus"> </div>
                                                                         <span class="help-block">enter processor</span>
                                                                     </div>
@@ -204,7 +206,7 @@
                                                                     <label class="col-md-3 control-label" for="form_control_1">Board
                                                                     </label>
                                                                     <div class="col-md-5">
-                                                                        <input type="text" class="form-control" placeholder="" name="board" value="{{$student->course}}">
+                                                                        <input type="text" class="form-control" placeholder="" name="board" value="{{$student->specifications->board}}">
                                                                         <div class="form-control-focus"> </div>
                                                                         <span class="help-block">enter board</span>
                                                                     </div>
@@ -214,7 +216,7 @@
                                                                     <label class="col-md-3 control-label" for="form_control_1">HDD
                                                                     </label>
                                                                     <div class="col-md-5">
-                                                                        <input type="text" class="form-control" placeholder="" name="hdd" value="{{$student->year}}">
+                                                                        <input type="text" class="form-control" placeholder="" name="hdd" value="{{$student->specifications->hdd}}">
                                                                         <div class="form-control-focus"> </div>
                                                                         <span class="help-block">enter hdd</span>
                                                                     </div>
@@ -224,7 +226,7 @@
                                                                     <label class="col-md-3 control-label" for="form_control_1">Memory
                                                                     </label>
                                                                     <div class="col-md-5">
-                                                                        <input type="text" class="form-control" placeholder="" name="memory" value="{{$student->year}}">
+                                                                        <input type="text" class="form-control" placeholder="" name="memory" value="{{$student->specifications->memory}}">
                                                                         <div class="form-control-focus"> </div>
                                                                         <span class="help-block">enter memory</span>
                                                                     </div>
@@ -234,7 +236,7 @@
                                                                     <label class="col-md-3 control-label" for="form_control_1">Graphics Card
                                                                     </label>
                                                                     <div class="col-md-5">
-                                                                        <input type="text" class="form-control" placeholder="" name="graphics_card" value="{{$student->year}}">
+                                                                        <input type="text" class="form-control" placeholder="" name="graphics_card" value="{{$student->specifications->graphics_card}}">
                                                                         <div class="form-control-focus"> </div>
                                                                         <span class="help-block">enter graphics card</span>
                                                                     </div>
@@ -244,15 +246,15 @@
                                                                     <label class="col-md-3 control-label" for="form_control_1">End of Life
                                                                     </label>
                                                                     <div class="col-md-5">
-                                                                        <input class="form-control form-control-inline input-medium date-picker" name="end_of_life" type="text" value="">
-                                                                        {{--<input type="text" class="form-control" placeholder="" name="year" value="{{$student->year}}">--}}
+                                                                        <input class="form-control form-control-inline input-medium date-picker" name="end_of_life" type="text"
+                                                                               value="{{ Carbon\Carbon::parse($student->specifications->end_of_life)->format('d-m-Y')}}" >
                                                                         <div class="form-control-focus"> </div>
                                                                         <span class="help-block">enter end of life</span>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div class="form-actions">
-                                                                <button type="submit" class="btn green">Submit</button>
+                                                                <button type="button" class="btn green addSpecification-btn" data-student="{{$student->students}}">Submit</button>
                                                                 <button type="button" class="btn default" data-dismiss="modal">Cancel</button>
                                                             </div>
                                                         </form>
@@ -261,46 +263,88 @@
 
                                                 <div class="tab-pane" id="software-{{$student->students}}">
                                                     <div class="skin skin-flat">
-                                                        <form action="{{action('RoomController@post_schedule')}}" class="form-horizontal mt-repeater form-horizontal" id="form_sample_1" novalidate="novalidate" method="POST">
+                                                        <form action="{{action('RoomController@ajax_save_software')}}" class="form-horizontal mt-repeater form-horizontal" id="addSoftware-{{$student->students}}" novalidate="novalidate" method="POST">
                                                             {{ csrf_field() }}
-                                                            <div data-repeater-list="group-a">
+
+                                                            <div class="software-error alert alert-danger hide">
+                                                                <button class="close" data-close="alert"></button> You have some form errors. Please check below. <br/>
+                                                                <ul class="slist">
+
+                                                                </ul>
+                                                            </div>
+                                                            <div class="software-success alert alert-success hide">
+                                                                <button class="close" data-close="alert"></button> <p class="msg"></p>
+                                                            </div>
+
+
+                                                            <input type="hidden" name="students" value="{{$student->students}}">
+                                                            <input type="hidden" name="seat_number" value="{{$student->seat_number}}">
+
+                                                            <div data-repeater-list="software">
                                                                 <div data-repeater-item="" class="mt-repeater-item">
+                                                                    @if(count($student->software) > 0)
+                                                                        <!-- display software list if present -->
+                                                                        @foreach($student->software as $software)
+                                                                            <div class="mt-repeater-input">
+                                                                                <label class="control-label">Software</label>
+                                                                                <br>
+                                                                                <input type="text" name="software[0][name]" class="form-control" value="{{$software->name}}">
+                                                                            </div>
+
+                                                                            <div class="mt-repeater-input">
+                                                                                <label class="control-label">Purchase Date</label>
+                                                                                <br>
+                                                                                <input class="input-group form-control form-control-inline date date-picker" name="software[0][purchase_date]" type="text"
+                                                                                       value="{{ Carbon\Carbon::parse($software->purchase_date)->format('d-m-Y')}}" >
+                                                                            </div>
+
+                                                                            <div class="mt-repeater-input">
+                                                                                <label class="control-label">End of Life</label>
+                                                                                <br>
+                                                                                <input class="input-group form-control form-control-inline date date-picker" name="software[0][end_of_life]" type="text"
+                                                                                       value="{{ Carbon\Carbon::parse($software->end_of_life)->format('d-m-Y')}}" >
+                                                                            </div>
+                                                                        @endforeach
+                                                                        <!-- end display software list if present -->
+                                                                    @else
+                                                                        <div class="mt-repeater-input">
+                                                                            <label class="control-label">Software</label>
+                                                                            <br>
+                                                                            <input type="text" name="software[0][name]" class="form-control" value="">
+                                                                        </div>
+
+                                                                        <div class="mt-repeater-input">
+                                                                            <label class="control-label">Purchase Date</label>
+                                                                            <br>
+                                                                            <input class="input-group form-control form-control-inline date date-picker" name="software[0][purchase_date]" type="text"value="" >
+                                                                        </div>
+
+                                                                        <div class="mt-repeater-input">
+                                                                            <label class="control-label">End of Life</label>
+                                                                            <br>
+                                                                            <input class="input-group form-control form-control-inline date date-picker" name="software[0][end_of_life]" type="text" value="" >
+                                                                        </div>
+                                                                     @endif
+                                                                        <div class="mt-repeater-input">
+                                                                            <a href="javascript:;" data-repeater-delete="" class="btn btn-danger mt-repeater-delete">
+                                                                                <i class="fa fa-close"></i> Delete</a>
+                                                                        </div>
                                                                     <!-- jQuery Repeater Container -->
-                                                                    <div class="mt-repeater-input">
-                                                                        <label class="control-label">Software</label>
-                                                                        <br>
-                                                                        <input type="text" name="group-a[0][text-input]" class="form-control" value="John Smith">
-                                                                    </div>
 
-                                                                    <div class="mt-repeater-input">
-                                                                        <label class="control-label">Purchase Date</label>
-                                                                        <br>
-                                                                        <input type="text" name="group-a[0][Brand]" class="form-control" value="LG 22M35">
-                                                                    </div>
-
-                                                                    <div class="mt-repeater-input">
-                                                                        <label class="control-label">End of Life</label>
-                                                                        <br>
-                                                                        <input type="text" name="group-a[0][Sticker]" class="form-control" value="31646">
-                                                                    </div>
-                                                                    <div class="mt-repeater-input">
-                                                                        <a href="javascript:;" data-repeater-delete="" class="btn btn-danger mt-repeater-delete">
-                                                                            <i class="fa fa-close"></i> Delete</a>
-                                                                    </div>
                                                                 </div>
                                                             </div>
                                                             <a href="javascript:;" data-repeater-create="" class="btn btn-success mt-repeater-add">
                                                                 <i class="fa fa-plus"></i> Add</a>
                                                             <div class="form-actions">
-                                                                <button type="submit" class="btn green">Submit</button>
-                                                                <button type="button" class="btn default" data-dismiss="modal">Cancel</button>
+                                                                <button type="button" class="btn green addSoftware-btn" data-student="{{$student->students}}">Submit</button>
+                                                                <button type="button" class="btn default btn-cancel" data-dismiss="modal" data-form="addSoftware-{{$student->students}}">Cancel</button>
                                                             </div>
                                                         </form>
                                                     </div>
                                                 </div>
                                                 <div class="tab-pane" id="hardware-{{$student->students}}">
                                                     <div class="skin skin-flat">
-                                                        <form action="{{action('RoomController@post_schedule')}}" class="form-horizontal mt-repeater form-horizontal" id="form_sample_1" novalidate="novalidate" method="POST">
+                                                        <form action="{{action('RoomController@post_schedule')}}" class="form-horizontal mt-repeater form-horizontal" id="addHardware-{{$student->students}}" novalidate="novalidate" method="POST">
                                                             {{ csrf_field() }}
                                                             <div data-repeater-list="group-a">
                                                                 <div data-repeater-item="" class="mt-repeater-item">
@@ -367,8 +411,9 @@
 
 @section('page_script')
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js" type="text/javascript"></script>
+    <script src="{{asset('global/plugins/jquery-repeater/jquery.repeater.js')}}" type="text/javascript"></script>
+    <script src="{{asset('global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js')}}" type="text/javascript"></script>
     <script src="{{asset('assets/pages/scripts/form-repeater.js')}}" type="text/javascript"></script>
-    <script src="{{asset('global/plugins/jquery-repeater/jquery.repeater.min.js')}}" type="text/javascript"></script>
     <script type="application/x-javascript">
         var x_axis = -1, y_axis = -1, total_draggable = {{ count($all_student) }}, div_pos_x = -1, div_pos_y = -1;
         var glow_color = "black";
@@ -390,6 +435,9 @@
                   this._ajxAddStudent();
                   this._removeBoxShadow();
                   this._addEditStudent();
+                  this._addEditSpecification();
+                  this._addEditSoftware();
+                  /*this.others();*/
                   $('.student-info').hide();
                 },
                 _removeBoxShadow: function(){
@@ -450,14 +498,68 @@
                                     html += '<li>'+data+'</li>';
                                 });
                                 $('.student-error ul').html(html);
-                                setTimeout(function(){ $('.student-error').addClass('hide'); }, 3000);
+                                setTimeout(function(){ $('.student-error').addClass('hide'); }, 2000);
                             }else if(result.status == 'ok'){
                                 $('.student-success').removeClass('hide');
                                 $('.student-success .msg').html('Student Record is Updated Successfully');
-                                setTimeout(function(){ location.reload(); }, 3000);
+                                setTimeout(function(){ location.reload(); }, 2000);
                              }
                            console.log(result.errors);
                         });
+                    });
+                },
+                _addEditSpecification: function(){
+                    $('.addSpecification-btn').on('click', function(e){
+                        $sID = $(this).attr('data-student');
+                        $form = $('#addSpecs-'+$sID);
+                        url = $form.attr('action');
+                        data = $form.serialize()  + '&ajaxReturn=TRUE';
+                        $.post(url, data, function(result){
+                            if(result.errors){
+                                $('.specs-error').removeClass('hide');
+                                html = '';
+                                $.each(result.errors, function (index, data) {
+                                    html += '<li>'+data+'</li>';
+                                });
+                                $('.specs-error ul').html(html);
+                                setTimeout(function(){ $('.specs-error').addClass('hide'); }, 2000);
+                            }else if(result.status == 'ok'){
+                                $('.specs-success').removeClass('hide');
+                                $('.specs-success .msg').html('System Specification is Updated Successfully');
+                                setTimeout(function(){ location.reload(); }, 2000);
+                            }
+                            console.log(result.errors);
+                        });
+                    });
+                },
+                _addEditSoftware: function(){
+                    $('.addSoftware-btn').on('click', function(e){
+                        $sID = $(this).attr('data-student');
+                        $form = $('#addSoftware-'+$sID);
+                        url = $form.attr('action');
+                        data = $form.serialize()  + '&ajaxReturn=TRUE';
+                        $.post(url, data, function(result){
+                            if(result.errors){
+                                $('.software-error').removeClass('hide');
+                                html = '';
+                                $.each(result.errors, function (index, data) {
+                                    html += '<li>'+data+'</li>';
+                                });
+                                $('.software-error ul').html(html);
+                                setTimeout(function(){ $('.software-error').addClass('hide'); }, 2000);
+                            }else if(result.status == 'ok'){
+                                $('.software-success').removeClass('hide');
+                                $('.software-success .msg').html('System Software is Updated Successfully');
+                                setTimeout(function(){ location.reload(); }, 2000);
+                            }
+                            console.log(result.errors);
+                        });
+                    });
+                },
+                others: function(){
+                    $('.btn-cancel').on('click',function(){
+                        $form = $(this).attr('data-form');
+                        $('#'+$form)[0].reset();
                     });
                 },
 

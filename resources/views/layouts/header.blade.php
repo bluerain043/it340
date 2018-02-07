@@ -2,7 +2,7 @@
 <html lang="{{config('app.locale')}}">
 <head>
     <meta charset="utf-8">
-    <title>{{config('app.name')}}</title>
+    <title>Mary Gale Jabagat</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{csrf_token()}}">
@@ -11,11 +11,12 @@
     <link href="{{asset('plugins/simple-line-icons/simple-line-icons.min.css')}}" rel="stylesheet">
     <link href="{{asset('plugins/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
     <link href="{{asset('plugins/bootstrap-switch/css/bootstrap-switch.min.css')}}" rel="stylesheet">
-    <link href="{{asset('plugins/bootstrap-daterangepicker/daterangepicker.min.css')}}" rel="stylesheet">
+    <link href="{{asset('global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css')}}" rel="stylesheet">
     <link href="{{asset('css/components.min.css')}}" rel="stylesheet">
     <link href="{{asset('css/plugins.min.css')}}" rel="stylesheet">
     <link href="{{asset('layout/css/layout.min.css')}}" rel="stylesheet">
     <link href="{{asset('global/plugins/bootstrap-fileinput/bootstrap-fileinput.css')}}" rel="stylesheet">
+    <link href="{{asset('global/plugins/bootstrap-fileinput/bootstrap-datepicker3.min.css')}}" rel="stylesheet">
     <link href="{{asset('layout/css/themes/default.min.css')}}" rel="stylesheet">
     <link href="{{asset('layout/css/custom.min.css')}}" rel="stylesheet">
     <link href="{{asset('css/jquery-ui.css')}}" rel="stylesheet">

@@ -28,6 +28,7 @@ Route::post('room/save-student', 'RoomController@save_new_student');
 Route::post('room/ajax-save-student', 'RoomController@ajax_save_new_student');
 //Specifications
 Route::post('room/ajax-save-specification', 'RoomController@ajax_save_specification');
+Route::post('room/ajax_save_software', 'RoomController@ajax_save_software');
 
 //Schedule
 Route::get('/schedule', 'RoomController@schedule')->name('schedule');
