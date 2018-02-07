@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use Storage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 use App\Room;
 use App\Schedule;
 use App\Students;
 use App\Specifications;
+use App\Software;
 
 
 class RoomController extends Controller
@@ -65,6 +67,20 @@ class RoomController extends Controller
         return view('room.room_view', compact('room', 'all_student', 'allRooms', 'schedules_list'));
     }
 
+    public function room_view_edit_schedule(Room $room, Schedule $schedule)
+    {
+        $all_student = $schedule->_students()->where('status', 'Active')->get();
+        foreach ($all_student as $student){
+            $all_specs = Specifications::where('students', $student->students)->where('seat_number', $student->seat_number)->first();
+            $all_software = Software::where('students', $student->students)->where('seat_number', $student->seat_number)->get();
+            $student->specifications = $all_specs;
+            $student->software = $all_software;
+        }
+        $schedules_list = $room->_schedule()->where('status', '1')->get();
+
+        return view('room.room_edit', compact('room', 'all_student', 'schedules_list' , 'schedule'));
+    }
+
     public function ajax_save_new_student(Request $request)
     {
         $validator = \Validator::make($request->except(['_token', 'students', 'ajaxReturn']),[
@@ -85,6 +101,43 @@ class RoomController extends Controller
                 ? response(['status' => 'ok', 'data' => $student])
                 : response(['status' => 'failed']);
         }
+    }
+
+    public function ajax_save_specification(Request $request)
+    {
+        $validator = \Validator::make($request->except(['_token', 'ajaxReturn']),[
+                'unit_type' => 'required'
+            ]
+        );
+        if ($validator->fails() && (isset($request->ajaxReturn) && $request->ajaxReturn == TRUE)) {
+            return response()->json(['errors' => $validator->errors()]);
+        }else{
+            $specs = new Specifications();
+            $specs = $specs->where('students', $request->students);
+            $request['end_of_life'] = Carbon::parse($request->end_of_life);
+            $save = $specs ?  $specs->update($request->except(['_token', 'student', 'ajaxReturn'])) : $specs->create($request->except(['_token']));
+            return ($save)
+                ? response(['status' => 'ok'])
+                : response(['status' => 'failed']);
+        }
+    }
+
+    public function ajax_save_software(Request $request)
+    {
+        /*$software = Software::where('students', $request->students)->where('seat_number', $request->seat_number)->delete();*/
+        Software::where('students', $request->students)->where('seat_number', $request->seat_number)->delete();
+        $new_software = new Software();
+        foreach ($request->software as $s){
+            $new_software->students = $request->students;
+            $new_software->seat_number = $request->seat_number;
+            $new_software->name = $s['name'];
+            $new_software->purchase_date = Carbon::parse($s['purchase_date']);
+            $new_software->end_of_life = Carbon::parse($s['end_of_life']);
+            $save = $new_software->save();
+        }
+        return ($save)
+            ? response(['status' => 'ok'])
+            : response(['status' => 'failed']);
 
     }
 
@@ -126,24 +179,7 @@ class RoomController extends Controller
         return back()->with('success', 'Schedule added successfully!');
     }
 
-    public function room_view_edit_schedule(Room $room, Schedule $schedule)
-    {
-        /*$all_spec = Specifications::where('students', 2)->get();dd($all_spec);*/
-        $all_student = $schedule->_students()->where('status', 'Active')->get();
-        foreach ($all_student as $student){
-            $all_specs = Specifications::where('students', $student->students)->where('seat_number', $student->seat_number)->first();
-            $student->specifications = $all_specs;
-        }
-        /*$students = $room->_room()->where('room', $room->room)->toSql();dd($students);*/
-        /*$all_student = [];
-        foreach ($students as $student){
-            $all_student = $student->where('room', $student->room)->get();
-        }*/
-        //$all_student = $room->_student()->where('room', $room->room)->where('schedule', $schedule->schedule)->get();dd($all_student);
-        $schedules_list = $room->_schedule()->where('status', '1')->get();
 
-        return view('room.room_edit', compact('room', 'all_student', 'schedules_list' , 'schedule'));
-    }
 
     private function generateRandomSeatNumber($length=16)
     {
