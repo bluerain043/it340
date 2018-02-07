@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSoftwareTable extends Migration
+class CreateTableDevice extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,16 @@ class CreateSoftwareTable extends Migration
      */
     public function up()
     {
-        Schema::create('software', function (Blueprint $table) {
-            $table->increments('software');
-            $table->string('name')->nullable();
+        Schema::create('device', function (Blueprint $table) {
+            $table->integer('device')->unsigned();
             $table->integer('students');
             $table->string('seat_number', 16);
-            $table->dateTime('purchase_date')->nullable();
-            $table->dateTime('end_of_life')->nullable();
-            //$table->foreign('seat_number')->references('seat_number')->on('students');
+            $table->string('sticker')->nullable();
+            $table->string('brand')->nullable();
+            $table->string('serial')->nullable();
             $table->timestamps();
+
+
         });
     }
 
@@ -32,6 +33,6 @@ class CreateSoftwareTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('software');
+        Schema::dropIfExists('device');
     }
 }

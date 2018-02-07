@@ -73,3 +73,12 @@
 }*/
 /*
 */
+.page-content{
+    height: auto;
+}
+.vertical-center img{
+    position:absolute;
+}
+body{
+    background-color: #fff;
+}

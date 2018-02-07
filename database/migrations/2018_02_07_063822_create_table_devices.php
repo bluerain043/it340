@@ -15,13 +15,13 @@ class CreateTableDevices extends Migration
     {
         Schema::create('devices', function (Blueprint $table) {
             $table->increments('devices');
-            $table->integer('students')->unsiqned();
-            $table->integer('seat_number')->unsigned();
+            $table->integer('students');
+            $table->string('seat_number', 16);
             $table->string('name')->nullable();
             $table->string('sticker')->nullable();
             $table->string('brand')->nullable();
             $table->string('serial')->nullable();
-            $table->foreign('students')->references('students')->on('students');
+           /* $table->foreign('students')->references('students')->on('students');*/
             $table->timestamps();
         });
     }

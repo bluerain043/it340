@@ -29,6 +29,7 @@ Route::post('room/ajax-save-student', 'RoomController@ajax_save_new_student');
 //Specifications
 Route::post('room/ajax-save-specification', 'RoomController@ajax_save_specification');
 Route::post('room/ajax_save_software', 'RoomController@ajax_save_software');
+Route::post('room/ajax_save_device', 'RoomController@ajax_save_device');
 
 //Schedule
 Route::get('/schedule', 'RoomController@schedule')->name('schedule');
@@ -38,3 +39,6 @@ Route::post('/schedule/add', 'RoomController@post_schedule');
 Route::get('/user/create', 'UserController@create_user')->name('create_user');
 Route::post('/user/create', 'UserController@post_create_user')->name('register_user');
 Route::get('/user/list', 'UserController@user_list')->name('user_list');
+
+//Return with view
+Route::post('room/get_info_details', 'RoomController@get_info_details');
