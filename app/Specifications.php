@@ -23,5 +23,5 @@ class Specifications extends Model
     ];
 
     public static $unitType = ['System Unit' => 'System Unit', 'iMac' => 'iMac', 'MacBook' => 'MacBook', 'Laptop' => 'Laptop'];
-
+    
 }

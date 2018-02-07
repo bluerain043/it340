@@ -171,6 +171,8 @@
                                                                 <div class="student-success alert alert-success hide">
                                                                     <button class="close" data-close="alert"></button> <p class="msg"></p>
                                                                 </div>
+
+
                                                                 <input type="hidden" name="students" value="{{$student->students}}">
                                                                 <input type="hidden" name="seat_number" value="{{$student->seat_number}}">
                                                                 <input type="hidden" name="in_used" value="yes">
@@ -182,7 +184,7 @@
                                                                         <select class="form-control" id="form_control_1" name="processor">
                                                                             <option value=""></option>
                                                                             @foreach(\App\Specifications::$unitType as $key=>$val)
-                                                                                <option value="{{$key}}">{{$val}}</option>
+                                                                                <option value="{{$key}}" {{$student->specifications->unit_type == $val ? 'Selected' : ''}}>{{$val}}</option>
                                                                             @endforeach
                                                                         </select>
                                                                         <div class="form-control-focus"> </div>
@@ -194,7 +196,7 @@
                                                                     <label class="col-md-3 control-label" for="form_control_1">Processor
                                                                     </label>
                                                                     <div class="col-md-5">
-                                                                        <input type="text" class="form-control" placeholder="" name="processor" value="{{$student->department}}">
+                                                                        <input type="text" class="form-control" placeholder="" name="processor" value="{{$student->specifications->processor}}">
                                                                         <div class="form-control-focus"> </div>
                                                                         <span class="help-block">enter processor</span>
                                                                     </div>
@@ -204,7 +206,7 @@
                                                                     <label class="col-md-3 control-label" for="form_control_1">Board
                                                                     </label>
                                                                     <div class="col-md-5">
-                                                                        <input type="text" class="form-control" placeholder="" name="board" value="{{$student->course}}">
+                                                                        <input type="text" class="form-control" placeholder="" name="board" value="{{$student->specifications->board}}">
                                                                         <div class="form-control-focus"> </div>
                                                                         <span class="help-block">enter board</span>
                                                                     </div>
@@ -214,7 +216,7 @@
                                                                     <label class="col-md-3 control-label" for="form_control_1">HDD
                                                                     </label>
                                                                     <div class="col-md-5">
-                                                                        <input type="text" class="form-control" placeholder="" name="hdd" value="{{$student->year}}">
+                                                                        <input type="text" class="form-control" placeholder="" name="hdd" value="{{$student->specifications->hdd}}">
                                                                         <div class="form-control-focus"> </div>
                                                                         <span class="help-block">enter hdd</span>
                                                                     </div>
@@ -224,7 +226,7 @@
                                                                     <label class="col-md-3 control-label" for="form_control_1">Memory
                                                                     </label>
                                                                     <div class="col-md-5">
-                                                                        <input type="text" class="form-control" placeholder="" name="memory" value="{{$student->year}}">
+                                                                        <input type="text" class="form-control" placeholder="" name="memory" value="{{$student->specifications->memory}}">
                                                                         <div class="form-control-focus"> </div>
                                                                         <span class="help-block">enter memory</span>
                                                                     </div>
@@ -234,7 +236,7 @@
                                                                     <label class="col-md-3 control-label" for="form_control_1">Graphics Card
                                                                     </label>
                                                                     <div class="col-md-5">
-                                                                        <input type="text" class="form-control" placeholder="" name="graphics_card" value="{{$student->year}}">
+                                                                        <input type="text" class="form-control" placeholder="" name="graphics_card" value="{{$student->specifications->graphics_card}}">
                                                                         <div class="form-control-focus"> </div>
                                                                         <span class="help-block">enter graphics card</span>
                                                                     </div>
@@ -244,8 +246,8 @@
                                                                     <label class="col-md-3 control-label" for="form_control_1">End of Life
                                                                     </label>
                                                                     <div class="col-md-5">
-                                                                        <input class="form-control form-control-inline input-medium date-picker" name="end_of_life" type="text" value="">
-                                                                        {{--<input type="text" class="form-control" placeholder="" name="year" value="{{$student->year}}">--}}
+                                                                        <input class="form-control form-control-inline input-medium date-picker" name="end_of_life" type="text"
+                                                                               value="{{ Carbon\Carbon::parse($student->specifications->end_of_life)->format('d-m-Y')}}" >
                                                                         <div class="form-control-focus"> </div>
                                                                         <span class="help-block">enter end of life</span>
                                                                     </div>
@@ -450,11 +452,11 @@
                                     html += '<li>'+data+'</li>';
                                 });
                                 $('.student-error ul').html(html);
-                                setTimeout(function(){ $('.student-error').addClass('hide'); }, 3000);
+                                setTimeout(function(){ $('.student-error').addClass('hide'); }, 2000);
                             }else if(result.status == 'ok'){
                                 $('.student-success').removeClass('hide');
                                 $('.student-success .msg').html('Student Record is Updated Successfully');
-                                setTimeout(function(){ location.reload(); }, 3000);
+                                setTimeout(function(){ location.reload(); }, 2000);
                              }
                            console.log(result.errors);
                         });

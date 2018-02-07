@@ -13,6 +13,7 @@ use App\Specifications;
 
 class RoomController extends Controller
 {
+
     public function __construct()
     {
         $this->middleware('auth');
@@ -20,6 +21,14 @@ class RoomController extends Controller
 
     public function add_room()
     {
+       /* $loginUser = Auth::user();dd($loginUser);
+        if(!empty($loginUser)){
+            dd($loginUser);
+        }
+        dd('gale');*/
+        /*if(!empty($loginUser->roles[0]) && $current_user['roles'] == 'administrator') {
+
+        }*/
         $allRooms = Room::getAllRooms('room_name');
         $bActive = true;
         return view('room.add_room', compact('allRooms', 'bActive'));
@@ -119,13 +128,11 @@ class RoomController extends Controller
 
     public function room_view_edit_schedule(Room $room, Schedule $schedule)
     {
-
+        /*$all_spec = Specifications::where('students', 2)->get();dd($all_spec);*/
         $all_student = $schedule->_students()->where('status', 'Active')->get();
-        $all_specs = [];
-        $specs = new Specifications();
         foreach ($all_student as $student){
-            $all_specs = $specs->where('students', $student->student)->get();
-
+            $all_specs = Specifications::where('students', $student->students)->where('seat_number', $student->seat_number)->first();
+            $student->specifications = $all_specs;
         }
         /*$students = $room->_room()->where('room', $room->room)->toSql();dd($students);*/
         /*$all_student = [];
