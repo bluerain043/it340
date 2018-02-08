@@ -41,12 +41,6 @@
                 <i class="icon-trash"></i>
             </a>
 
-            {{--<select class="form-control" id="form_control_1" name="room">
-                <option value=""></option>
-                @foreach($schedules_list as $schedule)
-                    <option value="{{$schedule->day}}">{{$schedule->day}}</option>
-                @endforeach
-            </select>--}}
         </div>
     <div class="row">
         <div class="col-md-12 student-box">
@@ -123,7 +117,7 @@ $('document').ready(function(){
                 total_draggable++;
                 div_pos_x = x_axis - 15;
                 div_pos_y = y_axis + 35;
-                $.post("{{action('RoomController@save_new_student')}}", {_token:'{{ csrf_token() }}', pos_x:div_pos_x, pos_y:div_pos_y, room:room, schedule:schedule}, function(result){
+                $.post("{{action('RoomController@save_new_student')}}", {_token:'{{ csrf_token() }}', pos_x:div_pos_x, pos_y:div_pos_y, room:room, schedule:schedule, status: 1}, function(result){
                     if(result.status == 'ok'){
                         temp_student_id = result.data.students;
                         fnScript._addChair(result.data.students);
@@ -135,7 +129,7 @@ $('document').ready(function(){
                 });
             });
         },
-        _addChair: function(student_id){ console.log('char ', student_id);
+        _addChair: function(student_id){
             htmlChair = '<div id="jquery-draggable-'+student_id+'" onMouseOver="showStudentInfo('+student_id+');" onMouseOut="hideStudentInfo('+student_id+');" ' +
                 'onClick="getInfoDetails('+student_id+');" class="student-chair jquery-draggable" style="left:50%;top:50%;"><div id="student-info-'+student_id+'" class="student-info"></div></div>';
             $('body').append(htmlChair);

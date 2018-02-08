@@ -270,16 +270,6 @@
                                     <span class="badge badge-danger">2</span>
                                 </a>
                             </li>
-                            <li class="nav-item  ">
-                                <a href="components_select2.html" class="nav-link ">
-                                    <span class="title">Software</span>
-                                </a>
-                            </li>
-                            <li class="nav-item  ">
-                                <a href="components_bootstrap_select.html" class="nav-link ">
-                                    <span class="title">Hardware</span>
-                                </a>
-                            </li>
                         </ul>
                     </li>
                     <li class="nav-item  ">
