@@ -14,6 +14,7 @@ class Students extends Model
         'student_name',
         'department',
         'course',
+        'status',
         'year',
         'pos_x',
         'pos_y',

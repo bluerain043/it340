@@ -11,7 +11,7 @@ use App\Schedule;
 use App\Students;
 use App\Specifications;
 use App\Software;
-use App\Device;
+use App\Devices;
 
 
 class RoomController extends Controller
@@ -70,11 +70,11 @@ class RoomController extends Controller
 
     public function room_view_edit_schedule(Room $room, Schedule $schedule)
     {
-        $all_student = $schedule->_students()->where('status', 'Active')->get();
+        $all_student = $schedule->_students()->where('students.status', 'Active')->get();
         foreach ($all_student as $student){
             $all_specs = Specifications::where('students', $student->students)->where('seat_number', $student->seat_number)->first();
             $all_software = Software::where('students', $student->students)->where('seat_number', $student->seat_number)->get();
-            $all_device = Device::where('students', $student->students)->where('seat_number', $student->seat_number)->get();
+            $all_device = Devices::where('students', $student->students)->where('seat_number', $student->seat_number)->get();
             $student->specifications = $all_specs;
             $student->software = $all_software;
             $student->device = $all_device;
@@ -133,6 +133,7 @@ class RoomController extends Controller
         $new_software = new Software();
         $new_software->students = $request->students;
         $new_software->seat_number = $request->seat_number;
+        $new_software->room = $request->room;
         foreach ($request->software as $s){
             $new_software->name = $s['name'];
             $new_software->purchase_date = Carbon::parse($s['purchase_date']);
@@ -147,15 +148,17 @@ class RoomController extends Controller
 
     public function ajax_save_device(Request $request)
     {
-        Device::where('students', $request->students)->where('seat_number', $request->seat_number)->delete();
-        $new_device = new Device();
+        //$dd = Devices::where('students', $request->students)->where('seat_number', $request->seat_number)->delete();dd($dd);
+        $new_device = new Devices();
         $new_device->students = $request->students;
         $new_device->seat_number = $request->seat_number;
+        $new_device->room = $request->room;//dd($request->device);
         foreach ($request->device as $s){
             $new_device->name = $s['name'];
             $new_device->sticker = $s['sticker'];
             $new_device->brand = $s['brand'];
             $new_device->serial = $s['serial'];
+            $new_device->end_of_life = Carbon::parse($s['end_of_life']);
             $save = $new_device->save();
         }
         return ($save)
@@ -251,14 +254,14 @@ class RoomController extends Controller
 
         $all_specs = Specifications::where('students', $student->students)->where('seat_number', $student->seat_number)->first();
         $all_software = Software::where('students', $student->students)->where('seat_number', $student->seat_number)->get();
-        $all_device = Device::where('students', $student->students)->where('seat_number', $student->seat_number)->get();
+        $all_device = Devices::where('students', $student->students)->where('seat_number', $student->seat_number)->get();
         $student->specifications = $all_specs;
         $student->software = $all_software;
         $student->device = $all_device;
 
 
 
-        $view = \View::make('modals.view_student_modal', ['student' => $student]);
+        $view = \View::make('modals.view_student_modal', ['student' => $student, 'room' => ($request->room) ? $request->room : '']);
         $html = $view->render();
         return \Response::json(['html' => $html, 'data' => $student]);
     }

@@ -13,6 +13,7 @@ class Software extends Model
         'purchase_date',
         'students',
         'seat_number',
+        'room',
         'end_of_life'
     ];
 }

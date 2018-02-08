@@ -21,7 +21,7 @@
                             <li class="">
                                 <a href="#hardware-{{$student->students}}" data-toggle="tab" aria-expanded="false"> Hardware </a>
                             </li>--}}
-                            <li class="">
+                            <li class="active">
                                 <a href="#student-tab" data-toggle="tab" aria-expanded="true"> Student </a>
                             </li>
                             <li class="">
@@ -53,6 +53,8 @@
                                             </div>
                                             <input type="hidden" name="students" value="{{$student->students}}">
                                             <input type="hidden" name="seat_number" value="{{$student->seat_number}}">
+                                            <input type="hidden" name="room" value="{{$room}}">
+                                            <input type="hidden" name="status" value="1">
                                             <div class="form-group form-md-line-input">
                                                 <label class="col-md-3 control-label" for="form_control_1">Student Name
                                                     <span class="required" aria-required="true">*</span>
@@ -122,6 +124,7 @@
 
                                             <input type="hidden" name="students" value="{{$student->students}}">
                                             <input type="hidden" name="seat_number" value="{{$student->seat_number}}">
+                                            <input type="hidden" name="room" value="{{$room}}">
                                             <input type="hidden" name="in_used" value="yes">
 
                                             @if(isset($student->specifications))
@@ -307,6 +310,7 @@
 
                                         <input type="hidden" name="students" value="{{$student->students}}">
                                         <input type="hidden" name="seat_number" value="{{$student->seat_number}}">
+                                        <input type="hidden" name="room" value="{{$room}}">
 
                                         <div data-repeater-list="software">
                                             <div data-repeater-item="" class="mt-repeater-item">
@@ -388,6 +392,7 @@
 
                                         <input type="hidden" name="students" value="{{$student->students}}">
                                         <input type="hidden" name="seat_number" value="{{$student->seat_number}}">
+                                        <input type="hidden" name="room" value="{{$room}}">
 
                                         <div data-repeater-list="device">
                                             <div data-repeater-item="" class="mt-repeater-item">

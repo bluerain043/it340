@@ -11,6 +11,7 @@ class Specifications extends Model
     protected $fillable = [
         'students',
         'seat_number',
+        'room',
         'unit_type',
         'processor',
         'memory',

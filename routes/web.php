@@ -12,6 +12,7 @@
 */
 
 /*Route::get('/', function () {
+
     return view('welcome');
 });*/
 
@@ -42,3 +43,6 @@ Route::get('/user/list', 'UserController@user_list')->name('user_list');
 
 //Return with view
 Route::post('room/get_info_details', 'RoomController@get_info_details');
+
+//Inventory
+Route::get('/inventory_list/{room?}', 'InventoryController@view_list');

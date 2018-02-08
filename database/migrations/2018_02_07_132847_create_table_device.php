@@ -13,8 +13,9 @@ class CreateTableDevice extends Migration
      */
     public function up()
     {
-        Schema::create('device', function (Blueprint $table) {
-            $table->integer('device')->unsigned();
+        Schema::create('devices', function (Blueprint $table) {
+            $table->increments('devices');
+            $table->string('name', 255);
             $table->integer('students');
             $table->string('seat_number', 16);
             $table->string('sticker')->nullable();
