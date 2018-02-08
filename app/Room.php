@@ -47,4 +47,8 @@ class Room extends Model
 
     }
 
+    public function _specification()
+    {
+        return $this->hasMany(Specifications::class, 'room', 'room');
+    }
 }

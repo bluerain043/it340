@@ -6,7 +6,6 @@ use App\Room;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-
 class HomeController extends Controller
 {
     /**
@@ -26,8 +25,10 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $allRooms = Room::getAllRooms('room_name');
-        return view('dashboard.index', compact('allRooms'));
-        //return view('home');
+        //return \redirect()->guest('login');
+        //var_dump(\Auth::user());die;
+        //$allRooms = Room::getAllRooms('room_name');
+        //return view('dashboard.index', compact('allRooms'));
+        return view('home');
     }
 }
