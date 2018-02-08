@@ -29,6 +29,7 @@ class HomeController extends Controller
         //var_dump(\Auth::user());die;
         //$allRooms = Room::getAllRooms('room_name');
         //return view('dashboard.index', compact('allRooms'));
+        echo phpinfo();
         return view('home');
     }
 }
