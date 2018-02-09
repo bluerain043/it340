@@ -80,8 +80,8 @@ class RoomController extends Controller
             $student->device = $all_device;
         }
         $schedules_list = $room->_schedule()->where('status', '1')->get();
-
-        return view('room.room_edit', compact('room', 'all_student', 'schedules_list' , 'schedule'));
+        $current_schedule = $schedule->schedule;//dd($all_student);
+        return view('room.room_edit', compact('room', 'all_student', 'schedules_list' , 'schedule', 'current_schedule'));
     }
 
     public function ajax_save_new_student(Request $request)
@@ -93,7 +93,7 @@ class RoomController extends Controller
                 'year' => 'required|numeric',
             ]
         );
-
+        //check wla ni save sa pivot table
         if ($validator->fails() && (isset($request->ajaxReturn) && $request->ajaxReturn == TRUE)) {
             return response()->json(['errors' => $validator->errors()]);
         }else{
