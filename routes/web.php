@@ -19,10 +19,10 @@
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/', 'HomeController@index')->name('home');
+Route::get('/', 'UserController@index');
 //Rooms
-Route::get('/add-room', 'RoomController@add_room');
-Route::post('/add-room', 'RoomController@post_add_room');
+Route::get('/room/add', 'RoomController@add_room');
+Route::post('/room/add', 'RoomController@post_add_room');
 Route::get('/room/{room}/edit', 'RoomController@room_view_edit');
 Route::get('/room/{room}/{schedule}', 'RoomController@room_view_edit_schedule');
 Route::post('room/save-student', 'RoomController@save_new_student');

@@ -69,9 +69,6 @@
 
 @section('page_script')
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js" type="text/javascript"></script>
-    <script src="{{asset('global/plugins/jquery-repeater/jquery.repeater.js')}}" type="text/javascript"></script>
-    <script src="{{asset('global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js')}}" type="text/javascript"></script>
-    <script src="{{asset('assets/pages/scripts/form-repeater.js')}}" type="text/javascript"></script>
     <script type="application/x-javascript">
 var x_axis = -1, y_axis = -1, total_draggable = {{ count($all_student) }}, div_pos_x = -1, div_pos_y = -1;
 var glow_color = "black";
@@ -117,7 +114,8 @@ $('document').ready(function(){
                 total_draggable++;
                 div_pos_x = x_axis - 15;
                 div_pos_y = y_axis + 35;
-                $.post("{{action('RoomController@save_new_student')}}", {_token:'{{ csrf_token() }}', pos_x:div_pos_x, pos_y:div_pos_y, room:room, schedule:schedule, status: 1}, function(result){
+                $.post("{{action('RoomController@save_new_student')}}", {_token:'{{ csrf_token() }}', pos_x:div_pos_x, pos_y:div_pos_y, room:room,
+                    schedule:schedule, status: 1}, function(result){
                     if(result.status == 'ok'){
                         temp_student_id = result.data.students;
                         fnScript._addChair(result.data.students);
@@ -131,7 +129,8 @@ $('document').ready(function(){
         },
         _addChair: function(student_id){
             htmlChair = '<div id="jquery-draggable-'+student_id+'" onMouseOver="showStudentInfo('+student_id+');" onMouseOut="hideStudentInfo('+student_id+');" ' +
-                'onClick="getInfoDetails('+student_id+');" class="student-chair jquery-draggable" style="left:50%;top:50%;"><div id="student-info-'+student_id+'" class="student-info"></div></div>';
+                'onClick="getInfoDetails('+student_id+');" class="student-chair jquery-draggable" style="left:50%;top:50%;"><div id="student-info-'+student_id+'" ' +
+                'class="student-info"></div></div>';
             $('body').append(htmlChair);
             $('#jquery-draggable-'+student_id).draggable({
                 stop:function() {fnScript.saveData}
@@ -140,7 +139,8 @@ $('document').ready(function(){
         saveData: function(){
          if(temp_student_id != -1){
               temp_div = $('#jquery-draggable-'+temp_student_id);
-              $.post("{{ action('RoomController@save_new_student') }}", {_token:'{{ csrf_token() }}', student_id:temp_student_id, pos_x:temp_div.position().left, pos_y:temp_div.position().top, room:room}, function(result){
+              $.post("{{ action('RoomController@save_new_student') }}", {_token:'{{ csrf_token() }}', student_id:temp_student_id, pos_x:temp_div.position().left,
+                  pos_y:temp_div.position().top, room:room}, function(result){
                   $('#jquery-draggable-'+total_draggable).data('student_id', result.id);
                   if(result.seat_number == null){
                       $('#student-info-'+result.id).html("");
@@ -268,10 +268,12 @@ function hideStudentInfo(student_id){
 }
 function getInfoDetails(student_id){
     temp_student_id = student_id;
-    $.post("{{ action('RoomController@get_info_details') }}", {_token:'{{ csrf_token() }}', student_id:temp_student_id, room:room}, function(result){console.log(result.html);
+    $.post("{{ action('RoomController@get_info_details') }}", {_token:'{{ csrf_token() }}', student_id:temp_student_id,
+        room:room}, function(result){//console.log(result.html);
        /* $('#jquery-draggable-'+total_draggable).data('student_id', result.id);*/
         $('#full-new').html(result.html);
         $('#full-new').modal('show');
+        FormRepeater.init();
         /*if(result.seat_number == null){
             $('#student-info-'+result.id).html("");
         }else{
@@ -282,7 +284,6 @@ function getInfoDetails(student_id){
     $('.student-chair').css('box-shadow', '');
     $('#jquery-draggable-'+temp_student_id).css('box-shadow', '0px 0px 3px 3px '+glow_color);
 }
-
 
 </script>
 @endsection

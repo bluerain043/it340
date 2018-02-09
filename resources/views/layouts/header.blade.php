@@ -16,7 +16,7 @@
     <link href="{{asset('css/plugins.min.css')}}" rel="stylesheet">
     <link href="{{asset('layout/css/layout.min.css')}}" rel="stylesheet">
     <link href="{{asset('global/plugins/bootstrap-fileinput/bootstrap-fileinput.css')}}" rel="stylesheet">
-    <link href="{{asset('global/plugins/bootstrap-fileinput/bootstrap-datepicker3.min.css')}}" rel="stylesheet">
+    {{--<link href="{{asset('global/plugins/bootstrap-fileinput/bootstrap-datepicker3.min.css')}}" rel="stylesheet">--}}
     <link href="{{asset('layout/css/themes/default.min.css')}}" rel="stylesheet">
     <link href="{{asset('layout/css/custom.min.css')}}" rel="stylesheet">
     <link href="{{asset('css/jquery-ui.css')}}" rel="stylesheet">
@@ -39,7 +39,7 @@
             <!-- BEGIN LOGO -->
             <div class="page-logo">
                 <a href="/">
-                    <img src="../assets/layouts/layout/img/logo.png" alt="logo" class="logo-default"> </a>
+                    <img src="{{asset('assets/layouts/layout/img/logo.png')}}" alt="logo" class="logo-default"> </a>
                    {{-- <p class="logo-default mlast">Jabagat<span class="mlogo">MaryGale</span></p>--}}
                 <div class="menu-toggler sidebar-toggler">
                     <span></span>
@@ -60,7 +60,7 @@
                     <!-- BEGIN USER LOGIN DROPDOWN -->
                     <li class="dropdown dropdown-user">
                         <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-                            <img alt="" class="img-circle" src="../assets/layouts/layout/img/avatar3_small.jpg">
+                            <img alt="" class="img-circle" src="{{asset('assets/layouts/layout/img/avatar.png')}}">
                             <span class="username username-hide-on-mobile"> {{ (Auth::user() != null) ? Auth::user()->name : ''}} </span>
                             <i class="fa fa-angle-down"></i>
                         </a>
@@ -91,7 +91,7 @@
                                     <i class="icon-lock"></i> Lock Screen </a>
                             </li>
                             <li>
-                                <a href="page_user_login_1.html">
+                                <a href="javascript;" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                     <i class="icon-key"></i> Log Out </a>
                             </li>
                         </ul>
@@ -155,25 +155,24 @@
                         <!-- END RESPONSIVE QUICK SEARCH FORM -->
                     </li>
                     <li class="nav-item start {{--active open--}}">
-                        <a href="javascript:;" class="nav-link nav-toggle">
+                        <a href="/" class="nav-link nav-toggle">
                             <i class="icon-home"></i>
                             <span class="title">Dashboard</span>
-                            {{--<span class="selected"></span>--}}
-                            <span class="arrow open"></span>
+                        {{--    <span class="arrow open"></span>--}}
                         </a>
-                        <ul class="sub-menu">
+                        {{--<ul class="sub-menu">
                             @if(isset($allRooms) && count($allRooms) > 0)
                                 @foreach($allRooms as $room)
                                     <li class="nav-item start active open">
                                         <a href="{{action('RoomController@room_view_edit', compact('room'))}}" class="nav-link ">
                                             <i class="icon-bar-chart"></i>
                                             <span class="title">{{$room->room_name}}</span>
-                                           {{-- <span class="selected"></span>--}}
+                                           --}}{{-- <span class="selected"></span>--}}{{--
                                         </a>
                                     </li>
                                 @endforeach
                             @endif
-                        </ul>
+                        </ul>--}}
                     </li>
                     <li class="heading">
                         <h3 class="uppercase">Features</h3>
@@ -380,18 +379,17 @@
 <script src="{{ asset('plugins/bootstrap-switch/js/bootstrap-switch.min.js') }}" type="text/javascript"></script>
 <!-- END CORE PLUGINS -->
 <!-- BEGIN PAGE LEVEL PLUGINS -->
-{{--<script src="{{asset('global/plugins/moment.min.js')}}" type="text/javascript"></script>--}}
-{{--<script src="{{asset('global/plugins/bootstrap-daterangepicker/daterangepicker.min.js')}}" type="text/javascript"></script>--}}
 <script src="{{asset('global/plugins/morris/morris.min.js')}}" type="text/javascript"></script>
 <script src="{{asset('global/plugins/morris/raphael-min.js')}}" type="text/javascript"></script>
 <script src="{{asset('global/plugins/counterup/jquery.waypoints.min.js')}}" type="text/javascript"></script>
 <script src="{{asset('global/plugins/counterup/jquery.counterup.min.js')}}" type="text/javascript"></script>
-{{--<script src="{{asset('global/plugins/fullcalendar/fullcalendar.min.js')}}" type="text/javascript"></script>
-<script src="{{asset('global/plugins/horizontal-timeline/horizontal-timeline.js')}}" type="text/javascript"></script>--}}
+
 
 <!-- END PAGE LEVEL PLUGINS -->
 <!-- BEGIN THEME GLOBAL SCRIPTS -->
 <script src="{{asset('global/scripts/app.min.js')}}" type="text/javascript"></script>
+<script src="{{asset('global/plugins/jquery-repeater/jquery.repeater.js')}}" type="text/javascript"></script>
+<script src="{{asset('assets/pages/scripts/form-repeater.js')}}" type="text/javascript"></script>
 <!-- END THEME GLOBAL SCRIPTS -->
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
 <script src="{{asset('assets/pages/scripts/dashboard.min.js')}}" type="text/javascript"></script>

@@ -13,6 +13,11 @@ class UserController extends Controller
         $this->middleware('auth');
     }
 
+    public function index()
+    {
+        $allRooms = Room::getAllRooms('room_name');
+        return view('user.index', compact('allRooms'));
+    }
     public function create_user(){
 
         $allRooms = Room::getAllRooms('room_name');

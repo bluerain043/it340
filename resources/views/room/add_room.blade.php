@@ -11,7 +11,7 @@
     </ul>
 @endsection
 @section('content')
-    <h1 class="page-title"> Add Room {{Route::getFacadeRoot()->current()->uri()}}</h1>
+    <h1 class="page-title"> Add Room </h1>
     <div class="row">
         {{--<div class="col-md-6 offset-md-3">--}}
         <div class="col-md-12">

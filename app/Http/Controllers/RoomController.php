@@ -130,17 +130,19 @@ class RoomController extends Controller
     {
         /*$software = Software::where('students', $request->students)->where('seat_number', $request->seat_number)->delete();*/
         Software::where('students', $request->students)->where('seat_number', $request->seat_number)->delete();
-        $new_software = new Software();
-        $new_software->students = $request->students;
-        $new_software->seat_number = $request->seat_number;
-        $new_software->room = $request->room;
         foreach ($request->software as $s){
+            $new_software = new Software();
+            $new_software->students = $request->students;
+            $new_software->seat_number = $request->seat_number;
+            $new_software->room = $request->room;
             $new_software->name = $s['name'];
             $new_software->purchase_date = Carbon::parse($s['purchase_date']);
             $new_software->end_of_life = Carbon::parse($s['end_of_life']);
-            $save = $new_software->save();
+            $new_software->save();
+
         }
-        return ($save)
+        $softwares = Software::where('students', $request->students)->where('seat_number', $request->seat_number)->get();
+        return (count($softwares) > 0)
             ? response(['status' => 'ok', 'seat_number' => $request->seat_number])
             : response(['status' => 'failed']);
 
@@ -170,8 +172,8 @@ class RoomController extends Controller
     public function save_new_student(Request $request)
     {
         $student = new Students();
-        $request['seat_number'] = $this->generateRandomSeatNumber(4);
         if(!isset($request->student_id)){
+            $request['seat_number'] = $this->generateRandomSeatNumber(4);
             $student = $student->create($request->except(['_token']));
             $schedule = new Schedule();
             $schedule = $schedule->where('schedule', $request->schedule)->first();

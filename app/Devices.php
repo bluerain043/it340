@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Devices extends Model
 {
+    protected $table = 'devices';
+    protected $primaryKey = "devices";
     protected $fillable = [
        'students', 'seat_number', 'room', 'name', 'sticker', 'brand', 'serial', 'end_of_life'
     ];
