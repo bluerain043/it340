@@ -51,8 +51,9 @@
 
                 @foreach($all_student as $student)
                     <div id="jquery-draggable-{{$student->students}}" onMouseOver="showStudentInfo({{$student->students}});" onMouseOut="hideStudentInfo({{$student->students}});"
-                         {{--data-toggle="modal" href="#full-{{$student->students}}"--}}
-                         onClick="getInfoDetails({{$student->students}});" class="student-chair jquery-draggable department-{{str_replace(['/', ' '],'-',$student->department)}}" style="left:{{$student->pos_x}}px;top:{{$student->pos_y}}px;z-index:1;">
+                         {{--data-toggle="modal" href="#full-{{$student->students}}"   onClick="setInfo({{$student->students}}{{($student->room) ? ','.$room->room : ',0'}}{{','.$schedule->schedule}});"--}}
+                         data-student="{{$student->students}}" data-room="{{$student->room}}" data-schedule="{{$schedule->schedule}}"
+                         onClick="setInfo({{$student->students}});" class="student-chair jquery-draggable department-{{str_replace(['/', ' '],'-',$student->department)}}" style="left:{{$student->pos_x}}px;top:{{$student->pos_y}}px;z-index:1;">
                         <div id="student-info-{{$student->students}}" class="student-info">{{$student->student_name}} - {{$student->seat_number}}</div>
                     </div>
                 @endforeach
@@ -76,6 +77,7 @@ var temp_id, temp_id, temp_student_id = -1;
 var room = "{{$room->room}}";
 var schedule = "{{$schedule->schedule}}";
 $('document').ready(function(){
+
     $('.jquery-draggable').draggable({
         stop: function(event, ui) {
             var student_div_id_arr = ui.helper[0].id.split('-'); console.log(student_div_id_arr);
@@ -84,6 +86,13 @@ $('document').ready(function(){
         },
         start: function() {},
         drag: function() {},
+    });
+
+    $('body').mousemove(function( event ) {
+        x_axis = event.pageX;
+        y_axis = event.pageY;
+        $('#x-axis').html(event.pageX);
+        $('#y-axis').html(event.pageY);
     });
 
     $('body').on('click','.date-picker', function() {
@@ -118,7 +127,7 @@ $('document').ready(function(){
                     schedule:schedule, status: 1}, function(result){
                     if(result.status == 'ok'){
                         temp_student_id = result.data.students;
-                        fnScript._addChair(result.data.students);
+                        fnScript._addChair(result.data.students, result.data.room, result.schedule.schedule);
                         $('#jquery-draggable-'+result.data.students).draggable({
                             stop:function() {fnScript.saveData}
                         });
@@ -127,14 +136,25 @@ $('document').ready(function(){
                 });
             });
         },
-        _addChair: function(student_id){
+        _addChair: function(student_id, room, schedule){
             htmlChair = '<div id="jquery-draggable-'+student_id+'" onMouseOver="showStudentInfo('+student_id+');" onMouseOut="hideStudentInfo('+student_id+');" ' +
-                'onClick="getInfoDetails('+student_id+');" class="student-chair jquery-draggable" style="left:50%;top:50%;"><div id="student-info-'+student_id+'" ' +
+                'onClick="setInfo('+student_id+', '+room+', '+schedule+');" class="student-chair jquery-draggable" style="left:50%;top:50%;"><div id="student-info-'+student_id+'" ' +
                 'class="student-info"></div></div>';
             $('body').append(htmlChair);
             $('#jquery-draggable-'+student_id).draggable({
                 stop:function() {fnScript.saveData}
             });
+
+            $('#jquery-draggable-'+student_id).css('position', 'absolute');
+            $('#jquery-draggable-'+student_id)
+                .animate({backgroundColor:glow_color}, 500)
+                .animate({backgroundColor:'#CCCCCC'}, 500)
+                .animate({backgroundColor:glow_color}, 500)
+                .animate({backgroundColor:'#CCCCCC'}, 500)
+                .animate({backgroundColor:glow_color}, 500)
+                .animate({backgroundColor:'#CCCCCC'}, 500);
+            $('#jquery-draggable-'+student_id).css('top', div_pos_y);
+            $('#jquery-draggable-'+student_id).css('left', div_pos_x);
         },
         saveData: function(){
          if(temp_student_id != -1){
@@ -243,6 +263,15 @@ $('document').ready(function(){
                 });
             });
         },
+        showModalOnStudentClick: function(student_id, room_id, schedule_id){
+            temp_student_id = student_id;
+            $.post("{{ action('RoomController@get_info_details') }}", {_token:'{{ csrf_token() }}', student_id:temp_student_id,
+                room:room_id, schedule: schedule_id}, function(result){
+                $('#full-new').html(result.html);
+                $('#full-new').modal('show');
+                FormRepeater.init();
+            });
+        },
         others: function(){
             $('.btn-cancel').on('click',function(){
                 $form = $(this).attr('data-form');
@@ -258,18 +287,31 @@ $('document').ready(function(){
         }
     }
     fnScript.onLoad();
+
+    $('.student-chair').on('click', function(){
+        cStudent = $(this).data('student');
+        cRoom = $(this).data('room');
+        cSchedule = $(this).data('schedule');
+        fnScript.showModalOnStudentClick(cStudent, cRoom, cSchedule);
+    });
 });
 
+function setInfo(student_id, room_id, schedule_id){
+    temp_student_id = student_id;
+    $('#edit-delete-container').show();
+    $('.employee-chair').css('box-shadow', '');
+    $('#jquery-draggable-'+temp_student_id).css('box-shadow', '0px 0px 10px 10px '+glow_color);
+}
 function showStudentInfo(student_id){
     $('#student-info-'+student_id).show();
 }
 function hideStudentInfo(student_id){
     $('#student-info-'+student_id).hide();
 }
-function getInfoDetails(student_id){
+function getInfoDetails_(student_id, room_id, schedule_id){
     temp_student_id = student_id;
     $.post("{{ action('RoomController@get_info_details') }}", {_token:'{{ csrf_token() }}', student_id:temp_student_id,
-        room:room}, function(result){//console.log(result.html);
+        room:room_id, schedule: schedule_id}, function(result){//console.log(result.html);
        /* $('#jquery-draggable-'+total_draggable).data('student_id', result.id);*/
         $('#full-new').html(result.html);
         $('#full-new').modal('show');

@@ -40,7 +40,7 @@
                                             <button class="close" data-close="alert"></button> <p class="msg"></p>
                                         </div>
                                         <input type="hidden" name="students" value="{{$student->students}}">
-                                        <input type="text" name="seat_number" value="{{$student->seat_number}}">
+                                        <input type="hidden" name="seat_number" value="{{$student->seat_number}}">
                                         <input type="hidden" name="room" value="{{$room}}">
                                         <input type="hidden" name="status" value="1">
                                         <div class="form-group form-md-line-input">
@@ -111,7 +111,7 @@
 
 
                                         <input type="hidden" name="students" value="{{$student->students}}">
-                                        <input type="text" name="seat_number" value="{{$student->seat_number}}">
+                                        <input type="hidden" name="seat_number" value="{{$student->seat_number}}">
                                         <input type="hidden" name="room" value="{{$room}}">
                                         <input type="hidden" name="in_used" value="yes">
 
@@ -297,10 +297,10 @@
 
 
                                     <input type="hidden" name="students" value="{{$student->students}}">
-                                    <input type="text" name="seat_number" value="{{$student->seat_number}}">
+                                    <input type="hidden" name="seat_number" value="{{$student->seat_number}}">
                                     <input type="hidden" name="room" value="{{$room}}">
 
-                                    <div data-repeater-list="software"> {{count($student->software)}}
+                                    <div data-repeater-list="software">
                                         @if(count($student->software) > 0)
                                             <!-- display software list if present -->
                                             @foreach($student->software as $software)
@@ -385,82 +385,84 @@
 
 
                                     <input type="hidden" name="students" value="{{$student->students}}">
-                                    <input type="text" name="seat_number" value="{{$student->seat_number}}">
+                                    <input type="hidden" name="seat_number" value="{{$student->seat_number}}">
                                     <input type="hidden" name="room" value="{{$room}}">
 
                                     <div data-repeater-list="device">
-                                        <div data-repeater-item="" class="mt-repeater-item">
                                         @if(count($student->device) > 0)
                                             <!-- display software list if present -->
                                             @foreach($student->device as $device)
+                                                    <div data-repeater-item="" class="mt-repeater-item">
+                                                        <div class="mt-repeater-input">
+                                                            <label class="control-label">Device</label>
+                                                            <br>
+                                                            <input type="text" name="device[0][name]" class="form-control" name="name" value="{{$device->name}}">
+                                                        </div>
+
+                                                        <div class="mt-repeater-input">
+                                                            <label class="control-label">Brand</label>
+                                                            <br>
+                                                            <input type="text" name="device[0][brand]" class="form-control" name="brand" value="{{$device->brand}}">
+                                                        </div>
+
+                                                        <div class="mt-repeater-input">
+                                                            <label class="control-label">Sticker</label>
+                                                            <br>
+                                                            <input type="text" name="device[0][sticker]" class="form-control" value="{{$device->sticker}}">
+                                                        </div>
+                                                        <div class="mt-repeater-input">
+                                                            <label class="control-label">Serial</label>
+                                                            <br>
+                                                            <input type="text" name="device[0][serial]" class="form-control"name="serial" value="{{$device->serial}}">
+                                                        </div>
+                                                        <div class="mt-repeater-input">
+                                                            <label class="control-label">End of Life</label>
+                                                            <br>
+                                                            <input class="input-group form-control form-control-inline date date-picker" name="device[0][end_of_life]" type="text" value="{{$device->end_of_life}}">
+                                                        </div>
+
+
+                                                        <div class="mt-repeater-input">
+                                                            <a href="javascript:;" data-repeater-delete="" class="btn btn-danger mt-repeater-delete">
+                                                                <i class="fa fa-close"></i> Delete</a>
+                                                        </div>
+                                                    </div>
+                                            @endforeach
+                                         @else
+                                                <div data-repeater-item="" class="mt-repeater-item">
                                                     <div class="mt-repeater-input">
                                                         <label class="control-label">Device</label>
                                                         <br>
-                                                        <input type="text" name="device[0][name]" class="form-control" name="name" value="{{$device->name}}">
+                                                        <input type="text" name="device[0][name]" class="form-control" name="name" value="">
                                                     </div>
 
                                                     <div class="mt-repeater-input">
                                                         <label class="control-label">Brand</label>
                                                         <br>
-                                                        <input type="text" name="device[0][brand]" class="form-control" name="brand" value="{{$device->brand}}">
+                                                        <input type="text" name="device[0][brand]" class="form-control" name="brand" value="">
                                                     </div>
 
                                                     <div class="mt-repeater-input">
                                                         <label class="control-label">Sticker</label>
                                                         <br>
-                                                        <input type="text" name="device[0][sticker]" class="form-control" value="{{$device->sticker}}">
+                                                        <input type="text" name="device[0][sticker]" class="form-control" value="">
                                                     </div>
                                                     <div class="mt-repeater-input">
                                                         <label class="control-label">Serial</label>
                                                         <br>
-                                                        <input type="text" name="device[0][serial]" class="form-control"name="serial" value="{{$device->serial}}">
+                                                        <input type="text" name="device[0][serial]" class="form-control"name="serial" value="">
                                                     </div>
                                                     <div class="mt-repeater-input">
                                                         <label class="control-label">End of Life</label>
                                                         <br>
-                                                        <input class="input-group form-control form-control-inline date date-picker" name="device[0][end_of_life]" type="text" value="{{$device->end_of_life}}">
+                                                        <input class="input-group form-control form-control-inline date date-picker" name="device[0][end_of_life]" type="text" value="">
                                                     </div>
-
-
                                                     <div class="mt-repeater-input">
                                                         <a href="javascript:;" data-repeater-delete="" class="btn btn-danger mt-repeater-delete">
                                                             <i class="fa fa-close"></i> Delete</a>
                                                     </div>
-                                            @endforeach
-                                         @else
-                                                <div class="mt-repeater-input">
-                                                    <label class="control-label">Device</label>
-                                                    <br>
-                                                    <input type="text" name="device[0][name]" class="form-control" name="name" value="">
-                                                </div>
-
-                                                <div class="mt-repeater-input">
-                                                    <label class="control-label">Brand</label>
-                                                    <br>
-                                                    <input type="text" name="device[0][brand]" class="form-control" name="brand" value="">
-                                                </div>
-
-                                                <div class="mt-repeater-input">
-                                                    <label class="control-label">Sticker</label>
-                                                    <br>
-                                                    <input type="text" name="device[0][sticker]" class="form-control" value="">
-                                                </div>
-                                                <div class="mt-repeater-input">
-                                                    <label class="control-label">Serial</label>
-                                                    <br>
-                                                    <input type="text" name="device[0][serial]" class="form-control"name="serial" value="">
-                                                </div>
-                                                <div class="mt-repeater-input">
-                                                    <label class="control-label">End of Life</label>
-                                                    <br>
-                                                    <input class="input-group form-control form-control-inline date date-picker" name="device[0][end_of_life]" type="text" value="">
-                                                </div>
-                                                <div class="mt-repeater-input">
-                                                    <a href="javascript:;" data-repeater-delete="" class="btn btn-danger mt-repeater-delete">
-                                                        <i class="fa fa-close"></i> Delete</a>
                                                 </div>
                                           @endif
-                                        </div>
                                     </div>
                                     <a href="javascript:;" data-repeater-create="" class="btn btn-success mt-repeater-add">
                                         <i class="fa fa-plus"></i> Add</a>

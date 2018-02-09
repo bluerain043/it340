@@ -70,7 +70,7 @@ class RoomController extends Controller
 
     public function room_view_edit_schedule(Room $room, Schedule $schedule)
     {
-        $all_student = $schedule->_students()->where('students.status', 'Active')->get();
+        $all_student = $schedule->_students()->where('students.status', 1)->where('room', $room->room)->get();
         foreach ($all_student as $student){
             $all_specs = Specifications::where('students', $student->students)->where('seat_number', $student->seat_number)->first();
             $all_software = Software::where('students', $student->students)->where('seat_number', $student->seat_number)->get();
@@ -150,20 +150,21 @@ class RoomController extends Controller
 
     public function ajax_save_device(Request $request)
     {
-        //$dd = Devices::where('students', $request->students)->where('seat_number', $request->seat_number)->delete();dd($dd);
-        $new_device = new Devices();
-        $new_device->students = $request->students;
-        $new_device->seat_number = $request->seat_number;
-        $new_device->room = $request->room;//dd($request->device);
+        Devices::where('students', $request->students)->where('seat_number', $request->seat_number)->delete();
         foreach ($request->device as $s){
+            $new_device = new Devices();
+            $new_device->students = $request->students;
+            $new_device->seat_number = $request->seat_number;
+            $new_device->room = $request->room;
             $new_device->name = $s['name'];
             $new_device->sticker = $s['sticker'];
             $new_device->brand = $s['brand'];
             $new_device->serial = $s['serial'];
             $new_device->end_of_life = Carbon::parse($s['end_of_life']);
-            $save = $new_device->save();
+            $new_device->save();
         }
-        return ($save)
+        $devices = Devices::where('students', $request->students)->where('seat_number', $request->seat_number)->get();
+        return ($devices)
             ? response(['status' => 'ok', 'seat_number' => $request->seat_number])
             : response(['status' => 'failed']);
 
@@ -172,17 +173,17 @@ class RoomController extends Controller
     public function save_new_student(Request $request)
     {
         $student = new Students();
+        $schedule = new Schedule();
+        $schedule = $schedule->where('schedule', $request->schedule)->first();
         if(!isset($request->student_id)){
             $request['seat_number'] = $this->generateRandomSeatNumber(4);
             $student = $student->create($request->except(['_token']));
-            $schedule = new Schedule();
-            $schedule = $schedule->where('schedule', $request->schedule)->first();
             $student->_schedule()->attach($schedule->schedule, ['status' => 'Active', 'schedule' => $request->schedule, 'student' => $student->students]);
-            return response(['status' => 'ok', 'data' => $student]);
+            return response(['status' => 'ok', 'data' => $student, 'schedule' => $schedule]);
         }else{
             $student = $student->where('students', $request->student_id);
             $student->update($request->except(['_token', 'student_id']));
-            return response(['status' => 'failed']);
+            return response(['status' => 'ok', 'data' => $student, 'schedule' => $schedule]);
         }
 
     }
