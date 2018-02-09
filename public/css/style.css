@@ -76,6 +76,9 @@
 .page-content{
     height: auto;
 }
+.modal-full.modal-dialog{
+    width: 70%;
+}
 /*
 .vertical-center img{
     position:absolute;
