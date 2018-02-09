@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'https://mgjabagat.herokuapp.com/'),
+    'url' => env('APP_URL', 'http://gale.jamesnogra.com'),
 
     /*
     |--------------------------------------------------------------------------
@@ -104,7 +104,7 @@ return [
     |
     */
 
-    'key' => env('APP_KEY'),
+    'key' => env('APP_KEY' , 'base64:HtQFiLjIEiFM01QtcjHIexOvjWVMAw2tr84oVWkCiOE='),
 
     'cipher' => 'AES-256-CBC',
 
