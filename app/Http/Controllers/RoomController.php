@@ -269,4 +269,12 @@ class RoomController extends Controller
         return \Response::json(['html' => $html, 'data' => $student]);
     }
 
+    public function list_of_room()
+    {
+         $allRooms = Room::getAllRooms('room_name');
+         return view('room.list', compact('allRooms', 'schedules'));
+
+
+    }
+
 }

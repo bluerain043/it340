@@ -2,11 +2,11 @@
 @section('breadcrumbs')
     <ul class="page-breadcrumb">
         <li>
-            <a href="javascript;">User</a>
+            <a href="javascript;">Room</a>
             <i class="fa fa-circle"></i>
         </li>
         <li>
-            <span>List of Users</span>
+            <span>List of Rooms</span>
         </li>
     </ul>
 @endsection
@@ -27,7 +27,7 @@
                 <div class="portlet-title">
                     <div class="caption">
                         <i class=" icon-layers font-green"></i>
-                        <span class="caption-subject font-green sbold uppercase">List of Users</span>
+                        <span class="caption-subject font-green sbold uppercase">List of Rooms</span>
                     </div>
                 </div>
                 <div class="portlet-body tbl-pad">
@@ -51,26 +51,28 @@
                         <table class="table table-hover">
                             <thead>
                             <tr>
-                                <th> Name </th>
-                                <th> Email </th>
-                                <th> Is Admin </th>
+                                <th> Room Number </th>
+                                <th> Room Name </th>
+                                <th> Facilitator </th>
+                                <th> Seatplan image </th>
                                 <th> Status </th>
-                                <th> Created At </th>
                             </tr>
                             </thead>
                             <tbody>
-                            @if(count($users) > 0)
-                                @foreach($users as $user)
+                            @if(count($allRooms) > 0)
+                                @foreach($allRooms as $room)
                                     <tr>
-                                        <td>{{ucwords($user->name)}}</td>
-                                        <td> {{$user->email}} </td>
-                                        <td> {{($user->is_admin == 1 ? 'Yes' : 'No')}} </td>
-                                        <td> <span class="label label-sm {{($user->status == 1) ? 'label-info' : 'label-warning'}}"> {{($user->status == 1) ? 'Active' : 'Inactive'}} </span> </td>
-                                        <td> {{ Carbon\Carbon::parse($user->created_at)->format('d-m-Y') }} </td>
+                                        <td>{{ucwords($room->room_number)}}</td>
+                                         <td>{{ucwords($room->room_name)}}</td>
+                                        <td>{{ucwords($room->facilitator)}}</td>
+                                        <td> {{($room->seatplan_image)}} </td>
+                                        <td> <span class="label label-sm {{ ($room->status == 'Active') ? 'label-info' : 'label-warning'}}"> {{$room->status}} </span> </td>
+                                        <td> {{ Carbon\Carbon::parse($room->created_at)->format('d-m-Y') }} </td>
                                         <td>
                                             <div class="btn-group">
                                                 <button type="button" class="btn btn-default">Edit</button>
                                                 <button type="button" class="btn btn-default">Delete</button>
+                                                <a href="{{action('RoomController@room_view_edit' ,compact('room'))}}" class="btn btn-default">View</button>
                                             </div>
                                         </td>
                                     </tr>

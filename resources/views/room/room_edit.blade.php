@@ -118,6 +118,15 @@
                 /*this.others();*/
                 $('.student-info').hide();
             },
+            init: function(){ console.log('init');
+                 $('.student-chair').on('click', function(){ 
+                   cStudent = $(this).data('student');console.log('h ',cStudent);
+                    /*cRoom = $(this).data('room');
+                    cSchedule = $(this).data('schedule');*/
+                   
+                    fnScript.showModalOnStudentClick(cStudent, room, schedule);
+                });   
+            },
             _removeBoxShadow: function(){
                 $('html').click(function(e) {
                     if(!$(e.target).hasClass('student-chair') )
@@ -130,15 +139,18 @@
                 $('.add-student-btn').on('click', function(e){
                     e.preventDefault();
                     total_draggable++;
-                    div_pos_x = x_axis - 15;
+                   /* div_pos_x = x_axis - 15;
+                    div_pos_y = y_axis + 35;*/
+                    div_pos_x = x_axis - 250;
                     div_pos_y = y_axis + 35;
-                    cRoom = $(this).data('room');
+                    //cRoom = $(this).data('room');
                     //cSchedule = $(this).data('schedule');
-                    $.post("{{action('RoomController@save_new_student')}}", {_token:'{{ csrf_token() }}', pos_x:div_pos_x, pos_y:div_pos_y, room:cRoom,
+                    $.post("{{action('RoomController@save_new_student')}}", {_token:'{{ csrf_token() }}', pos_x:div_pos_x, pos_y:div_pos_y, room:room,
                         schedule:schedule, status: 1}, function(result){
                         if(result.status == 'ok'){
                             temp_student_id = result.data.students;
                             fnScript._addChair(result.data.students, result.data.room, result.schedule.schedule);
+                            fnScript.init();
                             $('#jquery-draggable-'+result.data.students).draggable({
                                 stop:function() {fnScript.saveData}
                             });
@@ -148,7 +160,7 @@
                 });
             },
             _addChair: function(student_id, room, schedule){
-                htmlChair = '<div id="jquery-draggable-'+student_id+'" onMouseOver="showStudentInfo('+student_id+');" onMouseOut="hideStudentInfo('+student_id+');" ' +
+                htmlChair = '<div id="jquery-draggable-'+student_id+'" data-student="'+student_id+'" onMouseOver="showStudentInfo('+student_id+');" onMouseOut="hideStudentInfo('+student_id+');" ' +
                     'onClick="setInfo('+student_id+', '+room+', '+schedule+');" class="student-chair jquery-draggable" style="left:50%;top:50%;"><div id="student-info-'+student_id+'" ' +
                     'class="student-info"></div></div>';
                 $('body').append(htmlChair);
@@ -290,13 +302,7 @@
                 });
             },
 
-            showStudentInfo: function(){
-                alert('sdgsg');
-            },
-            hideStudentInfo: function(){
-                alert('sdgsg');
-            }
-        }
+       }
         fnScript.onLoad();
 
         /*$('.student-chair').on('click', function(){*/

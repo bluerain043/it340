@@ -195,7 +195,7 @@
                                 </a>
                             </li>
                             <li class="nav-item  ">
-                                <a href="{{action('RoomController@add_room')}}" class="nav-link ">
+                                <a href="{{action('RoomController@list_of_room')}}" class="nav-link ">
                                     <span class="title">List of Rooms</span>
                                 </a>
                             </li>
