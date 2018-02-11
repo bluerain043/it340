@@ -48,3 +48,8 @@ Route::post('room/get_info_details', 'RoomController@get_info_details');
 
 //Inventory
 Route::get('/inventory_list/{room?}', 'InventoryController@view_list');
+Route::get('/inventory_list/student/{room}', 'InventoryController@get_student');
+Route::get('/inventory_list/specs/{room}', 'InventoryController@get_specification');
+Route::get('/inventory_list/software/{room}', 'InventoryController@get_software');
+Route::get('/inventory_list/hardware/{room}', 'InventoryController@get_hardware');
+Route::post('/inventory_list/{room?}', 'InventoryController@search_student');

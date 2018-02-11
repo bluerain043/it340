@@ -55,8 +55,7 @@
                     </div>
                     <ul class="nav nav-tabs">
                         <li class="active">
-                            {{--<a href="{{action('InventoryController@get_student', compact('room'))}}" data-toggle="tab" aria-expanded="false"> Student</a>--}}
-                            <a href="#student" data-toggle="tab" aria-expanded="false"> Student</a>
+                            <a href="#student" data-toggle="tab" aria-expanded="false"> Student </a>
                         </li>
                         <li class="">
                             <a href="#specification" data-toggle="tab" aria-expanded="false"> Specification </a>
@@ -73,7 +72,7 @@
                     <div class="tab-content">
                         <!--STUDENT TAB -->
                         <div class="tab-pane active" id="student">
-                            <form action="{{action('InventoryController@search_student', compact('current_room'))}}" class="form-inline" role="form" method="POST">
+                            <form action="{{action('InventoryController@search_student')}}" class="form-inline" role="form" method="POST">
                                 <div class="form-group">
                                     <input type="text" class="form-control" id="processor" name="fields[student_name]" placeholder="Student Name"> </div>
                                 <div class="form-group">
@@ -103,26 +102,24 @@
                                     </thead>
                                     <tbody>
                                     @if(count($rooms) > 0)
-                                        @foreach($rooms as $room)
-                                            @foreach($room->students as $student)
-                                                @if($room->room == $student->room)
-                                                    <tr>
-                                                        <td>{{ucwords($student->student_name)}}</td>
-                                                        <td> {{$student->seat_number}} </td>
-                                                        <td> {{$student->course}} </td>
-                                                        <td> {{$student->department}} </td>
-                                                        <td> {{$student->year}} </td>
-                                                        <td>{{ucwords($room->room_name)}} </td>
-                                                        <td> {{$student->status == 1 ? 'Active' : 'Inactive'}} </td>
-                                                        <td>
-                                                            <div class="btn-group">
-                                                                <button type="button" class="btn btn-default">Edit</button>
-                                                                <button type="button" class="btn btn-default">Delete</button>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                @endif
-                                            @endforeach
+                                        @foreach($rooms->students as $student)
+
+                                            <tr>
+                                                <td>{{ucwords($student->student_name)}}</td>
+                                                <td> {{$student->seat_number}} </td>
+                                                <td> {{$student->course}} </td>
+                                                <td> {{$student->department}} </td>
+                                                <td> {{$student->year}} </td>
+                                                <td>{{ucwords($room->room_name)}} </td>
+                                                <td> {{$student->status == 1 ? 'Active' : 'Inactive'}} </td>
+                                                <td>
+                                                    <div class="btn-group">
+                                                        <button type="button" class="btn btn-default">Edit</button>
+                                                        <button type="button" class="btn btn-default">Delete</button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+
                                         @endforeach
                                     @else
                                         <tr style="text-align: center">
@@ -137,7 +134,7 @@
                         <!--SPECIFICATION TAB -->
                         <div class="tab-pane" id="specification">
 
-                            <form action="{{action('InventoryController@search_student', compact('current_room'))}}" class="form-inline" role="form" method="POST">
+                            <form class="form-inline" role="form">
                                 <div class="form-group">
                                     <input type="text" class="form-control" id="processor" name="processor" placeholder="Processor"> </div>
                                 <div class="form-group">
@@ -149,8 +146,6 @@
                                 <div class="form-group">
                                     <input type="text" class="form-control" id="board" name="graphics" placeholder="Graphics"> </div>
                                 <input type="hidden" class="form-control" id="board" name="room" value={{$current_room}}>
-                                {{ csrf_field() }}
-                                <input type="hidden" class="form-control" id="board" name="table" value="specification">
                                 <button type="submit" class="btn btn-default">Search</button>
                             </form>
 
@@ -173,29 +168,25 @@
                                     </thead>
                                     <tbody>
                                     @if(count($rooms) > 0)
-                                        @foreach($rooms as $room)
-                                            @foreach($room->specs as $specs)
-                                                @if($room->room == $specs->room)
-                                                    <tr>
-                                                        <td>{{ucwords($room->room_name)}}</td>
-                                                        <td>{{ucwords($specs->unit_type)}}</td>
-                                                        <td> {{$specs->process}} </td>
-                                                        <td> {{$specs->memory}} </td>
-                                                        <td> {{$specs->board}} </td>
-                                                        <td> {{$specs->hdd}} </td>
-                                                        <td> {{$specs->graphics_card}} </td>
-                                                        <td> {{$specs->in_used == 'yes' ? 1 : ''}} </td>
-                                                        <td> {{$specs->in_used == 'no' ? 1 : ''}} </td>
-                                                        <td> {{ Carbon\Carbon::parse($specs->created_at)->format('d-m-Y') }}  </td>
-                                                        <td>
-                                                            <div class="btn-group">
-                                                                <button type="button" class="btn btn-default">Edit</button>
-                                                                <button type="button" class="btn btn-default">Delete</button>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                @endif
-                                            @endforeach
+                                        @foreach($rooms->specs as $specs)
+                                                <tr>
+                                                    <td>{{ucwords($room->room_name)}}</td>
+                                                    <td>{{ucwords($specs->unit_type)}}</td>
+                                                    <td> {{$specs->process}} </td>
+                                                    <td> {{$specs->memory}} </td>
+                                                    <td> {{$specs->board}} </td>
+                                                    <td> {{$specs->hdd}} </td>
+                                                    <td> {{$specs->graphics_card}} </td>
+                                                    <td> {{$specs->in_used == 'yes' ? 1 : ''}} </td>
+                                                    <td> {{$specs->in_used == 'no' ? 1 : ''}} </td>
+                                                    <td> {{ Carbon\Carbon::parse($specs->created_at)->format('d-m-Y') }}  </td>
+                                                    <td>
+                                                        <div class="btn-group">
+                                                            <button type="button" class="btn btn-default">Edit</button>
+                                                            <button type="button" class="btn btn-default">Delete</button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
                                         @endforeach
                                     @else
                                         <tr style="text-align: center">
@@ -228,23 +219,19 @@
                                     </thead>
                                     <tbody>
                                     @if(count($rooms) > 0)
-                                        @foreach($rooms as $room)
-                                            @foreach($room->softwares as $software)
-                                                @if($room->room == $software->room)
-                                                    <tr>
-                                                        <td>{{ucwords($software->name)}}</td>
-                                                        <td>{{ucwords($room->room_name)}}</td>
-                                                        <td> {{ Carbon\Carbon::parse($software->purchase_date)->format('d-m-Y') }}  </td>
-                                                        <td> {{ Carbon\Carbon::parse($software->end_of_life)->format('d-m-Y') }}  </td>
-                                                        <td>
-                                                            <div class="btn-group">
-                                                                <button type="button" class="btn btn-default">Edit</button>
-                                                                <button type="button" class="btn btn-default">Delete</button>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                @endif
-                                            @endforeach
+                                        @foreach($rooms->softwares as $software)
+                                            <tr>
+                                                <td>{{ucwords($software->name)}}</td>
+                                                <td>{{ucwords($room->room_name)}}</td>
+                                                <td> {{ Carbon\Carbon::parse($software->purchase_date)->format('d-m-Y') }}  </td>
+                                                <td> {{ Carbon\Carbon::parse($software->end_of_life)->format('d-m-Y') }}  </td>
+                                                <td>
+                                                    <div class="btn-group">
+                                                        <button type="button" class="btn btn-default">Edit</button>
+                                                        <button type="button" class="btn btn-default">Delete</button>
+                                                    </div>
+                                                </td>
+                                            </tr>
                                         @endforeach
                                     @else
                                         <tr style="text-align: center">
@@ -282,24 +269,20 @@
                                     </thead>
                                     <tbody>
                                     @if(count($rooms) > 0)
-                                        @foreach($rooms as $room)
-                                            @foreach($room->devices as $device)
-                                                @if($room->room == $device->room)
-                                                    <tr>
-                                                        <td>{{ucwords($room->room_name)}}</td>
-                                                        <td>{{ucwords($device->name)}}</td>
-                                                        <td> {{$device->sticker}} </td>
-                                                        <td> {{$device->brand}} </td>
-                                                        <td> {{$device->serial}} </td>
-                                                        <td>
-                                                            <div class="btn-group">
-                                                                <button type="button" class="btn btn-default">Edit</button>
-                                                                <button type="button" class="btn btn-default">Delete</button>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                @endif
-                                            @endforeach
+                                        @foreach($rooms->devices as $device)
+                                            <tr>
+                                                <td>{{ucwords($room->room_name)}}</td>
+                                                <td>{{ucwords($device->name)}}</td>
+                                                <td> {{$device->sticker}} </td>
+                                                <td> {{$device->brand}} </td>
+                                                <td> {{$device->serial}} </td>
+                                                <td>
+                                                    <div class="btn-group">
+                                                        <button type="button" class="btn btn-default">Edit</button>
+                                                        <button type="button" class="btn btn-default">Delete</button>
+                                                    </div>
+                                                </td>
+                                            </tr>
                                         @endforeach
                                     @else
                                         <tr style="text-align: center">
@@ -310,6 +293,8 @@
                                 </table>
                             </div>
                         </div>
+
+
                     </div>
                 </div>
             </div>
