@@ -43,8 +43,7 @@ class RoomController extends Controller
            'room_name' => 'required',
            'room_number' => 'required|numeric',
            'facilitator' => 'required',
-           'seatplan_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:8000',
-           'status' => 'required'
+           'seatplan_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:8000'
         ]);
         $seat = $request->file('seatplan_image');
         $seat_name = 'seat_'.time().'.'.$seat->getClientOriginalExtension();

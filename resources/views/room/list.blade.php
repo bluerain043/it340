@@ -72,7 +72,7 @@
                                             <div class="btn-group">
                                                 <button type="button" class="btn btn-default">Edit</button>
                                                 <button type="button" class="btn btn-default">Delete</button>
-                                                <a href="{{action('RoomController@room_view_edit' ,compact('room'))}}" class="btn btn-default">View</button>
+                                                <a href="{{action('RoomController@room_view_edit' ,compact('room'))}}" class="btn btn-default">View</a>
                                             </div>
                                         </td>
                                     </tr>

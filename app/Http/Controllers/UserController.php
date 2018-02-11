@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Room;
+use App\Schedule;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -15,8 +16,12 @@ class UserController extends Controller
 
     public function index()
     {
+        $user = new User();
+        $schedule = new Schedule();
         $allRooms = Room::getAllRooms('room_name');
-        return view('user.index', compact('allRooms'));
+        $users = $user->where('status', 1)->get();
+        $schedules = $schedule->where('status', 1)->get();
+        return view('user.index', compact('allRooms', 'users', 'schedules'));
     }
     public function create_user(){
 

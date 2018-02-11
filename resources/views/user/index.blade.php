@@ -8,146 +8,233 @@
     </ul>
 @endsection
 @section('content')
-    <div class="room-title-box">
-        <h1 class="page-title"> Register User</h1>
-    </div>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
+            <!-- BEGIN PAGE TITLE-->
+            <h1 class="page-title"> Admin Dashboard
+                <small>room, users, schedule, inventory</small>
+            </h1>
+            <!-- END PAGE TITLE-->
+            <!-- END PAGE HEADER-->
+            <div class="row">
+                    <div class="col-lg-6 col-xs-12 col-sm-12">
+                        <div class="portlet light ">
+                            <div class="portlet-title">
+                                <div class="caption">
+                                    <span class="caption-subject bold uppercase font-dark">Classrooms</span>
+                                    <span class="caption-helper">click to view classrooms</span>
+                                </div>
+                            </div>
+                            <div class="portlet-body">
+                                <div class="mt-element-list">
+                                    <div class="mt-list-head list-default green-haze">
+                                        <div class="row">
+                                            <div class="col-xs-8">
+                                                <div class="list-head-title-container">
+                                                    <h3 class="list-title uppercase sbold">Classroom List</h3>
+                                                    <div class="list-date">{{  \Carbon\Carbon::now()->format('l j F Y')  }}</div>
+                                                </div>
+                                            </div>
 
+                                        </div>
+                                    </div>
+                                    <div class="mt-list-container list-default">
+                                        <ul>
+                                            @if(count($allRooms) > 0)
+                                                @foreach($allRooms as $room)
+                                                    <li class="mt-list-item">
+                                                        <div class="list-icon-container done">
+                                                            <a href="javascript:;">
+                                                                <i class="icon-check"></i>
+                                                            </a>
+                                                        </div>
+                                                        <div class="list-datetime"> {{ Carbon\Carbon::parse($room->created_at)->format('j F Y') }}
+                                                            {{--<br> 8 Nov--}} </div>
+                                                        <div class="list-item-content">
+                                                            <h3 class="uppercase bold">
+                                                                <a href="{{action('RoomController@room_view_edit', compact('room'))}}">{{$room->room_name}}</a>
+                                                            </h3>
+                                                            <p>{{$room->facilitator}}</p>
+                                                        </div>
+                                                    </li>
+                                                @endforeach
+                                            @else
+                                                <li class="mt-list-item">
+                                                    <div class="list-icon-container">
+                                                        <a href="javascript:;">
+                                                            <i class="icon-close"></i>
+                                                        </a>
+                                                    </div>
+                                                    <div class="list-item-content">
+                                                        <h3 class="uppercase bold">
+                                                            <a href="{{action('RoomController@add_room')}}">No Room to Display</a>
+                                                        </h3>
+                                                        <p>please add a room</p>
+                                                    </div>
+                                                </li>
 
-                <div class="portlet box red">
-                    <div class="portlet-title">
-                        <div class="caption">
-                            <i class="fa fa-gift"></i>Repeating Forms </div>
-                        <div class="tools">
-                            <a href="javascript:;" class="collapse" data-original-title="" title=""> </a>
-                            <a href="#portlet-config" data-toggle="modal" class="config" data-original-title="" title=""> </a>
-                            <a href="javascript:;" class="reload" data-original-title="" title=""> </a>
-                            <a href="javascript:;" class="remove" data-original-title="" title=""> </a>
+                                            @endif
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="portlet-body form">
-                        <div class="form-body">
-                            <div class="form-group">
-                                <form action="#" class="mt-repeater form-horizontal">
-                                    <h3 class="mt-repeater-title">Human Resource Management</h3>
-                                    <div data-repeater-list="group-a">
-                                        <div data-repeater-item="" class="mt-repeater-item">
-                                            <!-- jQuery Repeater Container -->
-                                            <div class="mt-repeater-input">
-                                                <label class="control-label">Name</label>
-                                                <br>
-                                                <input type="text" name="group-a[0][text-input]" class="form-control" value="John Smith"> </div>
-                                            <div class="mt-repeater-input">
-                                                <label class="control-label">Joined Date</label>
-                                                <br>
-                                                <input class="input-group form-control form-control-inline date date-picker" size="16" type="text" value="01/08/2016" name="group-a[0][date-input]" data-date-format="dd/mm/yyyy"> </div>
-                                            <div class="mt-repeater-input mt-repeater-textarea">
-                                                <label class="control-label">Job Description</label>
-                                                <br>
-                                                <textarea name="group-a[0][textarea-input]" class="form-control" rows="3">This role is to follow up with all meetings and ensure that each operational process flow moves accordingly in a timely manner.</textarea>
-                                            </div>
-                                            <div class="mt-repeater-input mt-radio-inline">
-                                                <label class="control-label">Tier</label>
-                                                <br>
-                                                <label class="mt-radio">
-                                                    <input type="radio" name="group-a[0][optionsRadios]" id="optionsRadios25" value="junior"> Junior
-                                                    <span></span>
-                                                </label>
-                                                <label class="mt-radio">
-                                                    <input type="radio" name="group-a[0][optionsRadios]" id="optionsRadios26" value="senior"> Senior
-                                                    <span></span>
-                                                </label>
-                                            </div>
-                                            <div class="mt-repeater-input mt-checkbox-inline">
-                                                <label class="control-label">Language</label>
-                                                <br>
-                                                <label class="mt-checkbox">
-                                                    <input type="checkbox" id="inlineCheckbox21" value="option1"> English
-                                                    <span></span>
-                                                </label>
-                                                <label class="mt-checkbox">
-                                                    <input type="checkbox" id="inlineCheckbox22" value="option2"> French
-                                                    <span></span>
-                                                </label>
-                                            </div>
-                                            <div class="mt-repeater-input">
-                                                <label class="control-label">Department</label>
-                                                <br>
-                                                <select name="group-a[0][select-input]" class="form-control">
-                                                    <option value="A" selected="">Marketing</option>
-                                                    <option value="B">Creative</option>
-                                                    <option value="C">Development</option>
-                                                </select>
-                                            </div>
-                                            <div class="mt-repeater-input">
-                                                <a href="javascript:;" data-repeater-delete="" class="btn btn-danger mt-repeater-delete">
-                                                    <i class="fa fa-close"></i> Delete</a>
+                    <div class="col-lg-6 col-xs-12 col-sm-12">
+                    <div class="portlet light ">
+                        <div class="portlet-title">
+                            <div class="caption ">
+                                <span class="caption-subject font-dark bold uppercase">Inventory</span>
+                                <span class="caption-helper">System Unit, Software, Hardware ...</span>
+                            </div>
+                        </div>
+                        <div class="portlet-body">
+                            <div class="mt-element-list">
+                                <div class="mt-list-head list-default green-haze">
+                                    <div class="row">
+                                        <div class="col-xs-8">
+                                            <div class="list-head-title-container">
+                                                <h3 class="list-title uppercase sbold">Inventory List</h3>
+                                                <div class="list-date">{{  \Carbon\Carbon::now()->format('l j F Y')  }}</div>
                                             </div>
                                         </div>
-                                        <div data-repeater-item="" class="mt-repeater-item" style="">
-                                            <!-- jQuery Repeater Container -->
-                                            <div class="mt-repeater-input">
-                                                <label class="control-label">Name</label>
-                                                <br>
-                                                <input type="text" name="group-a[1][text-input]" class="form-control" value="John Smith"> </div>
-                                            <div class="mt-repeater-input">
-                                                <label class="control-label">Joined Date</label>
-                                                <br>
-                                                <input class="input-group form-control form-control-inline date date-picker" size="16" type="text" value="01/08/2016" name="group-a[1][date-input]" data-date-format="dd/mm/yyyy"> </div>
-                                            <div class="mt-repeater-input mt-repeater-textarea">
-                                                <label class="control-label">Job Description</label>
-                                                <br>
-                                                <textarea name="group-a[1][textarea-input]" class="form-control" rows="3">This role is to follow up with all meetings and ensure that each operational process flow moves accordingly in a timely manner.</textarea>
-                                            </div>
-                                            <div class="mt-repeater-input mt-radio-inline">
-                                                <label class="control-label">Tier</label>
-                                                <br>
-                                                <label class="mt-radio">
-                                                    <input type="radio" name="group-a[1][optionsRadios]" id="optionsRadios25" value="junior"> Junior
-                                                    <span></span>
-                                                </label>
-                                                <label class="mt-radio">
-                                                    <input type="radio" name="group-a[1][optionsRadios]" id="optionsRadios26" value="senior"> Senior
-                                                    <span></span>
-                                                </label>
-                                            </div>
-                                            <div class="mt-repeater-input mt-checkbox-inline">
-                                                <label class="control-label">Language</label>
-                                                <br>
-                                                <label class="mt-checkbox">
-                                                    <input type="checkbox" id="inlineCheckbox21" value="option1"> English
-                                                    <span></span>
-                                                </label>
-                                                <label class="mt-checkbox">
-                                                    <input type="checkbox" id="inlineCheckbox22" value="option2"> French
-                                                    <span></span>
-                                                </label>
-                                            </div>
-                                            <div class="mt-repeater-input">
-                                                <label class="control-label">Department</label>
-                                                <br>
-                                                <select name="group-a[1][select-input]" class="form-control">
-                                                    <option value="A" selected="">Marketing</option>
-                                                    <option value="B">Creative</option>
-                                                    <option value="C">Development</option>
-                                                </select>
-                                            </div>
-                                            <div class="mt-repeater-input">
-                                                <a href="javascript:;" data-repeater-delete="" class="btn btn-danger mt-repeater-delete">
-                                                    <i class="fa fa-close"></i> Delete</a>
-                                            </div>
-                                        </div></div>
-                                    <a href="javascript:;" data-repeater-create="" class="btn btn-success mt-repeater-add">
-                                        <i class="fa fa-plus"></i> Add</a>
-                                </form>
+
+                                    </div>
+                                </div>
+                                <div class="mt-list-container list-default">
+                                    <ul>
+                                        @if(count($allRooms) > 0)
+                                            @foreach($allRooms as $room)
+                                                <li class="mt-list-item">
+                                                    <div class="list-icon-container done">
+                                                        <a href="javascript:;">
+                                                            <i class="icon-check"></i>
+                                                        </a>
+                                                    </div>
+                                                    <div class="list-datetime"> {{ Carbon\Carbon::parse($room->created_at)->format('j F Y') }}
+                                                        {{--<br> 8 Nov--}} </div>
+                                                    <div class="list-item-content">
+                                                        <h3 class="uppercase bold">
+                                                            <a href="{{action('InventoryController@view_list', compact('room'))}}">Software</a>
+                                                        </h3>
+                                                        <p>{{$room->room_name}}</p>
+                                                    </div>
+                                                </li>
+                                            @endforeach
+                                        @else
+                                            <li class="mt-list-item">
+                                                <div class="list-icon-container">
+                                                    <a href="javascript:;">
+                                                        <i class="icon-close"></i>
+                                                    </a>
+                                                </div>
+                                                <div class="list-item-content">
+                                                    <h3 class="uppercase bold">
+                                                        <a href="{{action('RoomController@add_room')}}">No Room to Display</a>
+                                                    </h3>
+                                                    <p>please add a room</p>
+                                                </div>
+                                            </li>
+
+                                        @endif
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
             </div>
-        </div>
-    </div>
+            <div class="row"><!--start user -->
+                <div class="col-lg-6 col-xs-12 col-sm-12">
+                    <div class="portlet light ">
+                        <div class="portlet-title tabbable-line">
+                            <div class="caption">
+                                <i class="icon-bubbles font-dark hide"></i>
+                                <span class="caption-subject font-dark bold uppercase">Users</span>
+                            </div>
+                        </div>
+                        <div class="portlet-body">
+                            <div class="tab-content">
+                                <div class="mt-comments">
+                                    @if(count($users) > 0)
+                                        @foreach($users as $user)
+                                            <div class="mt-comment">
+                                                <div class="mt-comment-img">
+                                                    <img alt="" class="img-circle" src="{{asset('assets/layouts/layout/img/avatar.png')}}"></div>
+                                                <div class="mt-comment-body">
+                                                    <div class="mt-comment-info">
+                                                        <span class="mt-comment-author">{{ucwords($user->name)}}</span>
+                                                        <span class="mt-comment-date"> {{ Carbon\Carbon::parse($user->created_at)->format('j F Y') }}</span>
+                                                    </div>
+                                                    <div class="mt-comment-text"> Lorem Ipsum is simply dummy text of the printing and typesetting industry. </div>
+                                                    <div class="mt-comment-details">
+                                                        <span class="mt-comment-status mt-comment-status-pending">{{($user->status == 1) ? 'Active' : 'Inactive'}}</span>
+                                                        <ul class="mt-comment-actions">
+                                                            <li>
+                                                                <a href="#">Quick Edit</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="#">View</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="#">Delete</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
+             </div><!--end user -->
+
+                <div class="row"><!--start schedule -->
+                    <div class="col-lg-6 col-xs-12 col-sm-12">
+                        <div class="portlet light ">
+                            <div class="portlet-title tabbable-line">
+                                <div class="caption">
+                                    <i class="icon-bubbles font-dark hide"></i>
+                                    <span class="caption-subject font-dark bold uppercase">Schedule</span>
+                                </div>
+                            </div>
+                            <div class="portlet-body">
+                                <div class="tab-content">
+                                    <div class="mt-comments">
+                                        @if(count($schedules) > 0)
+                                            @foreach($schedules as $schedule)
+                                                <div class="mt-comment">
+                                                    <div class="mt-comment-img">
+                                                        <img alt="" class="img-circle" src="{{asset('assets/layouts/layout/img/avatar.png')}}"></div>
+                                                    <div class="mt-comment-body">
+                                                        <div class="mt-comment-info">
+                                                            <span class="mt-comment-author">{{ucwords($schedule->subject)}}</span>
+                                                            <span class="mt-comment-date"> {{ucwords($schedule->day)}}</span>
+                                                        </div>
+                                                        <div class="mt-comment-text"> {{ucwords($schedule->teacher)}} </div>
+                                                        <div class="mt-comment-details">
+                                                            <span class="mt-comment-status mt-comment-status-pending">{{($schedule->status == 1) ? 'Active' : 'Inactive'}}</span>
+                                                            <ul class="mt-comment-actions">
+                                                                <li>
+                                                                    <a href="#">Quick Edit</a>
+                                                                </li>
+                                                                <li>
+                                                                    <a href="#">View</a>
+                                                                </li>
+                                                                <li>
+                                                                    <a href="#">Delete</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!--end schedule -->
+
+
 @endsection
