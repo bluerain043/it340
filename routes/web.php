@@ -34,6 +34,10 @@ Route::post('room/ajax-save-specification', 'RoomController@ajax_save_specificat
 Route::post('room/ajax_save_software', 'RoomController@ajax_save_software');
 Route::post('room/ajax_save_device', 'RoomController@ajax_save_device');
 
+//Specifications in stock modal
+Route::post('room/save-specification', 'RoomController@save_specification');//ajax
+
+
 //Schedule
 Route::get('/schedule', 'RoomController@schedule')->name('schedule');
 Route::post('/schedule/add', 'RoomController@post_schedule');

@@ -128,9 +128,9 @@
                                                 </div>
                                                 <div class="list-item-content">
                                                     <h3 class="uppercase bold">
-                                                        <a href="{{action('RoomController@add_room')}}">No Room to Display</a>
+                                                        <a href="{{action('RoomController@add_room')}}">No Data to Display</a>
                                                     </h3>
-                                                    <p>please add a room</p>
+                                                    <p>please process to add entries for inventory</p>
                                                 </div>
                                             </li>
 

@@ -11,6 +11,9 @@ use App\Specifications;
 use App\Software;
 use App\Devices;
 use App\Queries\StudentListQuery;
+use App\Queries\DeviceListQuery;
+use App\Queries\SoftwareListQuery;
+use App\Queries\SpecificationListQuery;
 
 class InventoryController extends Controller
 {
@@ -88,13 +91,14 @@ class InventoryController extends Controller
         if(isset($request->room)){
             $room->room = $room->where('room', $request->room)->where('status', 'Active')->get();
             /*$room->students = (new StudentListQuery($request))->get();*/
-            $room->students = ($request->table == 'Students') ?  (new StudentListQuery($request))->get() : Students::where('room', $room->room)->get();;
-            $room->specs = ($request->table == 'specification') ? (new StudentListQuery($request))->get() : Specifications::where('room', $current_room)->get();
-            $room->softwares = $softwares = Software::where('room', $current_room)->get();
-            $room->devices =  $devices = Devices::where('room', $current_room)->get();
+            $room->students = ($request->table == 'Students') ?  (new StudentListQuery($request))->get() : Students::where('room', $current_room)->get();//dd('gale');
+            $room->specs = ($request->table == 'specification') ? (new SpecificationListQuery($request))->get() : Specifications::where('room', $current_room)->get();
+            $room->softwares = ($request->table == 'software') ? (new SoftwareListQuery($request))->get() : Software::where('room', $current_room)->get();
+            $room->devices =  ($request->table == 'devices') ? (new DeviceListQuery($request))->get() : Devices::where('room', $current_room)->get();
         }
-        $rooms = $room;//dd($rooms);
-        return view('inventory/inventory_list_search', compact('rooms', 'allRooms', 'current_room'));
+        $rooms = $room;
+        $current_tab = (isset($request->table)) ? $request->table : '';
+        return view('inventory/inventory_list_search', compact('rooms', 'allRooms', 'current_room', 'current_tab'));
     }
 
     public function get_student(Room $room)

@@ -72,7 +72,7 @@
                     <div class="tab-content">
                         <!--STUDENT TAB -->
                         <div class="tab-pane active" id="student">
-                            <form action="{{action('InventoryController@search_student')}}" class="form-inline" role="form" method="POST">
+                            <form action="{{action('InventoryController@search_student', compact('current_room'))}}" class="form-inline" role="form" method="POST">
                                 <div class="form-group">
                                     <input type="text" class="form-control" id="processor" name="fields[student_name]" placeholder="Student Name"> </div>
                                 <div class="form-group">
@@ -85,6 +85,7 @@
                                 <input type="hidden" class="form-control" id="board" name="room" value={{$current_room}}>
                                 <input type="hidden" class="form-control" id="board" name="table" value="Students">
                                 <button type="submit" class="btn btn-default">Search</button>
+                                <button type="button" class="btn btn-success" id="refresh-btn">Refresh</button>
                             </form>
                             <div class="table-scrollable">
                                 <table class="table table-hover">
@@ -134,19 +135,22 @@
                         <!--SPECIFICATION TAB -->
                         <div class="tab-pane" id="specification">
 
-                            <form class="form-inline" role="form">
+                            <form action="{{action('InventoryController@search_student', compact('current_room'))}}" class="form-inline" role="form" method="POST">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" id="processor" name="processor" placeholder="Processor"> </div>
+                                    <input type="text" class="form-control" id="processor" name="fields[processor]" placeholder="Processor"> </div>
                                 <div class="form-group">
-                                    <input type="text" class="form-control" id="memory" name="memory" placeholder="Memory"> </div>
+                                    <input type="text" class="form-control" id="memory" name="fields[memory]" placeholder="Memory"> </div>
                                 <div class="form-group">
-                                    <input type="text" class="form-control" id="board" name="board" placeholder="Board"> </div>
+                                    <input type="text" class="form-control" id="board" name="fields[board]" placeholder="Board"> </div>
                                 <div class="form-group">
-                                    <input type="text" class="form-control" id="board" name="hdd" placeholder="HDD"> </div>
+                                    <input type="text" class="form-control" id="board" name="fields[hdd]" placeholder="HDD"> </div>
                                 <div class="form-group">
-                                    <input type="text" class="form-control" id="board" name="graphics" placeholder="Graphics"> </div>
+                                    <input type="text" class="form-control" id="board" name="fields[graphics_card]" placeholder="Graphics"> </div>
                                 <input type="hidden" class="form-control" id="board" name="room" value={{$current_room}}>
+                                {{ csrf_field() }}
+                                <input type="hidden" class="form-control" id="board" name="table" value="specification">
                                 <button type="submit" class="btn btn-default">Search</button>
+                                <button type="button" class="btn btn-success" id="refresh-btn">Refresh</button>
                             </form>
 
                             <div class="table-scrollable">
@@ -200,11 +204,14 @@
 
                         <!--SOFTWARE TAB -->
                         <div class="tab-pane" id="software">
-                            <form class="form-inline" role="form">
+                            <form action="{{action('InventoryController@search_student', compact('current_room'))}}" class="form-inline" role="form" method="POST">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" id="processor" name="name" placeholder="Software"> </div>
+                                    <input type="text" class="form-control" id="processor" name="fields[name]" placeholder="Software"> </div>
                                 <input type="hidden" class="form-control" id="board" name="room" value={{$current_room}}>
+                                {{ csrf_field() }}
+                                <input type="hidden" class="form-control" id="board" name="table" value="software">
                                 <button type="submit" class="btn btn-default">Search</button>
+                                <button type="button" class="btn btn-success" id="refresh-btn">Refresh</button>
                             </form>
                             <div class="table-scrollable">
                                 <table class="table table-hover">
@@ -245,15 +252,18 @@
 
                         <!-- HARDWARE TAB -->
                         <div class="tab-pane" id="hardware">
-                            <form class="form-inline" role="form">
+                            <form action="{{action('InventoryController@search_student', compact('current_room'))}}" class="form-inline" role="form" method="POST">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" id="processor" name="name" placeholder="Software"> </div>
+                                    <input type="text" class="form-control" id="processor" name="fields[name]" placeholder="Device Name"> </div>
                                 <div class="form-group">
-                                    <input type="text" class="form-control" id="processor" name="brand" placeholder="Brand"> </div>
+                                    <input type="text" class="form-control" id="processor" name="fields[brand]" placeholder="Brand"> </div>
                                 <div class="form-group">
-                                    <input type="text" class="form-control" id="processor" name="sticker" placeholder="Sticker"> </div>
+                                    <input type="text" class="form-control" id="processor" name="fields[sticker]" placeholder="Sticker"> </div>
                                 <input type="hidden" class="form-control" id="board" name="room" value={{$current_room}}>
+                                {{ csrf_field() }}
+                                <input type="hidden" class="form-control" id="board" name="table" value="devices">
                                 <button type="submit" class="btn btn-default">Search</button>
+                                <button type="button" class="btn btn-success" id="refresh-btn">Refresh</button>
                             </form>
                             <div class="table-scrollable">
                                 <table class="table table-hover">
@@ -302,4 +312,30 @@
         </div>
     </div>
 
+@endsection
+
+@section('page_script')
+    <script>
+        $('document').ready(function(){
+            $active_tab = "{{$current_tab}}";
+            $current_room= "{{$current_room}}";
+            if($active_tab == 'devices'){
+                $('.nav-tabs a[href="#hardware"]').tab('show');
+                $('.nav-tabs a[href="#hardware"]').closest('li').addClass('active');
+            }else if($active_tab == 'Students'){
+                $('.nav-tabs a[href="#student"]').tab('show');
+                $('.nav-tabs a[href="#student"]').closest('li').addClass('active');
+            }else if($active_tab == 'specification'){
+                $('.nav-tabs a[href="#specification"]').tab('show');
+                $('.nav-tabs a[href="#specification"]').closest('li').addClass('active');
+            }else if($active_tab == 'software'){
+                $('.nav-tabs a[href="#software"]').tab('show');
+                $('.nav-tabs a[href="#software"]').closest('li').addClass('active');
+            }
+
+            $('#refresh-btn').on('click', function(){
+                window.location = "/inventory_list/"+$current_room;
+            });
+        });
+    </script>
 @endsection

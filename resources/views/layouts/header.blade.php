@@ -250,7 +250,6 @@
                             </li>
                         </ul>
                     </li>
-                    gale
                     <li class="nav-item  ">
                         <a href="javascript:;" class="nav-link nav-toggle">
                             <i class="icon-puzzle"></i>
@@ -266,12 +265,12 @@
                             <li class="nav-item  ">
                                 <a href="{{action('InventoryController@view_list')}}" class="nav-link ">
                                     <span class="title">Inventory List</span>
-                                    <span class="badge badge-danger">2</span>
+                                  {{--  <span class="badge badge-danger">2</span>--}}
                                 </a>
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-item  ">
+                    {{--<li class="nav-item  ">
                         <a href="javascript:;" class="nav-link nav-toggle">
                             <i class="icon-bulb"></i>
                             <span class="title">Logs</span>
@@ -313,7 +312,7 @@
                                 </a>
                             </li>
                         </ul>
-                    </li>
+                    </li>--}}
                 </ul>
                 <!-- END SIDEBAR MENU -->
                 <!-- END SIDEBAR MENU -->

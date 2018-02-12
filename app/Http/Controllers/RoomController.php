@@ -272,8 +272,24 @@ class RoomController extends Controller
     {
          $allRooms = Room::getAllRooms('room_name');
          return view('room.list', compact('allRooms', 'schedules'));
+    }
 
-
+    public function save_specification(Request $request)
+    {
+        $validator = \Validator::make($request->except(['_token', 'ajaxReturn']),[
+                'unit_type' => 'required'
+            ]
+        );
+        if ($validator->fails() && (isset($request->ajaxReturn) && $request->ajaxReturn == TRUE)) {
+            return response()->json(['errors' => $validator->errors()]);
+        }else{
+            $new_specs = new Specifications();
+            $request['end_of_life'] = Carbon::parse($request->end_of_life);
+            $save = $new_specs->create($request->except(['_token']));
+            return ($save)
+                ? response(['status' => 'ok'])
+                : response(['status' => 'failed']);
+        }
     }
 
 }

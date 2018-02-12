@@ -38,8 +38,8 @@
 
         </div>
         <div class="actions">
-            <a class="btn btn-circle btn-icon-only btn-default add-student-btn popovers" data-container="body" data-trigger="hover" data-placement="left"
-               data-content="Add schedule" data-original-title="Schedule" data-toggle="modal" href="#addSchedule">
+            <a class="btn btn-circle btn-icon-only btn-default add-inventory-btn popovers" data-container="body" data-trigger="hover" data-placement="left"
+               data-content="Add item to Inventory" data-original-title="Inventory" data-toggle="modal" href="#addSchedule">
                 <i class="fa fa-plus"></i>
             </a>
         </div>
@@ -86,6 +86,7 @@
                                 <input type="hidden" class="form-control" id="board" name="room" value={{$current_room}}>
                                 <input type="hidden" class="form-control" id="board" name="table" value="Students">
                                 <button type="submit" class="btn btn-default">Search</button>
+                                <button type="button" class="btn btn-success" id="refresh-btn">Refresh</button>
                             </form>
                             <div class="table-scrollable">
                                 <table class="table table-hover">
@@ -139,19 +140,20 @@
 
                             <form action="{{action('InventoryController@search_student', compact('current_room'))}}" class="form-inline" role="form" method="POST">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" id="processor" name="processor" placeholder="Processor"> </div>
+                                    <input type="text" class="form-control" id="processor" name="fields[processor]" placeholder="Processor"> </div>
                                 <div class="form-group">
-                                    <input type="text" class="form-control" id="memory" name="memory" placeholder="Memory"> </div>
+                                    <input type="text" class="form-control" id="memory" name="fields[memory]" placeholder="Memory"> </div>
                                 <div class="form-group">
-                                    <input type="text" class="form-control" id="board" name="board" placeholder="Board"> </div>
+                                    <input type="text" class="form-control" id="board" name="fields[board]" placeholder="Board"> </div>
                                 <div class="form-group">
-                                    <input type="text" class="form-control" id="board" name="hdd" placeholder="HDD"> </div>
+                                    <input type="text" class="form-control" id="board" name="fields[hdd]" placeholder="HDD"> </div>
                                 <div class="form-group">
-                                    <input type="text" class="form-control" id="board" name="graphics" placeholder="Graphics"> </div>
+                                    <input type="text" class="form-control" id="board" name="fields[graphics_card]" placeholder="Graphics"> </div>
                                 <input type="hidden" class="form-control" id="board" name="room" value={{$current_room}}>
                                 {{ csrf_field() }}
                                 <input type="hidden" class="form-control" id="board" name="table" value="specification">
                                 <button type="submit" class="btn btn-default">Search</button>
+                                <button type="button" class="btn btn-success" id="refresh-btn">Refresh</button>
                             </form>
 
                             <div class="table-scrollable">
@@ -209,11 +211,14 @@
 
                         <!--SOFTWARE TAB -->
                         <div class="tab-pane" id="software">
-                            <form class="form-inline" role="form">
+                            <form action="{{action('InventoryController@search_student', compact('current_room'))}}" class="form-inline" role="form" method="POST">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" id="processor" name="name" placeholder="Software"> </div>
+                                    <input type="text" class="form-control" id="processor" name="fields[name]" placeholder="Software"> </div>
                                 <input type="hidden" class="form-control" id="board" name="room" value={{$current_room}}>
+                                {{ csrf_field() }}
+                                <input type="hidden" class="form-control" id="board" name="table" value="software">
                                 <button type="submit" class="btn btn-default">Search</button>
+                                <button type="button" class="btn btn-success" id="refresh-btn">Refresh</button>
                             </form>
                             <div class="table-scrollable">
                                 <table class="table table-hover">
@@ -258,15 +263,18 @@
 
                         <!-- HARDWARE TAB -->
                         <div class="tab-pane" id="hardware">
-                            <form class="form-inline" role="form">
+                            <form action="{{action('InventoryController@search_student', compact('current_room'))}}" class="form-inline" role="form" method="POST">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" id="processor" name="name" placeholder="Software"> </div>
+                                    <input type="text" class="form-control" id="processor" name="fields[name]" placeholder="Device Name"> </div>
                                 <div class="form-group">
-                                    <input type="text" class="form-control" id="processor" name="brand" placeholder="Brand"> </div>
+                                    <input type="text" class="form-control" id="processor" name="fields[brand]" placeholder="Brand"> </div>
                                 <div class="form-group">
-                                    <input type="text" class="form-control" id="processor" name="sticker" placeholder="Sticker"> </div>
+                                    <input type="text" class="form-control" id="processor" name="fields[sticker]" placeholder="Sticker"> </div>
                                 <input type="hidden" class="form-control" id="board" name="room" value={{$current_room}}>
+                                {{ csrf_field() }}
+                                <input type="hidden" class="form-control" id="board" name="table" value="devices">
                                 <button type="submit" class="btn btn-default">Search</button>
+                                <button type="button" class="btn btn-success" id="refresh-btn">Refresh</button>
                             </form>
                             <div class="table-scrollable">
                                 <table class="table table-hover">
@@ -317,4 +325,42 @@
         </div>
     </div>
 
+@include('modals/add_inventory_modal')
+@endsection
+@section('page_script')
+    <script>
+        $('document').ready(function(){
+            $current_room= "{{$current_room}}";
+
+            $('#refresh-btn').on('click', function(){
+                window.location = "/inventory_list/"+$current_room;
+            });
+
+           $('.add-inventory-btn').on('click', function(){
+               $('#full-new').modal('show');
+           })
+
+            $('#full-new').on('click', '.addSpecification-btn', function(){
+                $form = $('#addSpecs');
+                url = $form.attr('action');
+                data = $form.serialize()  + '&ajaxReturn=TRUE';
+                $.post(url, data, function(result){console.log(result);
+                    if(result.errors){
+                        $('.specs-error').removeClass('hide');
+                        html = '';
+                        $.each(result.errors, function (index, data) {
+                            html += '<li>'+data+'</li>';
+                        });
+                        $('.specs-error ul').html(html);
+                        setTimeout(function(){ $('.specs-error').addClass('hide'); }, 2000);
+                    }else if(result.status == 'ok'){
+                        $('.specs-success').removeClass('hide');
+                        $('.specs-success .msg').html('System Specification is Updated Successfully');
+                        setTimeout(function(){ location.reload(); }, 2000);
+                    }
+
+                });
+            });
+        });
+    </script>
 @endsection
