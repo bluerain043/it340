@@ -53,4 +53,28 @@ class UserController extends Controller
         $allRooms = Room::getAllRooms('room_name');
         return view('user.users_list', compact('allRooms', 'users'));
     }
+
+    public function get_user_data(Request $request)
+    {
+        $user = User::where('id', $request->user)->first();
+        $view = \View::make('modals.edit_user_modal', ['user' => $user]);
+        $html = $view->render();
+        return \Response::json(['html' => $html, 'data' => $user]);
+    }
+
+    public function post_edit_user(Request $request)
+    {
+        $user = User::where('id', $request->id)->first();
+        $user->update($request->except(['_token']));
+        return back()->with('success', 'User Updated added successfully!');
+    }
+
+    public function delete_user(Request $request)
+    {
+        $bDelete = User::where('id', $request->user)->delete();
+        return ($bDelete)
+            ? response(['status' => 'ok'])
+            : response(['status' => 'failed']);
+        /*return back()->with('success', 'User deleted successfully!');*/
+    }
 }

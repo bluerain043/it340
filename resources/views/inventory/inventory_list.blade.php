@@ -99,7 +99,9 @@
                                         <th> Year </th>
                                         <th> Room </th>
                                         <th> Status </th>
+                                        @if(Auth::user()->is_admin == 1)
                                         <th>  </th>
+                                        @endif
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -115,20 +117,27 @@
                                                         <td> {{$student->year}} </td>
                                                         <td>{{ucwords($room->room_name)}} </td>
                                                         <td> {{$student->status == 1 ? 'Active' : 'Inactive'}} </td>
+                                                        @if(Auth::user()->is_admin == 1)
                                                         <td>
                                                             <div class="btn-group">
                                                                 <button type="button" class="btn btn-default">Edit</button>
                                                                 <button type="button" class="btn btn-default">Delete</button>
                                                             </div>
                                                         </td>
+                                                         @endif
                                                     </tr>
                                                 @endif
                                             @endforeach
                                         @endforeach
                                     @else
                                         <tr style="text-align: center">
+                                            @if(Auth::user()->is_admin == 1)
                                             <td colspan="7"> No Data to Display</td>
+                                            @else
+                                                <td colspan="6"> No Data to Display</td>
+                                            @endif
                                         </tr>
+
                                     @endif
                                     </tbody>
                                 </table>
@@ -170,7 +179,9 @@
                                         <th> In Use </th>
                                         <th> In Stock </th>
                                         <th> End of Life </th>
-                                        <th>  </th>
+                                        @if(Auth::user()->is_admin == 1)
+                                            <th>  </th>
+                                        @endif
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -189,19 +200,25 @@
                                                         <td> {{$specs->in_used == 'yes' ? 1 : ''}} </td>
                                                         <td> {{$specs->in_used == 'no' ? 1 : ''}} </td>
                                                         <td> {{ Carbon\Carbon::parse($specs->created_at)->format('d-m-Y') }}  </td>
+                                                        @if(Auth::user()->is_admin == 1)
                                                         <td>
                                                             <div class="btn-group">
                                                                 <button type="button" class="btn btn-default">Edit</button>
                                                                 <button type="button" class="btn btn-default">Delete</button>
                                                             </div>
                                                         </td>
+                                                         @endif
                                                     </tr>
                                                 @endif
                                             @endforeach
                                         @endforeach
                                     @else
                                         <tr style="text-align: center">
-                                            <td colspan="7"> No Data to Display</td>
+                                            @if(Auth::user()->is_admin == 1)
+                                            <td colspan="9"> No Data to Display</td>
+                                             @else
+                                                <td colspan="8"> No Data to Display</td>
+                                            @endif
                                         </tr>
                                     @endif
                                     </tbody>
@@ -228,7 +245,9 @@
                                         <th> Room </th>
                                         <th> Purchase Date </th>
                                         <th> End of Life </th>
+                                        @if(Auth::user()->is_admin == 1)
                                         <th>  </th>
+                                        @endif
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -241,19 +260,25 @@
                                                         <td>{{ucwords($room->room_name)}}</td>
                                                         <td> {{ Carbon\Carbon::parse($software->purchase_date)->format('d-m-Y') }}  </td>
                                                         <td> {{ Carbon\Carbon::parse($software->end_of_life)->format('d-m-Y') }}  </td>
+                                                        @if(Auth::user()->is_admin == 1)
                                                         <td>
                                                             <div class="btn-group">
                                                                 <button type="button" class="btn btn-default">Edit</button>
                                                                 <button type="button" class="btn btn-default">Delete</button>
                                                             </div>
                                                         </td>
+                                                        @endif
                                                     </tr>
                                                 @endif
                                             @endforeach
                                         @endforeach
                                     @else
                                         <tr style="text-align: center">
-                                            <td colspan="7"> No Data to Display</td>
+                                            @if(Auth::user()->is_admin == 1)
+                                                <td colspan="4"> No Data to Display</td>
+                                            @else
+                                                <td colspan="3"> No Data to Display</td>
+                                            @endif
                                         </tr>
                                     @endif
                                     </tbody>
@@ -285,7 +310,9 @@
                                         <th> Sticker </th>
                                         <th> Brand </th>
                                         <th> Serial </th>
-                                        <th>  </th>
+                                        @if(Auth::user()->is_admin == 1)
+                                            <th>  </th>
+                                        @endif
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -299,19 +326,25 @@
                                                         <td> {{$device->sticker}} </td>
                                                         <td> {{$device->brand}} </td>
                                                         <td> {{$device->serial}} </td>
+                                                        @if(Auth::user()->is_admin == 1)
                                                         <td>
                                                             <div class="btn-group">
                                                                 <button type="button" class="btn btn-default">Edit</button>
                                                                 <button type="button" class="btn btn-default">Delete</button>
                                                             </div>
                                                         </td>
+                                                         @endif
                                                     </tr>
                                                 @endif
                                             @endforeach
                                         @endforeach
                                     @else
                                         <tr style="text-align: center">
-                                            <td colspan="7"> No Data to Display</td>
+                                            @if(Auth::user()->is_admin == 1)
+                                                <td colspan="5"> No Data to Display</td>
+                                            @else
+                                                <td colspan="4"> No Data to Display</td>
+                                            @endif
                                         </tr>
                                     @endif
                                     </tbody>
