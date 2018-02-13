@@ -67,3 +67,4 @@ Route::post('user/delete/', 'UserController@delete_user');
 //Schedule Edit
 Route::post('/schedule/schedule_info', 'ScheduleController@get_schedule_details');
 Route::post('/schedule/update/{schedule}', 'ScheduleController@post_update');
+Route::post('/schedule/delete', 'ScheduleController@delete_schedule');

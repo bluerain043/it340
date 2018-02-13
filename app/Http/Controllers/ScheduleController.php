@@ -43,11 +43,15 @@ class ScheduleController extends Controller
                 : response(['status' => 'failed']);
         }
 
+    }
 
-
-
-
-
+    public function delete_schedule(Request $request)
+    {
+        $schedule = Schedule::where('schedule', $request->schedule) ->first();
+        $delete = $schedule->update(['status' => 0]);
+        return ($delete)
+            ? response(['status' => 'ok'])
+            : response(['status' => 'failed']);
     }
 
 }
