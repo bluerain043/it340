@@ -2,7 +2,7 @@
 @section('breadcrumbs')
     <ul class="page-breadcrumb">
         <li>
-            <a href="javascript;">Schedule</a>
+            <a href="/">Dashboard</a>
             <i class="fa fa-circle"></i>
         </li>
         <li>
@@ -45,7 +45,7 @@
                                 <th> Action </th>
                             </tr>
                             </thead>
-                            <tbody>
+                            <tbody class="tschedule">
                             @if(count($schedules) > 0)
                                 @foreach($schedules as $schedule)
                                     <tr>
@@ -59,7 +59,7 @@
                                         </td>
                                         <td>
                                             <div class="btn-group">
-                                                <button type="button" class="btn btn-default">Edit</button>
+                                                <button type="button" class="btn btn-default edit-schedule" data-schedule="{{$schedule->schedule}}">Edit</button>
                                                 <button type="button" class="btn btn-default">Delete</button>
                                             </div>
                                         </td>
@@ -207,7 +207,6 @@
                                         <div class="col-md-offset-4 col-md-8">
                                             <button type="button" class="btn dark btn-outline" data-dismiss="modal">Close</button>
                                             <button type="submit" class="btn green">Add</button>
-                                            <button type="reset" class="btn default">Reset</button>
                                         </div>
                                     </div>
                                 </div>
@@ -223,4 +222,43 @@
         </div>
         <!-- /.modal-dialog -->
     </div>
+
+    <div class="modal fade bs-modal-lg" id="editSchedule" tabindex="-1" role="dialog" aria-hidden="true">
+    {{--@include('modals/edit_schedule.blade.php')--}}
+    </div>
+@endsection
+
+@section('page_script')
+<script>
+    $('document').ready(function(){
+       $('.tschedule').on('click', '.edit-schedule', function(e){
+            e.preventDefault();
+            var schedule = $(this).data('schedule');
+           $.post("{{ action('ScheduleController@get_schedule_details') }}", {_token:'{{ csrf_token() }}', schedule:schedule}, function(result){
+               $('#editSchedule').html(result.html);
+               $('#editSchedule').modal('show');
+           });
+       }) ;
+        $('#editSchedule').on('click', '.update-schedule', function(){
+           $form = $('#update-schedule-form');
+           url = $form.attr('action');
+           data = $form.serialize();
+           $.post(url, data, function(result){
+               if(result.errors){
+                   $('.danger-edit-error').removeClass('hide');
+                   html = '';
+                   $.each(result.errors, function (index, data) {
+                       html += '<li>'+data+'</li>';
+                   });
+                   $('.danger-edit-error ul').html(html);
+                   setTimeout(function(){ $('.danger-edit-error').addClass('hide'); }, 1000);
+               }else if(result.status == 'ok'){
+                   $('.success-edit-msg').removeClass('hide');
+                   $('.success-edit-msg .msg').html('Schedule is Updated Successfully');
+                   setTimeout(function(){ location.reload(); }, 1000);
+               }
+           });
+       });
+    });
+</script>
 @endsection

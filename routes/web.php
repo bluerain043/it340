@@ -62,3 +62,8 @@ Route::post('/inventory_list/{room?}', 'InventoryController@search_student');
 Route::post('user/edit', 'UserController@get_user_data');
 Route::post('user/edit/user', 'UserController@post_edit_user');
 Route::post('user/delete/', 'UserController@delete_user');
+
+
+//Schedule Edit
+Route::post('/schedule/schedule_info', 'ScheduleController@get_schedule_details');
+Route::post('/schedule/update/{schedule}', 'ScheduleController@post_update');
