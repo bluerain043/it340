@@ -50,8 +50,8 @@
                                 @foreach($schedules as $schedule)
                                     <tr class="tr-schedule-{{$schedule->schedule}}">
                                         <td>{{ucwords($schedule->subject)}}</td>
-                                        <td> {{$schedule->day}} </td>
-                                        <td> {{$schedule->time}} </td>
+                                        <td>{{\App\Schedule::$days[$schedule->day]}}</td>
+                                        <td>{{\App\Schedule::$time[$schedule->time]}}</td>
                                         <td> {{$schedule->room}} </td>
                                         <td> {{$schedule->teacher}} </td>
                                         <td>
