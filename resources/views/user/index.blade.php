@@ -165,7 +165,7 @@
                                 <div class="mt-comments">
                                     @if(count($users) > 0)
                                         @foreach($users as $user)
-                                            <div class="mt-comment">
+                                            <div class="mt-comment mt-user-{{$user->id}}">
                                                 <div class="mt-comment-img">
                                                     <img alt="" class="img-circle" src="{{asset('assets/layouts/layout/img/avatar.png')}}"></div>
                                                 <div class="mt-comment-body">
@@ -173,19 +173,15 @@
                                                         <span class="mt-comment-author">{{ucwords($user->name)}}</span>
                                                         <span class="mt-comment-date"> {{ Carbon\Carbon::parse($user->created_at)->format('j F Y') }}</span>
                                                     </div>
-                                                    <div class="mt-comment-text"> Lorem Ipsum is simply dummy text of the printing and typesetting industry. </div>
-                                                    <div class="mt-comment-details">
+                                                    <div class="mt-comment-text"> Email Address: {{ $user->email }}. </div>
+                                                    <div class="mt-comment-details actions">
                                                         <span class="mt-comment-status mt-comment-status-pending">{{($user->status == 1) ? 'Active' : 'Inactive'}}</span>
                                                         <ul class="mt-comment-actions">
+                                                            @if(Auth::user()->is_admin == 1)
                                                             <li>
-                                                                <a href="#">Quick Edit</a>
+                                                                <a href="javascript:void(0);" class="edit-user" data-userid="{{$user->id}}">Quick Edit</a>
                                                             </li>
-                                                            <li>
-                                                                <a href="#">View</a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="#">Delete</a>
-                                                            </li>
+                                                          @endif
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -223,7 +219,7 @@
                                                         <div class="mt-comment-text"> {{ucwords($schedule->teacher)}} </div>
                                                         <div class="mt-comment-details">
                                                             <span class="mt-comment-status mt-comment-status-pending">{{($schedule->status == 1) ? 'Active' : 'Inactive'}}</span>
-                                                            <ul class="mt-comment-actions">
+                                                           {{-- <ul class="mt-comment-actions">
                                                                 <li>
                                                                     <a href="#">Quick Edit</a>
                                                                 </li>
@@ -233,7 +229,7 @@
                                                                 <li>
                                                                     <a href="#">Delete</a>
                                                                 </li>
-                                                            </ul>
+                                                            </ul>--}}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -245,5 +241,31 @@
                         </div>
                     </div><!--end schedule -->
 
+<div class="modal fade" id="editUser" tabindex="-1" role="dialog" aria-hidden="true">
+    {{--@include('modals/edit_user_modal')--}}
+</div>
+@endsection
+@section('page_script')
+    <script type="application/x-javascript">
+        $('document').ready(function(){
+            $('.actions').on('click', '.edit-user', function () {
+                var user = $(this).data('userid');
+                $.post("{{ action('UserController@get_user_data') }}", {_token:'{{ csrf_token() }}', user:user}, function(result){
+                    $('#editUser').modal('show');
+                    $('#editUser').html(result.html);
+                });
+            })
+            $('#editUser').on('click', '.user-delete', function(){ console.log('sdgsdgs');
+                var user = $(this).data('userid');
+                $.post("{{ action('UserController@delete_user') }}", {_token:'{{ csrf_token() }}', user:user}, function(result){
+                    if(result.status == 'ok'){
+                        $('.mt-user-'+user).remove();
+                        $('#editUser').modal('hide');
+                    }
 
+                });
+            })
+        });
+
+    </script>
 @endsection

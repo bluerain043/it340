@@ -57,3 +57,14 @@ Route::get('/inventory_list/specs/{room}', 'InventoryController@get_specificatio
 Route::get('/inventory_list/software/{room}', 'InventoryController@get_software');
 Route::get('/inventory_list/hardware/{room}', 'InventoryController@get_hardware');
 Route::post('/inventory_list/{room?}', 'InventoryController@search_student');
+
+//User
+Route::post('user/edit', 'UserController@get_user_data');
+Route::post('user/edit/user', 'UserController@post_edit_user');
+Route::post('user/delete/', 'UserController@delete_user');
+
+
+//Schedule Edit
+Route::post('/schedule/schedule_info', 'ScheduleController@get_schedule_details');
+Route::post('/schedule/update/{schedule}', 'ScheduleController@post_update');
+Route::post('/schedule/delete', 'ScheduleController@delete_schedule');

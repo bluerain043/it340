@@ -45,13 +45,13 @@
                                 <th> Action </th>
                             </tr>
                             </thead>
-                            <tbody>
+                            <tbody class="tschedule">
                             @if(count($schedules) > 0)
                                 @foreach($schedules as $schedule)
-                                    <tr>
+                                    <tr class="tr-schedule-{{$schedule->schedule}}">
                                         <td>{{ucwords($schedule->subject)}}</td>
-                                        <td> {{$schedule->day}} </td>
-                                        <td> {{$schedule->time}} </td>
+                                        <td>{{\App\Schedule::$days[$schedule->day]}}</td>
+                                        <td>{{\App\Schedule::$time[$schedule->time]}}</td>
                                         <td> {{$schedule->room}} </td>
                                         <td> {{$schedule->teacher}} </td>
                                         <td>
@@ -59,8 +59,8 @@
                                         </td>
                                         <td>
                                             <div class="btn-group">
-                                                <button type="button" class="btn btn-default">Edit</button>
-                                                <button type="button" class="btn btn-default">Delete</button>
+                                                <button type="button" class="btn btn-default edit-schedule" data-schedule="{{$schedule->schedule}}">Edit</button>
+                                                <button type="button" class="btn btn-default delete-schedule" data-schedule="{{$schedule->schedule}}">Delete</button>
                                             </div>
                                         </td>
                                     </tr>
@@ -207,7 +207,6 @@
                                         <div class="col-md-offset-4 col-md-8">
                                             <button type="button" class="btn dark btn-outline" data-dismiss="modal">Close</button>
                                             <button type="submit" class="btn green">Add</button>
-                                            <button type="reset" class="btn default">Reset</button>
                                         </div>
                                     </div>
                                 </div>
@@ -223,4 +222,85 @@
         </div>
         <!-- /.modal-dialog -->
     </div>
+
+    <div class="modal fade bs-modal-lg" id="editSchedule" tabindex="-1" role="dialog" aria-hidden="true">
+    {{--@include('modals/edit_schedule.blade.php')--}}
+    </div>
+
+    <div id="static" class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title">Confirmation</h4>
+                </div>
+                <div class="modal-body">
+                    <p> Would you like to delete this schedule? </p>
+                   {{-- <form id="delete-schedule" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        {{ csrf_field() }}
+                    </form>--}}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn dark btn-outline">No</button>
+                    <button type="button" data-dismiss="modal" class="btn green confirm-delete" {{--onclick="event.preventDefault(); document.getElementById('delete-schedule').submit();"--}}>Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
+
+@section('page_script')
+<script>
+    $('document').ready(function(){
+        var schedule = '';
+       $('.tschedule').on('click', '.edit-schedule', function(e){
+            e.preventDefault();
+            schedule = $(this).data('schedule');
+           $.post("{{ action('ScheduleController@get_schedule_details') }}", {_token:'{{ csrf_token() }}', schedule:schedule}, function(result){
+               if(result.status == 'ok') {
+                   $('#editSchedule').html(result.html);
+                   $('#editSchedule').modal('show');
+               }
+           });
+       }) ;
+
+       $('.tschedule').on('click', '.delete-schedule', function(e){
+            e.preventDefault();
+            schedule = $(this).data('schedule');
+            $('#static').modal('show');
+       });
+
+       /* $('#static').on('show.bs.modal', function(e) {*/
+        $('#static').on('click', '.confirm-delete' ,function(e) {
+            e.preventDefault(); console.log('delete btn');
+            //$(this).find('.confirm-delete').attr('href', $(e.relatedTarget).data('href'));
+            $.post("{{ action('ScheduleController@delete_schedule') }}", {_token:'{{ csrf_token() }}', schedule:schedule}, function(result){
+                if(result.status == 'ok'){
+                    $('.tr-schedule-'+schedule).remove();
+                }
+             });
+            console.log('delete', schedule);
+        });
+        $('#editSchedule').on('click', '.update-schedule', function(){
+           $form = $('#update-schedule-form');
+           url = $form.attr('action');
+           data = $form.serialize();
+           $.post(url, data, function(result){
+               if(result.errors){
+                   $('.danger-edit-error').removeClass('hide');
+                   html = '';
+                   $.each(result.errors, function (index, data) {
+                       html += '<li>'+data+'</li>';
+                   });
+                   $('.danger-edit-error ul').html(html);
+                   setTimeout(function(){ $('.danger-edit-error').addClass('hide'); }, 1000);
+               }else if(result.status == 'ok'){
+                   $('.success-edit-msg').removeClass('hide');
+                   $('.success-edit-msg .msg').html('Schedule is Updated Successfully');
+                   setTimeout(function(){ location.reload(); }, 1000);
+               }
+           });
+       });
+    });
+</script>
 @endsection
