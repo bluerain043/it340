@@ -28,6 +28,7 @@ Route::get('/room/{room}/{schedule}', 'RoomController@room_view_edit_schedule');
 Route::post('room/save-student', 'RoomController@save_new_student');
 Route::post('room/ajax-save-student', 'RoomController@ajax_save_new_student');
 Route::get('/room/list', 'RoomController@list_of_room');
+Route::post('room/get_room_details', 'RoomController@get_room_details');
 
 //Specifications
 Route::post('room/ajax-save-specification', 'RoomController@ajax_save_specification');

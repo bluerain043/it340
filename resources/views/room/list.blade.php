@@ -12,7 +12,7 @@
 @endsection
 @section('content')
     <div class="room-title-box">
-        <h1 class="page-title"> Add Users</h1>
+        <h1 class="page-title"> Add Room</h1>
         <div class="actions">
             <a class="btn btn-circle btn-icon-only btn-default add-student-btn popovers" data-container="body" data-trigger="hover" data-placement="left"
                data-content="Add user" data-original-title="User" data-toggle="modal" href="#addUser">
@@ -56,6 +56,7 @@
                                 <th> Facilitator </th>
                                 <th> Seatplan image </th>
                                 <th> Status </th>
+                                <th> Created </th>
                             </tr>
                             </thead>
                             <tbody>
@@ -69,10 +70,10 @@
                                         <td> <span class="label label-sm {{ ($room->status == 1) ? 'label-info' : 'label-warning'}}"> {{($room->status) ? 'Active' : 'Inactive'}} </span> </td>
                                         <td> {{ Carbon\Carbon::parse($room->created_at)->format('d-m-Y') }} </td>
                                         <td>
-                                            <div class="btn-group">
-                                                <button type="button" class="btn btn-default">Edit</button>
-                                                <button type="button" class="btn btn-default">Delete</button>
-                                                <a href="{{action('RoomController@room_view_edit' ,compact('room'))}}" class="btn btn-default">View</a>
+                                            <div class="btn-group actions">
+                                                <button type="button" class="btn btn-default edit-room" data-room="{{$room->room}}">Edit</button>
+                                                <button type="button" class="btn btn-default delete-room" data-room="{{$room->room}}">Delete</button>
+                                                {{--<a href="{{action('RoomController@room_view_edit' ,compact('room'))}}" class="btn btn-default">View</a>--}}
                                             </div>
                                         </td>
                                     </tr>
@@ -101,79 +102,97 @@
                         <div class="portlet-title">
                             <div class="caption">
                                 <i class=" icon-layers font-green"></i>
-                                <span class="caption-subject font-green sbold uppercase">Add User Details</span>
+                                <span class="caption-subject font-green sbold uppercase">Add Room Details</span>
                             </div>
                         </div>
                         <div class="portlet-body">
                             <!-- BEGIN FORM-->
-                            <form action="{{ route('register_user') }}" class="form-horizontal" id="form_sample_1" novalidate="novalidate" method="POST">
+                            <form action="{{action('RoomController@post_add_room')}}" class="form-horizontal"  enctype="multipart/form-data" id="form_sample_1" novalidate="novalidate" method="POST">
                                 {{ csrf_field() }}
                                 <div class="form-body">
+                                    @if (count($errors) > 0)
+                                        <div class="alert alert-danger">
+                                            <button class="close" data-close="alert"></button> You have some form errors. Please check below. <br/>
+                                            <ul>
+                                                @foreach ($errors->all() as $error)
+                                                    <li>{{ $error }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    @endif
+                                    @if ($message = Session::get('success'))
+                                        <div class="alert alert-success">
+                                            <button class="close" data-close="alert"></button> {{ $message }}
+                                        </div>
+                                    @endif
                                     <div class="form-group form-md-line-input">
                                         <label class="col-md-3 control-label" for="form_control_1">Name
                                             <span class="required" aria-required="true">*</span>
                                         </label>
-                                        <div class="col-md-8">
-                                            <input type="text" class="form-control" placeholder="" name="name" required autofocus>
+                                        <div class="col-md-7">
+                                            <input type="text" class="form-control" placeholder="" name="room_name">
                                             <div class="form-control-focus"> </div>
-                                            <span class="help-block">enter user name</span>
+                                            <span class="help-block">enter room name</span>
                                         </div>
                                     </div>
 
                                     <div class="form-group form-md-line-input">
-                                        <label class="col-md-3 control-label" for="form_control_1">Email
+                                        <label class="col-md-3 control-label" for="form_control_1">Room Number
                                             <span class="required" aria-required="true">*</span>
                                         </label>
-                                        <div class="col-md-8">
-                                            <input type="text" class="form-control" placeholder="" name="email" required autofocus>
-                                            <div class="form-control-focus"> </div>
-                                            <span class="help-block">enter user email</span>
+                                        <div class="col-md-7">
+                                            <div class="input-icon">
+                                                <input type="text" class="form-control" placeholder="Enter digits" name="room_number">
+                                                <div class="form-control-focus"> </div>
+                                                <i class="fa fa-bell-o"></i>
+                                            </div>
                                         </div>
                                     </div>
 
                                     <div class="form-group form-md-line-input">
-                                        <label class="col-md-3 control-label" for="form_control_1">Password
+                                        <label class="col-md-3 control-label" for="form_control_1">Facilitor
                                             <span class="required" aria-required="true">*</span>
                                         </label>
-                                        <div class="col-md-8">
-                                            <input type="password" class="form-control" placeholder="" name="password" required autofocus>
+                                        <div class="col-md-7">
+                                            <input type="text" class="form-control" placeholder="" name="facilitator">
                                             <div class="form-control-focus"> </div>
-                                            <span class="help-block">enter user name</span>
+                                            <span class="help-block">enter name of room facilitor</span>
                                         </div>
                                     </div>
 
                                     <div class="form-group form-md-line-input">
-                                        <label class="col-md-3 control-label" for="form_control_1">Confirm Password
-                                            <span class="required" aria-required="true">*</span>
-                                        </label>
-                                        <div class="col-md-8">
-                                            <input type="password" class="form-control" placeholder="" name="password_confirmation" required autofocus>
-                                            <div class="form-control-focus"> </div>
-                                            <span class="help-block">enter user name</span>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="form-group form-md-checkboxes">
-                                        <label class="col-md-3 control-label" for="form_control_1">Status
-                                            <span class="required" aria-required="true">*</span>
-                                        </label>
-                                        <div class="col-md-8">
-                                            <div class="md-checkbox-inline">
-                                                <div class="md-checkbox">
-                                                    <input type="checkbox" id="checkbox1_3" name="status" value="1" class="md-check">
-                                                    <label for="checkbox1_3">
-                                                        <span></span>
-                                                        <span class="check"></span>
-                                                        <span class="box"></span> Active</label>
+                                        <label class="col-md-3 control-label" for="form_control_1">Seatplan image</label>
+                                        <div class="col-md-7">
+                                            <div class="col-md-9">
+                                                <div class="fileinput fileinput-new" data-provides="fileinput">
+                                                    <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 200px; height: 150px;"> </div>
+                                                    <div>
+                                                                <span class="btn red btn-outline btn-file">
+                                                                    <span class="fileinput-new"> Select image </span>
+                                                                    <span class="fileinput-exists"> Change </span>
+                                                                    <input type="file" accept="image/png, image/jpeg, image/gif" name="seatplan_image"> </span>
+                                                        <a href="javascript:;" class="btn red fileinput-exists" data-dismiss="fileinput"> Remove </a>
+                                                    </div>
                                                 </div>
-                                                <div class="md-checkbox">
-                                                    <input type="checkbox" id="checkbox1_4" name="checkboxes2[]" value="2" class="md-check">
-                                                    <label for="checkbox1_4">
-                                                        <span></span>
-                                                        <span class="check"></span>
-                                                        <span class="box"></span> Inactive </label>
-                                                </div>
+                                                <div class="clearfix margin-top-10">
+                                                    <span class="label label-success">NOTE!</span> Image preview only works in IE10+, FF3.6+, Safari6.0+, Chrome6.0+ and Opera11.1+. In older browsers the filename is shown instead. </div>
+                                            </div>
+                                            <div class="form-control-focus"> </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">Status</label>
+                                        <div class="col-md-8">
+                                            <div class="mt-radio-inline">
+                                                <label class="mt-radio">
+                                                    <input type="radio" id="optionsRadios25" value="1" name="status" checked=""> Active
+                                                    <span></span>
+                                                </label>
+                                                <label class="mt-radio">
+                                                    <input type="radio" id="optionsRadios26" value="0" name="status" checked=""> Inactive
+                                                    <span></span>
+                                                </label>
                                             </div>
                                         </div>
                                     </div>
@@ -181,7 +200,6 @@
                                 <div class="form-actions">
                                     <div class="row">
                                         <div class="col-md-offset-4 col-md-8">
-                                            <button type="button" class="btn dark btn-outline" data-dismiss="modal">Close</button>
                                             <button type="submit" class="btn green">Add</button>
                                             <button type="reset" class="btn default">Reset</button>
                                         </div>
@@ -199,14 +217,30 @@
         </div>
         <!-- /.modal-dialog -->
     </div>
+    <div class="modal fade bs-modal-lg" id="edit-room-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        {{--@include('modals/edit_room_modal)--}}
+    </div>
 @endsection
 
 @section('page_script')
     <script type="application/x-javascript">
-        setTimeout(function(){
-            $('.alert-danger').addClass('hide');
-            $('.alert-success').addClass('hide');
+        $('document').ready(function () {
+            var room = '';
+            setTimeout(function(){
+                $('.alert-danger').addClass('hide');
+                $('.alert-success').addClass('hide');
             }, 2000);
+
+           $('.actions').on('click', '.edit-room', function(e){
+                e.preventDefault();
+                room = $(this).data('room');
+                $.post("{{ action('RoomController@get_room_details') }}", {_token:'{{ csrf_token() }}', room:room}, function(result){
+                    $('#edit-room-modal').modal('show');
+                    $('#edit-room-modal').html(result.html);
+                });
+            });
+        });
+
 
     </script>
 @endsection

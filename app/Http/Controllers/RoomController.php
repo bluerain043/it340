@@ -40,24 +40,55 @@ class RoomController extends Controller
 
     public function post_add_room(Request $request)
     {
-        $this->validate($request, [
+       /* $this->validate($request, [
            'room_name' => 'required',
            'room_number' => 'required|numeric',
            'facilitator' => 'required',
            'seatplan_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:8000'
-        ]);
-        $seat = $request->file('seatplan_image');
-        $seat_name = 'seat_'.time().'.'.$seat->getClientOriginalExtension();
+        ]);*/
+        $validator = \Validator::make($request->except(['_token']),[
+                'room_name' => 'required',
+                'room_number' => 'required|numeric',
+                'facilitator' => 'required'
+                /*'seatplan_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:8000'*/
+            ]
+        );
+        //check wla ni save sa pivot table
 
-        $room = new Room;
-        $room->room_name = $request->room_name;
-        $room->room_number = $request->room_number;
-        $room->facilitator = $request->facilitator;
-        $room->seatplan_image = "/images/".$seat_name;
-        $room->status = $request->status;
-        $room->save();
-        $request->file('seatplan_image')->move(public_path('images'), $seat_name);
-        return back()->with('success', 'Room added successfully!');
+        if ($validator->fails()) {
+            return back()->with(['errors' => $validator->errors()]);
+        }else {
+            $room = new Room;
+            $seat = $request->file('seatplan_image') ? $request->file('seatplan_image') : '';
+
+            if(!isset($request->room)){
+                $seat_name = 'seat_'.time().'.'.$seat->getClientOriginalExtension();
+                $room->room_name = $request->room_name;
+                $room->room_number = $request->room_number;
+                $room->facilitator = $request->facilitator;
+                $room->seatplan_image = "/images/".$seat_name;
+                $room->status = $request->status;
+                $room->save();
+                $request->file('seatplan_image')->move(public_path('images'), $seat_name);
+            }else{
+                //update room
+                $room = $room->where('room', $request->room)->first();
+                if(!empty($seat)){
+                    unlink(public_path($room->seatplan_image));
+                    $seat_name = 'seat_'.time().'.'.$seat->getClientOriginalExtension();
+                    $room->seatplan_image = "/images/".$seat_name;
+                    $request->file('seatplan_image')->move(public_path('images'), $seat_name);
+                }
+                $room->room_name = $request->room_name;
+                $room->room_number = $request->room_number;
+                $room->facilitator = $request->facilitator;
+                $room->status = $request->status;
+                $room->update();
+            }
+
+            return back()->with('success', 'Room added successfully!');
+        }
+
     }
 
     public function room_view_edit(Room $room)
@@ -276,7 +307,8 @@ class RoomController extends Controller
 
     public function list_of_room()
     {
-         $allRooms = Room::getAllRooms('room_name');
+         /*$allRooms = Room::getAllRooms('room_name');*/
+         $allRooms = Room::all();
          return view('room.list', compact('allRooms', 'schedules'));
     }
 
@@ -296,6 +328,14 @@ class RoomController extends Controller
                 ? response(['status' => 'ok'])
                 : response(['status' => 'failed']);
         }
+    }
+
+    public function get_room_details(Request $request)
+    {
+        $room = Room::where('room', $request->room)->first();
+        $view = \View::make('modals.edit_room_modal', ['room' => $room]);
+        $html = $view->render();
+        return \Response::json(['html' => $html, 'data' => $room]);
     }
 
 }
