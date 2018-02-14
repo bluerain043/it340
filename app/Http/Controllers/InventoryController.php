@@ -85,7 +85,7 @@ class InventoryController extends Controller
         return view('inventory/inventory_list_search', compact('rooms', 'allRooms', 'current_room', 'current_tab'));
     }
 
-    public function get_student(Room $room)
+    public function get_student(Room $room, Request $request)
     {
         $allRooms = Room::getAllRooms('room_name');
         $student = new Students();
@@ -95,6 +95,16 @@ class InventoryController extends Controller
 
         return view('inventory/student', compact('students', 'allRooms', 'room'));
 
+    }
+
+    public function add()
+    {
+        return view('inventory/inventory_add');
+    }
+
+    public function post_add(Request $request)
+    {
+        dd($request->input());
     }
 
     public function get_specification(Room $room)

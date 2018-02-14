@@ -37,7 +37,23 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group form-md-checkboxes">
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Status</label>
+                                    <div class="col-md-9">
+                                        <div class="mt-radio-inline">
+                                            <label class="mt-radio">
+                                                <input type="radio" id="optionsRadios25" value="1" name="status" {{$user->status == 1 ? 'checked' : ''}}> Active {{$user->status}}
+                                                <span></span>
+                                            </label>
+                                            <label class="mt-radio">
+                                                <input type="radio" id="optionsRadios26" value="0" name="status"  {{$user->status != 1 ? 'checked' : 'false'}}> Inactive
+                                                <span></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {{--<div class="form-group form-md-checkboxes">
                                     <label class="col-md-3 control-label" for="form_control_1">Status
                                         <span class="required" aria-required="true">*</span>
                                     </label>
@@ -59,14 +75,13 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div>--}}
                             </div>
                             <div class="form-actions">
                                 <div class="row">
                                     <div class="col-md-offset-4 col-md-8">
-                                        <button type="button" class="btn dark btn-outline" data-dismiss="modal">Close</button>
                                         <button type="submit" class="btn green">Update</button>
-                                        <button type="button" class="btn default user-delete" data-userid="{{$user->id}}">Delete</button>
+                                        <button type="button" class="btn dark btn-outline" data-dismiss="modal">Close</button>
                                     </div>
                                 </div>
                             </div>

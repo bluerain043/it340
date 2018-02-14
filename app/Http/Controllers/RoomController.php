@@ -230,6 +230,12 @@ class RoomController extends Controller
         return view('room.schedule', compact('allRooms', 'schedules'));
     }
 
+    public function get_schedule()
+    {
+        $allRooms = Room::getAllRooms('room_name');
+        return view('schedule.add_schedule', compact('allRooms'));
+    }
+
     public function post_schedule(Request $request)
     {
         $this->validate($request, [

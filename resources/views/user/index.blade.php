@@ -76,7 +76,7 @@
                                                         <h3 class="uppercase bold">
                                                             <a href="{{action('RoomController@add_room')}}">No Room to Display</a>
                                                         </h3>
-                                                        <p>please add a room</p>
+                                                        <a href="{{action('RoomController@add_room')}}">please add a room</a>
                                                     </div>
                                                 </li>
 
@@ -210,7 +210,9 @@
                                             @foreach($schedules as $schedule)
                                                 <div class="mt-comment schedule-box-{{$schedule->schedule}}">
                                                     <div class="mt-comment-img">
-                                                        <img alt="" class="img-circle" src="{{asset('assets/layouts/layout/img/avatar.png')}}"></div>
+                                                        {{--<img alt="" class="img-circle" src="{{asset('assets/layouts/layout/img/avatar.png')}}">--}}
+                                                        <i class=" icon-layers font-green"></i>
+                                                    </div>
                                                     <div class="mt-comment-body">
                                                         <div class="mt-comment-info">
                                                             <span class="mt-comment-author">{{ucwords($schedule->subject)}}</span>
@@ -228,6 +230,28 @@
                                                     </div>
                                                 </div>
                                             @endforeach
+                                        @else
+                                            <div class="mt-comment">
+                                                <div class="mt-comment-img">
+                                                  {{--  <img alt="" class="img-circle" src="{{asset('assets/layouts/layout/img/avatar.png')}}">--}}
+                                                    <i class=" icon-layers font-green"></i>
+                                                </div>
+                                               {{--     <i class=" icon-layers font-green"></i>--}}
+                                                <div class="mt-comment-body">
+                                                    <div class="mt-comment-info">
+                                                        <span class="mt-comment-author">No Data to Display</span>
+                                                        <span class="mt-comment-date"> </span>
+                                                    </div>
+                                                    <div class="mt-comment-text"> Please add entries for schedule </div>
+                                                    <div class="mt-comment-details">
+                                                        <ul class="mt-comment-actions">
+                                                            <li>
+                                                                <a href="{{action('RoomController@get_schedule')}}"> Add Entries</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         @endif
                                     </div>
                                 </div>
