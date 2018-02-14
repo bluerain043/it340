@@ -338,4 +338,13 @@ class RoomController extends Controller
         return \Response::json(['html' => $html, 'data' => $room]);
     }
 
+    public function post_delete_room(Request $request)
+    {
+        $status = ($request->status == 1) ? 0 : 1;
+        $room = Room::where('room', $request->room) ->first();
+        $delete = $room->update(['status' => $status]);
+        return ($delete)
+            ? response(['status' => 'ok', 'data' => $room])
+            : response(['status' => 'failed']);
+    }
 }

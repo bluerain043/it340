@@ -62,17 +62,17 @@
                             <tbody>
                             @if(count($allRooms) > 0)
                                 @foreach($allRooms as $room)
-                                    <tr>
+                                    <tr class="mt-room-{{$room->room}}">
                                         <td>{{ucwords($room->room_number)}}</td>
                                          <td>{{ucwords($room->room_name)}}</td>
                                         <td>{{ucwords($room->facilitator)}}</td>
                                         <td> {{($room->seatplan_image)}} </td>
-                                        <td> <span class="label label-sm {{ ($room->status == 1) ? 'label-info' : 'label-warning'}}"> {{($room->status) ? 'Active' : 'Inactive'}} </span> </td>
+                                        <td class="room-status-{{$room->room}}"> <span class="label label-sm {{ ($room->status == 1) ? 'label-info' : 'label-warning'}}"> {{($room->status) ? 'Active' : 'Inactive'}} </span> </td>
                                         <td> {{ Carbon\Carbon::parse($room->created_at)->format('d-m-Y') }} </td>
                                         <td>
                                             <div class="btn-group actions">
                                                 <button type="button" class="btn btn-default edit-room" data-room="{{$room->room}}">Edit</button>
-                                                <button type="button" class="btn btn-default delete-room" data-room="{{$room->room}}">Delete</button>
+                                                <button type="button" class="btn btn-default delete-room" id="room-text-{{$room->room}}" data-room="{{$room->room}}" data-status="{{$room->status}}">{{($room->status) ? 'Deactivate' : 'Activate'}}</button>
                                                 {{--<a href="{{action('RoomController@room_view_edit' ,compact('room'))}}" class="btn btn-default">View</a>--}}
                                             </div>
                                         </td>
@@ -220,12 +220,33 @@
     <div class="modal fade bs-modal-lg" id="edit-room-modal" tabindex="-1" role="dialog" aria-hidden="true">
         {{--@include('modals/edit_room_modal)--}}
     </div>
+
+    <div id="static" class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title">Confirmation</h4>
+                </div>
+                <div class="modal-body">
+                    <p> Would you like to change status this room? <br>NOTE: by changing status to inactive you cannot view/edit room unless you go back to active the status again!</p>
+                    {{-- <form id="delete-schedule" action="{{ route('logout') }}" method="POST" style="display: none;">
+                         {{ csrf_field() }}
+                     </form>--}}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn dark btn-outline">No</button>
+                    <button type="button" data-dismiss="modal" class="btn green confirm-delete" {{--onclick="event.preventDefault(); document.getElementById('delete-schedule').submit();"--}}>Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('page_script')
     <script type="application/x-javascript">
         $('document').ready(function () {
-            var room = '';
+            var room = '', status;
             setTimeout(function(){
                 $('.alert-danger').addClass('hide');
                 $('.alert-success').addClass('hide');
@@ -237,6 +258,29 @@
                 $.post("{{ action('RoomController@get_room_details') }}", {_token:'{{ csrf_token() }}', room:room}, function(result){
                     $('#edit-room-modal').modal('show');
                     $('#edit-room-modal').html(result.html);
+                });
+            });
+
+            $('.actions').on('click', '.delete-room', function(e){
+                e.preventDefault();
+                room = $(this).data('room');
+                status = $(this).data('status');
+                $('#static').modal('show');
+            });
+
+            $('#static').on('click', '.confirm-delete' ,function(e) {
+                e.preventDefault();
+                $.post("{{ action('RoomController@post_delete_room') }}", {_token:'{{ csrf_token() }}', room:room, status:status}, function(result){
+                    if(result.status == 'ok'){console.log(result.data.status);
+                        if(result.data.status == 1){ console.log('active');
+                            html = '<span class="label label-sm label-info"> Active </span>';
+                            $('.actions').find('#room-text-'+room).html('Deactivate');
+                        }else{console.log('inactive');
+                            $('.actions').find('#room-text-'+room).html('Activate');
+                            html = '<span class="label label-sm label-warning"> Inactive </span>'
+                        }
+                        $('.room-status-'+room).html(html);
+                    }
                 });
             });
         });
