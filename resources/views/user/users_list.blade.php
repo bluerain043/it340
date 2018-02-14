@@ -152,26 +152,18 @@
                                     </div>
 
 
-                                    <div class="form-group form-md-checkboxes">
-                                        <label class="col-md-3 control-label" for="form_control_1">Status
-                                            <span class="required" aria-required="true">*</span>
-                                        </label>
-                                        <div class="col-md-8">
-                                            <div class="md-checkbox-inline">
-                                                <div class="md-checkbox">
-                                                    <input type="checkbox" id="checkbox1_3" name="status" value="1" class="md-check">
-                                                    <label for="checkbox1_3">
-                                                        <span></span>
-                                                        <span class="check"></span>
-                                                        <span class="box"></span> Active</label>
-                                                </div>
-                                                <div class="md-checkbox">
-                                                    <input type="checkbox" id="checkbox1_4" name="checkboxes2[]" value="2" class="md-check">
-                                                    <label for="checkbox1_4">
-                                                        <span></span>
-                                                        <span class="check"></span>
-                                                        <span class="box"></span> Inactive </label>
-                                                </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">Status</label>
+                                        <div class="col-md-9">
+                                            <div class="mt-radio-inline">
+                                                <label class="mt-radio">
+                                                    <input type="radio" id="optionsRadios25" value="1" name="status" checked> Active
+                                                    <span></span>
+                                                </label>
+                                                <label class="mt-radio">
+                                                    <input type="radio" id="optionsRadios26" value="0" name="status"> Inactive
+                                                    <span></span>
+                                                </label>
                                             </div>
                                         </div>
                                     </div>

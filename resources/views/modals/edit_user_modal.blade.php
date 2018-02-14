@@ -42,7 +42,7 @@
                                     <div class="col-md-9">
                                         <div class="mt-radio-inline">
                                             <label class="mt-radio">
-                                                <input type="radio" id="optionsRadios25" value="1" name="status" {{$user->status == 1 ? 'checked' : ''}}> Active {{$user->status}}
+                                                <input type="radio" id="optionsRadios25" value="1" name="status" {{$user->status == 1 ? 'checked' : ''}}> Active
                                                 <span></span>
                                             </label>
                                             <label class="mt-radio">

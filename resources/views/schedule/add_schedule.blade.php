@@ -114,11 +114,11 @@
                                 <div class="col-md-8">
                                     <div class="mt-radio-inline">
                                         <label class="mt-radio">
-                                            <input type="radio" id="optionsRadios25" value="1" name="status" checked=""> Active
+                                            <input type="radio" id="optionsRadios25" value="1" name="status" checked> Active
                                             <span></span>
                                         </label>
                                         <label class="mt-radio">
-                                            <input type="radio" id="optionsRadios26" value="0" name="status" checked=""> Inactive
+                                            <input type="radio" id="optionsRadios26" value="0" name="status"> Inactive
                                             <span></span>
                                         </label>
                                     </div>
