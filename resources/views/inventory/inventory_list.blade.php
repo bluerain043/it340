@@ -2,7 +2,7 @@
 @section('breadcrumbs')
     <ul class="page-breadcrumb">
         <li>
-            <a href="javascript;">Inventory</a>
+            <a href="/">Dashboard</a>
             <i class="fa fa-circle"></i>
         </li>
         <li>
@@ -92,7 +92,7 @@
                                 <table class="table table-hover">
                                     <thead>
                                     <tr>
-                                        <th> Student Name </th>
+                                        <th> Student Name</th>
                                         <th> Seat Number </th>
                                         <th> Course </th>
                                         <th> Department </th>
@@ -105,29 +105,27 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @if(count($rooms) > 0)
-                                        @foreach($rooms as $room)
-                                            @foreach($room->students as $student)
-                                                @if($room->room == $student->room)
-                                                    <tr>
-                                                        <td>{{ucwords($student->student_name)}}</td>
-                                                        <td> {{$student->seat_number}} </td>
-                                                        <td> {{$student->course}} </td>
-                                                        <td> {{$student->department}} </td>
-                                                        <td> {{$student->year}} </td>
-                                                        <td>{{ucwords($room->room_name)}} </td>
-                                                        <td> {{$student->status == 1 ? 'Active' : 'Inactive'}} </td>
-                                                        @if(Auth::user()->is_admin == 1)
+                                    @if(count($rooms->students) > 0)
+                                       @foreach($rooms->students as $student)
+                                            @if($rooms->room == $student->room)
+                                                <tr>
+                                                    <td>{{ucwords($student->student_name)}}</td>
+                                                    <td> {{$student->seat_number}} </td>
+                                                    <td> {{$student->course}} </td>
+                                                    <td> {{$student->department}} </td>
+                                                    <td> {{$student->year}} </td>
+                                                    <td>{{ucwords($room->room_name)}} </td>
+                                                    <td> {{$student->status == 1 ? 'Active' : 'Inactive'}} </td>
+                                                    @if(Auth::user()->is_admin == 1)
                                                         <td>
                                                             <div class="btn-group">
                                                                 <button type="button" class="btn btn-default">Edit</button>
                                                                 <button type="button" class="btn btn-default">Delete</button>
                                                             </div>
                                                         </td>
-                                                         @endif
-                                                    </tr>
-                                                @endif
-                                            @endforeach
+                                                    @endif
+                                                </tr>
+                                            @endif
                                         @endforeach
                                     @else
                                         <tr style="text-align: center">
@@ -185,32 +183,30 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @if(count($rooms) > 0)
-                                        @foreach($rooms as $room)
-                                            @foreach($room->specs as $specs)
-                                                @if($room->room == $specs->room)
-                                                    <tr>
-                                                        <td>{{ucwords($room->room_name)}}</td>
-                                                        <td>{{ucwords($specs->unit_type)}}</td>
-                                                        <td> {{$specs->process}} </td>
-                                                        <td> {{$specs->memory}} </td>
-                                                        <td> {{$specs->board}} </td>
-                                                        <td> {{$specs->hdd}} </td>
-                                                        <td> {{$specs->graphics_card}} </td>
-                                                        <td> {{$specs->in_used == 'yes' ? 1 : ''}} </td>
-                                                        <td> {{$specs->in_used == 'no' ? 1 : ''}} </td>
-                                                        <td> {{ Carbon\Carbon::parse($specs->created_at)->format('d-m-Y') }}  </td>
-                                                        @if(Auth::user()->is_admin == 1)
+                                    @if(count($rooms->specs) > 0)
+                                        @foreach($rooms->specs as $specs)
+                                            @if($rooms->room == $specs->room)
+                                                <tr>
+                                                    <td>{{ucwords($rooms->room_name)}}</td>
+                                                    <td>{{ucwords($specs->unit_type)}}</td>
+                                                    <td> {{$specs->process}} </td>
+                                                    <td> {{$specs->memory}} </td>
+                                                    <td> {{$specs->board}} </td>
+                                                    <td> {{$specs->hdd}} </td>
+                                                    <td> {{$specs->graphics_card}} </td>
+                                                    <td> {{$specs->in_used == 'yes' ? 1 : ''}} </td>
+                                                    <td> {{$specs->in_used == 'no' ? 1 : ''}} </td>
+                                                    <td> {{ Carbon\Carbon::parse($specs->created_at)->format('d-m-Y') }}  </td>
+                                                    @if(Auth::user()->is_admin == 1)
                                                         <td>
                                                             <div class="btn-group">
                                                                 <button type="button" class="btn btn-default">Edit</button>
                                                                 <button type="button" class="btn btn-default">Delete</button>
                                                             </div>
                                                         </td>
-                                                         @endif
-                                                    </tr>
-                                                @endif
-                                            @endforeach
+                                                    @endif
+                                                </tr>
+                                            @endif
                                         @endforeach
                                     @else
                                         <tr style="text-align: center">
@@ -252,25 +248,23 @@
                                     </thead>
                                     <tbody>
                                     @if(count($rooms) > 0)
-                                        @foreach($rooms as $room)
-                                            @foreach($room->softwares as $software)
-                                                @if($room->room == $software->room)
-                                                    <tr>
-                                                        <td>{{ucwords($software->name)}}</td>
-                                                        <td>{{ucwords($room->room_name)}}</td>
-                                                        <td> {{ Carbon\Carbon::parse($software->purchase_date)->format('d-m-Y') }}  </td>
-                                                        <td> {{ Carbon\Carbon::parse($software->end_of_life)->format('d-m-Y') }}  </td>
-                                                        @if(Auth::user()->is_admin == 1)
+                                        @foreach($rooms->softwares as $software)
+                                            @if($rooms->room == $software->room)
+                                                <tr>
+                                                    <td>{{ucwords($software->name)}}</td>
+                                                    <td>{{ucwords($rooms->room_name)}}</td>
+                                                    <td> {{ Carbon\Carbon::parse($software->purchase_date)->format('d-m-Y') }}  </td>
+                                                    <td> {{ Carbon\Carbon::parse($software->end_of_life)->format('d-m-Y') }}  </td>
+                                                    @if(Auth::user()->is_admin == 1)
                                                         <td>
                                                             <div class="btn-group">
                                                                 <button type="button" class="btn btn-default">Edit</button>
                                                                 <button type="button" class="btn btn-default">Delete</button>
                                                             </div>
                                                         </td>
-                                                        @endif
-                                                    </tr>
-                                                @endif
-                                            @endforeach
+                                                    @endif
+                                                </tr>
+                                            @endif
                                         @endforeach
                                     @else
                                         <tr style="text-align: center">
@@ -317,26 +311,24 @@
                                     </thead>
                                     <tbody>
                                     @if(count($rooms) > 0)
-                                        @foreach($rooms as $room)
-                                            @foreach($room->devices as $device)
-                                                @if($room->room == $device->room)
-                                                    <tr>
-                                                        <td>{{ucwords($room->room_name)}}</td>
-                                                        <td>{{ucwords($device->name)}}</td>
-                                                        <td> {{$device->sticker}} </td>
-                                                        <td> {{$device->brand}} </td>
-                                                        <td> {{$device->serial}} </td>
-                                                        @if(Auth::user()->is_admin == 1)
+                                        @foreach($rooms->devices as $device)
+                                            @if($rooms->room == $device->room)
+                                                <tr>
+                                                    <td>{{ucwords($rooms->room_name)}}</td>
+                                                    <td>{{ucwords($device->name)}}</td>
+                                                    <td> {{$device->sticker}} </td>
+                                                    <td> {{$device->brand}} </td>
+                                                    <td> {{$device->serial}} </td>
+                                                    @if(Auth::user()->is_admin == 1)
                                                         <td>
                                                             <div class="btn-group">
                                                                 <button type="button" class="btn btn-default">Edit</button>
                                                                 <button type="button" class="btn btn-default">Delete</button>
                                                             </div>
                                                         </td>
-                                                         @endif
-                                                    </tr>
-                                                @endif
-                                            @endforeach
+                                                    @endif
+                                                </tr>
+                                            @endif
                                         @endforeach
                                     @else
                                         <tr style="text-align: center">
@@ -365,7 +357,7 @@
         $('document').ready(function(){
             $current_room= "{{$current_room}}";
 
-            $('#refresh-btn').on('click', function(){
+            $('.tab-pane').on('click', '#refresh-btn', function(){
                 window.location = "/inventory_list/"+$current_room;
             });
 

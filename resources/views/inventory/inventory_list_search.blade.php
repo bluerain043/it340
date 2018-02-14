@@ -333,7 +333,7 @@
                 $('.nav-tabs a[href="#software"]').closest('li').addClass('active');
             }
 
-            $('#refresh-btn').on('click', function(){
+           $('.tab-pane').on('click', '#refresh-btn', function(){
                 window.location = "/inventory_list/"+$current_room;
             });
         });

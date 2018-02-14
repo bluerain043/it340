@@ -141,9 +141,9 @@
                                         </div>
 
 
-                                        <input type="hidden" name="students" value="{{$student->students}}">
-                                        <input type="hidden" name="seat_number" value="{{$student->seat_number}}">
-                                        <input type="hidden" class="form-control" name="room" value={{$current_room}}>
+                                        {{--<input type="hidden" name="students" value="{{$student->students}}">
+                                        <input type="hidden" name="seat" value="{{$student->seat}}">
+                                        <input type="hidden" class="form-control" name="room" value={{$current_room}}>--}}
 
                                         <div data-repeater-list="software">
                                             <div data-repeater-item="" class="mt-repeater-item">
@@ -197,9 +197,9 @@
                                         </div>
 
 
-                                        <input type="hidden" name="students" value="{{$student->students}}">
+                                        {{--<input type="hidden" name="students" value="{{$student->students}}">
                                         <input type="hidden" name="seat_number" value="{{$student->seat_number}}">
-                                        <input type="hidden" name="room" value="{{$room}}">
+                                        <input type="hidden" name="room" value="{{$room}}">--}}
 
                                         <div data-repeater-list="device">
                                             <!-- display software list if present -->

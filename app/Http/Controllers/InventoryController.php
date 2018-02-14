@@ -22,27 +22,16 @@ class InventoryController extends Controller
         $this->middleware('auth');
     }
 
-    public function view_list(Request $request)
+    public function view_list(Room $room)
     {
         $allRooms = Room::getAllRooms('room_name');
-        $room = new Room();
-        if(isset($request->room)){
-            //if room is in parameter
-            $rooms = $room->where('room', $request->room)->where('status', 'Active')->get();
-            $current_room = $request->room;
-        }else{
-            $rooms = $room->where('status', 'Active')->get();
-            $current_room = 0;
-        }
+        $rooms = $room;
+        $current_room = $room->room;
+        $rooms->students = Students::where('room', $rooms->room)->get();
+        $rooms->specs = Specifications::where('room', $rooms->room)->get();
+        $rooms->softwares = Software::where('room', $rooms->room)->get();
+        $rooms->devices =  Devices::where('room', $rooms->room)->get();
 
-        if(count($rooms) > 0){
-            foreach ($rooms as $room){
-                $room->students = $students = Students::where('room', $room->room)->get();
-                $room->specs = $specs = Specifications::where('room', $room->room)->get();
-                $room->softwares = $softwares = Software::where('room', $room->room)->get();
-                $room->devices =  $devices = Devices::where('room', $room->room)->get();
-            }
-        }
         return view('inventory/inventory_list', compact('rooms', 'allRooms', 'current_room'));
 
     }
@@ -69,11 +58,6 @@ class InventoryController extends Controller
                 $room->devices =  $devices = Devices::where('room', $room->room)->get();
             }
         }
-       /* $room->specs = $specs;
-        $room->softwares = $softwares;
-        $room->devices = $devices;
-        $room->students = $students;dd($rooms);*/
-        ///return view('room.schedule', compact('allRooms', 'schedules'));
         return view('inventory/inventory_list', compact('rooms', 'allRooms'));
     }
 
@@ -89,13 +73,13 @@ class InventoryController extends Controller
         $allRooms = Room::getAllRooms('room_name');
         $current_room = $request->room;
         if(isset($request->room)){
-            $room->room = $room->where('room', $request->room)->where('status', 'Active')->get();
-            /*$room->students = (new StudentListQuery($request))->get();*/
-            $room->students = ($request->table == 'Students') ?  (new StudentListQuery($request))->get() : Students::where('room', $current_room)->get();//dd('gale');
+            $room->room = $room->where('room', $request->room)->where('status', 1)->first();
+            $room->students = ($request->table == 'Students') ?  (new StudentListQuery($request))->get() : Students::where('room', $current_room)->get();
             $room->specs = ($request->table == 'specification') ? (new SpecificationListQuery($request))->get() : Specifications::where('room', $current_room)->get();
             $room->softwares = ($request->table == 'software') ? (new SoftwareListQuery($request))->get() : Software::where('room', $current_room)->get();
             $room->devices =  ($request->table == 'devices') ? (new DeviceListQuery($request))->get() : Devices::where('room', $current_room)->get();
         }
+
         $rooms = $room;
         $current_tab = (isset($request->table)) ? $request->table : '';
         return view('inventory/inventory_list_search', compact('rooms', 'allRooms', 'current_room', 'current_tab'));

@@ -2,8 +2,11 @@
 @section('breadcrumbs')
     <ul class="page-breadcrumb">
         <li>
-            <a href="/">Class rooms</a>
+            <a href="/">Dashboard</a>
             <i class="fa fa-circle"></i>
+        </li>
+        <li>
+            <span>Class rooms</span>
         </li>
     </ul>
 @endsection
