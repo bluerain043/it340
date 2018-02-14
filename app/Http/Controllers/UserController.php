@@ -72,10 +72,11 @@ class UserController extends Controller
 
     public function delete_user(Request $request)
     {
-        $bDelete = User::where('id', $request->user)->delete();
-        return ($bDelete)
+
+        $user = User::where('id', $request->user)->first();
+        $delete = $user->update(['status' => 0]);
+        return ($delete)
             ? response(['status' => 'ok'])
             : response(['status' => 'failed']);
-        /*return back()->with('success', 'User deleted successfully!');*/
     }
 }

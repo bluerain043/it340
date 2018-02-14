@@ -2,7 +2,7 @@
 @section('breadcrumbs')
     <ul class="page-breadcrumb">
         <li>
-            <a href="javascript;">User</a>
+            <a href="/">Dashboard</a>
             <i class="fa fa-circle"></i>
         </li>
         <li>
@@ -61,16 +61,16 @@
                             <tbody>
                             @if(count($users) > 0)
                                 @foreach($users as $user)
-                                    <tr>
+                                    <tr class="mt-user-{{$user->id}}">
                                         <td>{{ucwords($user->name)}}</td>
                                         <td> {{$user->email}} </td>
                                         <td> {{($user->is_admin == 1 ? 'Yes' : 'No')}} </td>
                                         <td> <span class="label label-sm {{($user->status == 1) ? 'label-info' : 'label-warning'}}"> {{($user->status == 1) ? 'Active' : 'Inactive'}} </span> </td>
                                         <td> {{ Carbon\Carbon::parse($user->created_at)->format('d-m-Y') }} </td>
-                                        <td>
+                                        <td class="actions">
                                             <div class="btn-group">
-                                                <button type="button" class="btn btn-default">Edit</button>
-                                                <button type="button" class="btn btn-default">Delete</button>
+                                                <button type="button" class="btn btn-default edit-user" data-userid="{{$user->id}}">Edit</button>
+                                                <button type="button" class="btn btn-default delete-user" data-user="{{$user->id}}">Delete</button>
                                             </div>
                                         </td>
                                     </tr>
@@ -197,14 +197,75 @@
         </div>
         <!-- /.modal-dialog -->
     </div>
+
+    <div class="modal fade" id="editUser" tabindex="-1" role="dialog" aria-hidden="true">
+        {{--@include('modals/edit_user_modal')--}}
+    </div>
+
+    <div id="static" class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title">Confirmation</h4>
+                </div>
+                <div class="modal-body">
+                    <p> Would you like to delete this user? </p>
+                    {{-- <form id="delete-schedule" action="{{ route('logout') }}" method="POST" style="display: none;">
+                         {{ csrf_field() }}
+                     </form>--}}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn dark btn-outline">No</button>
+                    <button type="button" data-dismiss="modal" class="btn green confirm-delete" {{--onclick="event.preventDefault(); document.getElementById('delete-schedule').submit();"--}}>Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('page_script')
-    <script type="application/x-javascript">
+<script type="application/x-javascript">
+$('document').ready(function(){
+    var  user = '';
         setTimeout(function(){
             $('.alert-danger').addClass('hide');
             $('.alert-success').addClass('hide');
             }, 2000);
 
+        $('.actions').on('click', '.edit-user', function () {
+            var user = $(this).data('userid');
+            $.post("{{ action('UserController@get_user_data') }}", {_token:'{{ csrf_token() }}', user:user}, function(result){
+                $('#editUser').modal('show');
+                $('#editUser').html(result.html);
+            });
+        });
+        $('#editUser').on('click', '.user-delete', function(){ console.log('sdgsdgs');
+            var user = $(this).data('userid');
+            $.post("{{ action('UserController@delete_user') }}", {_token:'{{ csrf_token() }}', user:user}, function(result){
+                if(result.status == 'ok'){
+                    $('.mt-user-'+user).remove();
+                    $('#editUser').modal('hide');
+                }
+
+            });
+        });
+
+        $('#static').on('click', '.confirm-delete' ,function(e) {
+            e.preventDefault();
+            $.post("{{ action('UserController@delete_user') }}", {_token:'{{ csrf_token() }}', user:user}, function(result){
+                if(result.status == 'ok'){
+                    $('.mt-user-'+user).remove();
+                }
+            });
+         });
+
+        $('.actions').on('click', '.delete-user', function(e){
+            e.preventDefault();
+            user = $(this).data('user');
+            $('#static').modal('show');
+        });
+
+});
     </script>
 @endsection

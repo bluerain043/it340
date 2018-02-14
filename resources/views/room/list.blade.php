@@ -2,7 +2,7 @@
 @section('breadcrumbs')
     <ul class="page-breadcrumb">
         <li>
-            <a href="javascript;">Room</a>
+            <a href="/">Dashboard</a>
             <i class="fa fa-circle"></i>
         </li>
         <li>
@@ -66,7 +66,7 @@
                                          <td>{{ucwords($room->room_name)}}</td>
                                         <td>{{ucwords($room->facilitator)}}</td>
                                         <td> {{($room->seatplan_image)}} </td>
-                                        <td> <span class="label label-sm {{ ($room->status == 'Active') ? 'label-info' : 'label-warning'}}"> {{$room->status}} </span> </td>
+                                        <td> <span class="label label-sm {{ ($room->status == 1) ? 'label-info' : 'label-warning'}}"> {{($room->status) ? 'Active' : 'Inactive'}} </span> </td>
                                         <td> {{ Carbon\Carbon::parse($room->created_at)->format('d-m-Y') }} </td>
                                         <td>
                                             <div class="btn-group">

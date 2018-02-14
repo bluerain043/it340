@@ -208,7 +208,7 @@
                                     <div class="mt-comments">
                                         @if(count($schedules) > 0)
                                             @foreach($schedules as $schedule)
-                                                <div class="mt-comment">
+                                                <div class="mt-comment schedule-box-{{$schedule->schedule}}">
                                                     <div class="mt-comment-img">
                                                         <img alt="" class="img-circle" src="{{asset('assets/layouts/layout/img/avatar.png')}}"></div>
                                                     <div class="mt-comment-body">
@@ -219,17 +219,11 @@
                                                         <div class="mt-comment-text"> {{ucwords($schedule->teacher)}} </div>
                                                         <div class="mt-comment-details">
                                                             <span class="mt-comment-status mt-comment-status-pending">{{($schedule->status == 1) ? 'Active' : 'Inactive'}}</span>
-                                                           {{-- <ul class="mt-comment-actions">
+                                                            <ul class="mt-comment-actions">
                                                                 <li>
-                                                                    <a href="#">Quick Edit</a>
+                                                                    <a href="javascript;" class="edit-schedule" data-schedule="{{$schedule->schedule}}">Quick Edit</a>
                                                                 </li>
-                                                                <li>
-                                                                    <a href="#">View</a>
-                                                                </li>
-                                                                <li>
-                                                                    <a href="#">Delete</a>
-                                                                </li>
-                                                            </ul>--}}
+                                                            </ul>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -244,17 +238,22 @@
 <div class="modal fade" id="editUser" tabindex="-1" role="dialog" aria-hidden="true">
     {{--@include('modals/edit_user_modal')--}}
 </div>
+
+<div class="modal fade bs-modal-lg" id="editSchedule" tabindex="-1" role="dialog" aria-hidden="true">
+    {{--@include('modals/edit_schedule.blade.php')--}}
+</div>
 @endsection
 @section('page_script')
     <script type="application/x-javascript">
         $('document').ready(function(){
+            var schedule = '';
             $('.actions').on('click', '.edit-user', function () {
                 var user = $(this).data('userid');
                 $.post("{{ action('UserController@get_user_data') }}", {_token:'{{ csrf_token() }}', user:user}, function(result){
                     $('#editUser').modal('show');
                     $('#editUser').html(result.html);
                 });
-            })
+            });
             $('#editUser').on('click', '.user-delete', function(){ console.log('sdgsdgs');
                 var user = $(this).data('userid');
                 $.post("{{ action('UserController@delete_user') }}", {_token:'{{ csrf_token() }}', user:user}, function(result){
@@ -264,7 +263,39 @@
                     }
 
                 });
-            })
+            });
+
+            $('.mt-comments').on('click', '.edit-schedule', function(e){
+                e.preventDefault();
+                schedule = $(this).data('schedule');
+                $.post("{{ action('ScheduleController@get_schedule_details') }}", {_token:'{{ csrf_token() }}', schedule:schedule}, function(result){
+                    if(result.status == 'ok') {
+                        $('#editSchedule').html(result.html);
+                        $('#editSchedule').modal('show');
+                    }
+                });
+            });//schedule-box-
+
+            $('#editSchedule').on('click', '.update-schedule', function(){
+                $form = $('#update-schedule-form');
+                url = $form.attr('action');
+                data = $form.serialize();
+                $.post(url, data, function(result){
+                    if(result.errors){
+                        $('.danger-edit-error').removeClass('hide');
+                        html = '';
+                        $.each(result.errors, function (index, data) {
+                            html += '<li>'+data+'</li>';
+                        });
+                        $('.danger-edit-error ul').html(html);
+                        setTimeout(function(){ $('.danger-edit-error').addClass('hide'); }, 1000);
+                    }else if(result.status == 'ok'){
+                        $('.success-edit-msg').removeClass('hide');
+                        $('.success-edit-msg .msg').html('Schedule is Updated Successfully');
+                        setTimeout(function(){ location.reload(); }, 1000);
+                    }
+                });
+            });
         });
 
     </script>
