@@ -16,11 +16,12 @@ class CreateTableDevice extends Migration
         Schema::create('devices', function (Blueprint $table) {
             $table->increments('devices');
             $table->string('name', 255);
-            $table->integer('students');
-            $table->string('seat_number', 16);
+            $table->integer('seat')->foreign('seat')->references('seat')->on('seat');
+            $table->integer('room')->foreign('room')->references('room')->on('room');
             $table->string('sticker')->nullable();
             $table->string('brand')->nullable();
             $table->string('serial')->nullable();
+            $table->dateTime('end_of_life', 255)->nullable();
             $table->timestamps();
 
 

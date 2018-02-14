@@ -15,8 +15,8 @@ class CreateTableSpecifications extends Migration
     {
         Schema::create('specifications', function (Blueprint $table) {
             $table->increments('specifications');
-            $table->integer('students')->references('students')->on('students');
-            $table->string('seat_number', 5);
+            $table->integer('seat')->foreign('seat')->references('seat')->on('seat');
+            $table->integer('room')->foreign('room')->references('room')->on('room');
             $table->string('unit_type', 255)->nullable();
             $table->string('processor', 255)->nullable();
             $table->string('memory', 255)->nullable();

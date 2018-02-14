@@ -28,7 +28,7 @@ class Room extends Model
         $rooms = parent::all($columns);
         $all_rooms = [];
         foreach ($rooms as $room){
-            $all_rooms = $room->where('status', 'Active')->get();
+            $all_rooms = $room->where('status', 1)->get();
         }
         return $all_rooms;
     }
@@ -50,5 +50,10 @@ class Room extends Model
     public function _specification()
     {
         return $this->hasMany(Specifications::class, 'room', 'room');
+    }
+
+    public function _seat()
+    {
+        return $this->hasMany(Seat::class, 'seat', 'room');
     }
 }

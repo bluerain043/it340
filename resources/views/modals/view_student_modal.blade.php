@@ -40,7 +40,7 @@
                                             <button class="close" data-close="alert"></button> <p class="msg"></p>
                                         </div>
                                         <input type="hidden" name="students" value="{{$student->students}}">
-                                        <input type="hidden" name="seat_number" value="{{$student->seat_number}}">
+                                        <input type="hidden" name="seat" value="{{$current_seat}}">
                                         <input type="hidden" name="room" value="{{$room}}">
                                         <input type="hidden" name="status" value="1">
                                         <div class="form-group form-md-line-input">
@@ -111,7 +111,7 @@
 
 
                                         <input type="hidden" name="students" value="{{$student->students}}">
-                                        <input type="hidden" name="seat_number" value="{{$student->seat_number}}">
+                                        <input type="hidden" name="seat" value="{{$current_seat}}">
                                         <input type="hidden" name="room" value="{{$room}}">
                                         <input type="hidden" name="in_used" value="yes">
 
@@ -297,7 +297,7 @@
 
 
                                     <input type="hidden" name="students" value="{{$student->students}}">
-                                    <input type="hidden" name="seat_number" value="{{$student->seat_number}}">
+                                    <input type="hidden" name="seat" value="{{$current_seat}}">
                                     <input type="hidden" name="room" value="{{$room}}">
 
                                     <div data-repeater-list="software">
@@ -385,7 +385,7 @@
 
 
                                     <input type="hidden" name="students" value="{{$student->students}}">
-                                    <input type="hidden" name="seat_number" value="{{$student->seat_number}}">
+                                    <input type="hidden" name="seat" value="{{$current_seat}}">
                                     <input type="hidden" name="room" value="{{$room}}">
 
                                     <div data-repeater-list="device">

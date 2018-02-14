@@ -9,6 +9,7 @@ class CreateRoomTable extends Migration
     /**
      * Run the migrations.
      *
+     *
      * @return void
      */
     public function up()
@@ -18,9 +19,8 @@ class CreateRoomTable extends Migration
             $table->integer('room_number');
             $table->string('facilitator', 255);
             $table->string('room_name', 255);
-            $table->string('cover_image', 255)->nullable();
             $table->string('seatplan_image', 255);
-            $table->string('status', 30);
+            $table->tinyInteger('status');
             $table->timestamps();
         });
     }

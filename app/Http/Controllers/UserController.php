@@ -21,6 +21,7 @@ class UserController extends Controller
         $allRooms = Room::getAllRooms('room_name');
         $users = $user->where('status', 1)->get();
         $schedules = $schedule->where('status', 1)->get();
+
         return view('user.index', compact('allRooms', 'users', 'schedules'));
     }
     public function create_user(){

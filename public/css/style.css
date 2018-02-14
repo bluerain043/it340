@@ -3,10 +3,11 @@
 }
 
 .vertical-center img{
-    display: table-cell;
+    /*display: table-cell;*/
     float: none;
     vertical-align: middle;
     margin: 0 auto;
+    position:static;
 }
 .room-title-box .actions{
     position: absolute;

@@ -15,14 +15,13 @@ class CreateStudentsTable extends Migration
     {
         Schema::create('students', function (Blueprint $table) {
             $table->increments('students');
-            $table->string('seat_number', 16)->nullable();
+            $table->string('seat', 16)->foreign('seat')->references('seat')->on('seat');
+            $table->integer('room')->foreign('room')->references('room')->on('room');
             $table->string('student_name')->nullable();
             $table->string('department')->nullable();
             $table->string('course')->nullable();
             $table->integer('year')->nullable();
-            $table->integer('pos_x')->nullable();
-            $table->integer('pos_y')->nullable();
-            $table->integer('room')->foreign('room')->references('room')->on('room');
+            $table->integer('status')->nullable();
             $table->timestamps();
         });
     }

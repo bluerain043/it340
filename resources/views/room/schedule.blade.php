@@ -2,7 +2,7 @@
 @section('breadcrumbs')
     <ul class="page-breadcrumb">
         <li>
-            <a href="javascript;">Schedule</a>
+            <a href="/">Dashboard</a>
             <i class="fa fa-circle"></i>
         </li>
         <li>

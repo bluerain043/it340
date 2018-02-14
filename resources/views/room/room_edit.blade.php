@@ -54,16 +54,17 @@
     <div class="row">
         <div class="col-md-12 student-box">
             <!-- BEGIN VALIDATION STATES-->
-            <div class="portlet light portlet-fit portlet-form bordered vertical-center" style="z-index:1;">
+            <div class="portlet light portlet-fit portlet-form bordered vertical-center classroom-plan" style="z-index:1;" onClick="deselectEmployee();">
             {{--<div class="seatplan_img" style="z-index:1;">--}}
                 <img src="{{asset($room->seatplan_image)}}" alt="#" class="seat-image">
 
                 @foreach($all_student as $student)
                     <div id="jquery-draggable-{{$student->students}}" onMouseOver="showStudentInfo({{$student->students}});" onMouseOut="hideStudentInfo({{$student->students}});"
                          {{--data-toggle="modal" href="#full-{{$student->students}}"   onClick="setInfo({{$student->students}}{{($student->room) ? ','.$room->room : ',0'}}{{','.$schedule->schedule}});"--}}
-                         data-student="{{$student->students}}" data-room="{{$student->room}}" data-schedule="{{$schedule->schedule}}"
-                         onClick="setInfo({{$student->students}});" class="student-chair jquery-draggable department-{{str_replace(['/', ' '],'-',$student->department)}}" style="left:{{$student->pos_x}}px;top:{{$student->pos_y}}px;z-index:1;">
-                        <div id="student-info-{{$student->students}}" class="student-info">{{$student->student_name}} - {{$student->seat_number}}</div>
+                         data-student="{{$student->students}}" data-room="{{$student->room}}" data-schedule="{{$schedule->schedule}}" data-seat="{{$student->seat}}"
+                         onClick="setInfo({{$student->students}});" class="student-chair jquery-draggable department-{{str_replace(['/', ' '],'-',$student->department)}}"
+                         style="left:{{$student->pos_x}}px;top:{{$student->pos_y}}px;z-index:1;">
+                        <div id="student-info-{{$student->students}}" class="student-info">{{$student->student_name}} - {{$student->seat}}</div>
                     </div>
                 @endforeach
             </div>
@@ -87,16 +88,6 @@
     var schedule = '{{$current_schedule}}';
     $('document').ready(function(){
 
-        $('.jquery-draggable').draggable({
-            stop: function(event, ui) {
-                var student_div_id_arr = ui.helper[0].id.split('-'); console.log(student_div_id_arr);
-                temp_student_id = student_div_id_arr[2];
-                fnScript.saveData();
-            },
-            start: function() {},
-            drag: function() {},
-        });
-
         $('body').mousemove(function( event ) {
             x_axis = event.pageX;
             y_axis = event.pageY;
@@ -117,15 +108,28 @@
                 this._addEditDevice();
                 /*this.others();*/
                 $('.student-info').hide();
+                fnScript.dragSeat();
             },
-            init: function(){ console.log('init');
-                 $('.student-chair').on('click', function(){ 
-                   cStudent = $(this).data('student');console.log('h ',cStudent);
-                    /*cRoom = $(this).data('room');
-                    cSchedule = $(this).data('schedule');*/
-                   
-                    fnScript.showModalOnStudentClick(cStudent, room, schedule);
-                });   
+            init: function(){
+                     $('.student-chair').on('click', function(){
+                       cStudent = $(this).data('student');
+                       cSeat = $(this).data('seat');
+                        /*cRoom = $(this).data('room');
+                        cSchedule = $(this).data('schedule');*/
+
+                        fnScript.showModalOnStudentClick(cStudent, room, schedule, cSeat);
+                    });
+             },
+            dragSeat: function(){ console.log('sdgsdgsg');
+                $('.jquery-draggable').draggable({
+                    stop: function(event, ui) {
+                        var student_div_id_arr = ui.helper[0].id.split('-');
+                        temp_student_id = student_div_id_arr[2];
+                        fnScript.saveData();
+                    },
+                    start: function() {},
+                    drag: function() {},
+                });
             },
             _removeBoxShadow: function(){
                 $('html').click(function(e) {
@@ -149,23 +153,24 @@
                         schedule:schedule, status: 1}, function(result){
                         if(result.status == 'ok'){
                             temp_student_id = result.data.students;
-                            fnScript._addChair(result.data.students, result.data.room, result.schedule.schedule);
+                            fnScript._addChair(result.data.students, result.data.room, result.schedule.schedule, result.data.seat);
                             fnScript.init();
                             $('#jquery-draggable-'+result.data.students).draggable({
-                                stop:function() {fnScript.saveData}
+                                stop:function() {fnScript.saveData(); console.log('save me ',result.data.students);}
                             });
                         }
 
                     });
                 });
             },
-            _addChair: function(student_id, room, schedule){
-                htmlChair = '<div id="jquery-draggable-'+student_id+'" data-student="'+student_id+'" onMouseOver="showStudentInfo('+student_id+');" onMouseOut="hideStudentInfo('+student_id+');" ' +
+            _addChair: function(student_id, room, schedule, seat_id){
+                htmlChair = '<div id="jquery-draggable-'+student_id+'" data-seat="'+seat_id+'" data-student="'+student_id+'" onMouseOver="showStudentInfo('+student_id+');" onMouseOut="hideStudentInfo('+student_id+');" ' +
                     'onClick="setInfo('+student_id+', '+room+', '+schedule+');" class="student-chair jquery-draggable" style="left:50%;top:50%;"><div id="student-info-'+student_id+'" ' +
                     'class="student-info"></div></div>';
                 $('body').append(htmlChair);
                 $('#jquery-draggable-'+student_id).draggable({
-                    stop:function() {fnScript.saveData}
+                    stop:function() {fnScript.saveData();console.log('addchair');}
+
                 });
 
                 $('#jquery-draggable-'+student_id).css('position', 'absolute');
@@ -182,8 +187,9 @@
             saveData: function(){
                 if(temp_student_id != -1){
                     temp_div = $('#jquery-draggable-'+temp_student_id);
-                    $.post("{{ action('RoomController@save_new_student') }}", {_token:'{{ csrf_token() }}', student_id:temp_student_id, pos_x:temp_div.position().left,
-                        pos_y:temp_div.position().top, room:room}, function(result){
+                    seat = $('#jquery-draggable-'+temp_student_id).attr('data-seat');
+                    $.post("{{ action('RoomController@save_new_student') }}", {_token:'{{ csrf_token() }}', student:temp_student_id, pos_x:temp_div.position().left,
+                        pos_y:temp_div.position().top, room:room, seat: seat}, function(result){
                         $('#jquery-draggable-'+total_draggable).data('student_id', result.id);
                         if(result.seat_number == null){
                             $('#student-info-'+result.id).html("");
@@ -286,9 +292,9 @@
                     });
                 });
             },
-            showModalOnStudentClick: function(student_id, room_id, schedule_id){
+            showModalOnStudentClick: function(student_id, room_id, schedule_id, seat_id){
                 temp_student_id = student_id;
-                $.post("{{ action('RoomController@get_info_details') }}", {_token:'{{ csrf_token() }}', student_id:temp_student_id,
+                $.post("{{ action('RoomController@get_info_details') }}", {_token:'{{ csrf_token() }}', students:student_id, seat:seat_id,
                     room:room_id, schedule: schedule_id}, function(result){
                     $('#full-new').html(result.html);
                     $('#full-new').modal('show');
@@ -310,7 +316,8 @@
             cStudent = $(this).data('student');
             cRoom = $(this).data('room');
             cSchedule = $(this).data('schedule');
-            fnScript.showModalOnStudentClick(cStudent, cRoom, cSchedule);
+            cSeat = $(this).data('seat');
+            fnScript.showModalOnStudentClick(cStudent, cRoom, cSchedule, cSeat);
         });
     });
 
@@ -326,7 +333,7 @@
     function hideStudentInfo(student_id){
         $('#student-info-'+student_id).hide();
     }
-    function getInfoDetails_(student_id, room_id, schedule_id){
+    /*function getInfoDetails_(student_id, room_id, schedule_id){
         temp_student_id = student_id;
         $.post("{{ action('RoomController@get_info_details') }}", {_token:'{{ csrf_token() }}', student_id:temp_student_id,
             room:room_id, schedule: schedule_id}, function(result){//console.log(result.html);
@@ -338,6 +345,11 @@
 
         $('.student-chair').css('box-shadow', '');
         $('#jquery-draggable-'+temp_student_id).css('box-shadow', '0px 0px 3px 3px '+glow_color);
+    }*/
+    function deselectEmployee() {
+        temp_student_id = -1;
+        $('#edit-delete-container').hide();
+        $('.student-chair').css('box-shadow', '');
     }
 
 </script>

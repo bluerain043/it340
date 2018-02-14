@@ -16,11 +16,10 @@ class CreateSoftwareTable extends Migration
         Schema::create('software', function (Blueprint $table) {
             $table->increments('software');
             $table->string('name')->nullable();
-            $table->integer('students');
-            $table->string('seat_number', 16);
+            $table->integer('seat')->foreign('seat')->references('seat')->on('seat');
+            $table->integer('room')->foreign('room')->references('room')->on('room');
             $table->dateTime('purchase_date')->nullable();
             $table->dateTime('end_of_life')->nullable();
-            //$table->foreign('seat_number')->references('seat_number')->on('students');
             $table->timestamps();
         });
     }

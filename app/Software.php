@@ -13,7 +13,7 @@ class Software extends Model
         'name',
         'purchase_date',
         'students',
-        'seat_number',
+        'seat',
         'room',
         'end_of_life'
     ];
