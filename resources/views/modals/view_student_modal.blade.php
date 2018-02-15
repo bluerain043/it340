@@ -6,7 +6,7 @@
                 <div class="portlet-title tabbable-line">
                     <div class="caption">
                         <i class="icon-globe font-green"></i>
-                        <span class="caption-subject font-green bold uppercase">Add Details</span>
+                        <span class="caption-subject font-green bold uppercase">Add Details  <a href="javascript:;" class="label label-sm label-danger small delete-all" data-student="{{$student->students}}" data-seat="{{$current_seat}}" data-room="{{$room}}" data-schedule="{{$schedule->schedule}}"> Delete entire entries for this data</a>
                     </div>
                     <ul class="nav nav-tabs">
                         <li class="active">
@@ -111,11 +111,11 @@
                                         </div>
 
 
-                                        {{--<input type="hidden" name="students" value="{{$student->students}}">
+                                        <input type="hidden" name="students" value="{{$student->students}}">
                                         <input type="hidden" name="seat" value="{{$current_seat}}">
-                                        <input type="hidden" name="room" value="{{$room}}">--}}
+                                        <input type="hidden" name="room" value="{{$room}}">
                                         <input type="hidden" name="in_used" value="yes">
-                                        <input type="hidden" name="specifications" value="{{$student->specifications->specifications}}">
+                                        <input type="hidden" name="specifications" value="{{isset($student->specifications->specifications) ? $student->specifications->specifications : ''}}">
 
                                         @if(isset($student->specifications))
                                             <div class="form-group form-md-line-input">

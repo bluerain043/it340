@@ -246,6 +246,30 @@
                 });
 
 
+                $('#full-new').on('click', '.delete-all', function(){
+                    var $this = $(this);
+                    $sID = $this.attr('data-student');
+                    $sRoom = $this.data('room');
+                    $sSeat = $this.data('seat');
+                    $sSchedule = $this.data('schedule');
+                    $.post("{{ action('RoomController@hard_delete') }}", {_token:'{{ csrf_token() }}', student:$sID, room: $sRoom, seat:$sSeat, schedule:$sSchedule}, function(result){
+                        if(result.errors){
+                            $('.student-error').removeClass('hide');
+                            html = '';
+                            $.each(result.errors, function (index, data) {
+                                html += '<li>'+data+'</li>';
+                            });
+                            $('.student-error ul').html(html);
+                            setTimeout(function(){ $('.student-error').addClass('hide'); }, 2000);
+                        }else if(result.status == 'ok'){
+                            $('.student-success').removeClass('hide');
+                            $('.student-success .msg').html('Student Record is Updated Successfully');
+                            setTimeout(function(){ location.reload(); }, 2000);
+                        }
+                    });
+                });
+
+
 
             },
             _addEditSpecification: function(){

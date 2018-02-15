@@ -298,8 +298,9 @@ class RoomController extends Controller
             $student->device = $all_device;
         }
         $current_seat = $request->seat;
+        $schedule = Schedule::where('schedule', $request->schedule)->first();
 
-        $view = \View::make('modals.view_student_modal', ['current_seat' => $current_seat, 'student' => $student, 'room' => ($request->room) ? $request->room : '']);
+        $view = \View::make('modals.view_student_modal', ['schedule' => $schedule, 'current_seat' => $current_seat, 'student' => $student, 'room' => ($request->room) ? $request->room : '']);
         $html = $view->render();
         return \Response::json(['html' => $html, 'data' => $student]);
     }
@@ -385,5 +386,16 @@ class RoomController extends Controller
         return ($delete)
             ? response(['status' => 'ok'])
             : response(['status' => 'failed']);
+    }
+
+    public function hard_delete(Request $request)
+    {
+
+        $student = new Student();
+        $schedule = new Schedule();
+        $student = $student->where('students', $request->student)->first();
+        $schedule = $schedule->where('schedule', $request->schedule)->first();
+        $student->_schedule()->attach($schedule->schedule, ['status' => 'Active', 'schedule' => $request->schedule, 'student' => $student->students]);
+
     }
 }

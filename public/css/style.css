@@ -91,3 +91,10 @@ body{
 .page-content{
     background-color: #eef1f5;
 }
+
+.caption .small{
+    font-size: 11px;
+    text-transform: lowercase;
+    margin-left: 20px;
+    padding: 5px;
+}
