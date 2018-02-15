@@ -13,6 +13,7 @@
                         <!-- BEGIN FORM-->
                         <form action="{{action('ScheduleController@post_update', compact('schedule'))}}" class="form-horizontal" id="update-schedule-form" novalidate="novalidate" method="POST">
                             {{ csrf_field() }}
+                            <input type="hidden" name="room" value="{{$schedule->room}}">
                             <div class="form-body">
                                 @if (count($errors) > 0)
                                     <div class="alert alert-danger danger-edit-error">

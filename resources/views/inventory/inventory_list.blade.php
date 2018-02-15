@@ -37,12 +37,12 @@
             </ul>
 
         </div>
-        <div class="actions">
+        {{--<div class="actions">
             <a class="btn btn-circle btn-icon-only btn-default add-inventory-btn popovers" data-container="body" data-trigger="hover" data-placement="left"
                data-content="Add item to Inventory" data-original-title="Inventory" data-toggle="modal" href="#addSchedule">
                 <i class="fa fa-plus"></i>
             </a>
-        </div>
+        </div>--}}
     </div>
     <div class="row">
         <div class="col-md-12">
@@ -115,7 +115,7 @@
                                                     <td> {{$student->department}} </td>
                                                     <td> {{$student->year}} </td>
                                                     <td>{{ucwords($room->room_name)}} </td>
-                                                    <td> {{$student->status == 1 ? 'Active' : 'Inactive'}} </td>
+                                                    <td> <span class="label label-sm {{($student->status == 1) ? 'label-info' : 'label-warning'}}"> {{($student->status == 1) ? 'Active' : 'Inactive'}} </span> </td>
                                                     @if(Auth::user()->is_admin == 1)
                                                         <td>
                                                             <div class="btn-group">

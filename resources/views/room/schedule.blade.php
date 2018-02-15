@@ -233,8 +233,8 @@
                     </form>--}}
                 </div>
                 <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn dark btn-outline">No</button>
                     <button type="button" data-dismiss="modal" class="btn green confirm-delete" {{--onclick="event.preventDefault(); document.getElementById('delete-schedule').submit();"--}}>Yes</button>
+                    <button type="button" data-dismiss="modal" class="btn dark btn-outline">No</button>
                 </div>
             </div>
         </div>
@@ -262,10 +262,8 @@
             $('#static').modal('show');
        });
 
-       /* $('#static').on('show.bs.modal', function(e) {*/
         $('#static').on('click', '.confirm-delete' ,function(e) {
             e.preventDefault(); console.log('delete btn');
-            //$(this).find('.confirm-delete').attr('href', $(e.relatedTarget).data('href'));
             $.post("{{ action('ScheduleController@delete_schedule') }}", {_token:'{{ csrf_token() }}', schedule:schedule}, function(result){
                 if(result.status == 'ok'){
                     $('.tr-schedule-'+schedule).remove();

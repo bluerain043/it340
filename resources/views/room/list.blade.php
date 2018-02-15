@@ -72,7 +72,9 @@
                                         <td>
                                             <div class="btn-group actions">
                                                 <button type="button" class="btn btn-default edit-room" data-room="{{$room->room}}">Edit</button>
+                                                @if( Auth::user()->is_admin == 1)
                                                 <button type="button" class="btn btn-default delete-room" id="room-text-{{$room->room}}" data-room="{{$room->room}}">Delete</button>
+                                                @endif
                                                 {{--<a href="{{action('RoomController@room_view_edit' ,compact('room'))}}" class="btn btn-default">View</a>--}}
                                             </div>
                                         </td>

@@ -14,10 +14,12 @@
     <div class="room-title-box">
         <h1 class="page-title"> Add Users</h1>
         <div class="actions">
-            <a class="btn btn-circle btn-icon-only btn-default add-student-btn popovers" data-container="body" data-trigger="hover" data-placement="left"
-               data-content="Add user" data-original-title="User" data-toggle="modal" href="#addUser">
-                <i class="fa fa-plus"></i>
-            </a>
+            @if( Auth::user()->is_admin == 1)
+                <a class="btn btn-circle btn-icon-only btn-default add-student-btn popovers" data-container="body" data-trigger="hover" data-placement="left"
+                   data-content="Add user" data-original-title="User" data-toggle="modal" href="#addUser">
+                    <i class="fa fa-plus"></i>
+                </a>
+            @endif
         </div>
     </div>
     <div class="row">
@@ -56,6 +58,7 @@
                                 <th> Is Admin </th>
                                 <th> Status </th>
                                 <th> Created At </th>
+                                @if( Auth::user()->is_admin == 1)<th></th>@endif
                             </tr>
                             </thead>
                             <tbody>
@@ -67,12 +70,14 @@
                                         <td> {{($user->is_admin == 1 ? 'Yes' : 'No')}} </td>
                                         <td> <span class="label label-sm {{($user->status == 1) ? 'label-info' : 'label-warning'}}"> {{($user->status == 1) ? 'Active' : 'Inactive'}} </span> </td>
                                         <td> {{ Carbon\Carbon::parse($user->created_at)->format('d-m-Y') }} </td>
-                                        <td class="actions">
-                                            <div class="btn-group">
-                                                <button type="button" class="btn btn-default edit-user" data-userid="{{$user->id}}">Edit</button>
-                                                <button type="button" class="btn btn-default delete-user" data-user="{{$user->id}}">Delete</button>
-                                            </div>
-                                        </td>
+                                        @if( Auth::user()->is_admin == 1)
+                                            <td class="actions">
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-default edit-user" data-userid="{{$user->id}}">Edit</button>
+                                                    <button type="button" class="btn btn-default delete-user" data-user="{{$user->id}}">Delete</button>
+                                                </div>
+                                            </td>
+                                        @endif
                                     </tr>
                                 @endforeach
                             @else

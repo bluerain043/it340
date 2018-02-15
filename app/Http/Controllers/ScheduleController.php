@@ -16,7 +16,7 @@ class ScheduleController extends Controller
     public function get_schedule_details(Request $request)
     {
         $allRooms = Room::getAllRooms('room_name');
-        $schedule = Schedule::where('schedule', $request->schedule) ->first();
+        $schedule = Schedule::where('schedule', $request->schedule)->first();
         $view = \View::make('modals.edit_schedule_modal', ['schedule' => $schedule, 'allRooms' => $allRooms]);
         $html = $view->render();
         return \Response::json(['html' => $html, 'data' => $schedule, 'status' => 'ok']);
@@ -47,8 +47,8 @@ class ScheduleController extends Controller
 
     public function delete_schedule(Request $request)
     {
-        $schedule = Schedule::where('schedule', $request->schedule) ->first();
-        $delete = $schedule->update(['status' => 0]);
+        $delete = Schedule::where('schedule', $request->schedule) ->delete();
+       /* $delete = $schedule->update(['status' => 0]);*/
         return ($delete)
             ? response(['status' => 'ok'])
             : response(['status' => 'failed']);

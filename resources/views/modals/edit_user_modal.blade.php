@@ -37,7 +37,23 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group">
+                                <div class="form-group form-md-line-input">
+                                    <label class="col-md-3 control-label">Is Admin </label>
+                                    <div class="col-md-9">
+                                        <div class="mt-radio-inline">
+                                            <label class="mt-radio">
+                                                <input type="radio" id="is_admin" value="1" name="is_admin" {{$user->is_admin == 1 ? 'checked' : ''}}> Yes
+                                                <span></span>
+                                            </label>
+                                            <label class="mt-radio">
+                                                <input type="radio" id="is_admin" value="0" name="is_admin"  {{$user->is_admin != 1 ? 'checked' : 'false'}}> No
+                                                <span></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group form-md-line-input">
                                     <label class="col-md-3 control-label">Status</label>
                                     <div class="col-md-9">
                                         <div class="mt-radio-inline">

@@ -226,7 +226,7 @@ class RoomController extends Controller
     public function schedule()
     {
         $allRooms = Room::getAllRooms('room_name');
-        $schedules = Schedule::query()->where('status', 1)->orderBy('created_at')->get();
+        $schedules = Schedule::query()->orderBy('created_at')->get();
         return view('room.schedule', compact('allRooms', 'schedules'));
     }
 

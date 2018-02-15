@@ -227,11 +227,11 @@
                             <span class="arrow"></span>
                         </a>
                         <ul class="sub-menu">
-                            <li class="nav-item  ">
+                            {{--<li class="nav-item  ">
                                 <a href="{{action('InventoryController@add')}}" class="nav-link ">
                                     <span class="title">Add</span>
                                 </a>
-                            </li>
+                            </li>--}}
                             <li class="nav-item  ">
                                 <a href="{{action('InventoryController@view_list')}}" class="nav-link ">
                                     <span class="title">Inventory List</span>
