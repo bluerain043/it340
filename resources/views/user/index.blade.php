@@ -48,7 +48,7 @@
                                                                         <i class="icon-check"></i>
                                                                     </a>
                                                                 </div>
-                                                                <div class="list-datetime"> {{ Carbon\Carbon::parse($room->created_at)->format('j F Y') }}</div>
+                                                                <div class="list-datetime"> {{$schedule->day}} {{\App\Schedule::$time[$schedule->time]}}</div>
                                                                 <div class="list-item-content">
                                                                         <h3 class="uppercase bold">
                                                                             <a href="{{action('RoomController@room_view_edit_schedule', compact('room', 'schedule'))}}">{{$room->room_name}}</a>
@@ -64,7 +64,7 @@
                                                                         <i class="icon-check"></i>
                                                                     </a>
                                                                 </div>
-                                                                <div class="list-datetime"> {{ \Carbon\Carbon::now()->format('j F Y')}}</div>
+                                                                <div class="list-datetime"> No Schedule</div>
                                                                 <div class="list-item-content">
                                                                     <h3 class="uppercase bold">
                                                                         {{--<a href="javascript:;">{{$room->room_name}}</a>--}}
