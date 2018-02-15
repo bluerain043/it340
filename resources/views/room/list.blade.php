@@ -276,14 +276,6 @@
                 $.post("{{ action('RoomController@post_delete_room') }}", {_token:'{{ csrf_token() }}', room:room}, function(result){
                     if(result.status == 'ok'){
                         $('tr.mt-room-'+room).remove();
-                        /*if(result.data.status == 1){ console.log('active');
-                            html = '<span class="label label-sm label-info"> Active </span>';
-                            $('td > .actions').find('#room-text-'+room).html('Deactivate').attr('data-status', result.data.status);
-                        }else{console.log('inactive ');
-                            $('td > .actions').find('#room-text-'+room).html('Activate').attr('data-status', result.data.status);
-                            html = '<span class="label label-sm label-warning"> Inactive </span>'
-                        }
-                        $('.room-status-'+room).html(html);*/
                     }
                 });
             });

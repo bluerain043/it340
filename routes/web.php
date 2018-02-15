@@ -29,7 +29,7 @@ Route::post('room/save-student', 'RoomController@save_new_student');
 Route::post('room/ajax-save-student', 'RoomController@ajax_save_new_student');
 Route::get('/room/list', 'RoomController@list_of_room');
 Route::post('room/get_room_details', 'RoomController@get_room_details');
-Route::post('room/delete', 'RoomController@post_delete_room');
+Route::post('room/delete/list', 'RoomController@post_delete_room');
 
 //Specifications
 Route::post('room/ajax-save-specification', 'RoomController@ajax_save_specification');

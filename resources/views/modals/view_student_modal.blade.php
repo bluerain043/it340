@@ -6,7 +6,10 @@
                 <div class="portlet-title tabbable-line">
                     <div class="caption">
                         <i class="icon-globe font-green"></i>
-                        <span class="caption-subject font-green bold uppercase">Add Details  <a href="javascript:;" class="label label-sm label-danger small delete-all" data-student="{{$student->students}}" data-seat="{{$current_seat}}" data-room="{{$room}}" data-schedule="{{$schedule->schedule}}"> Delete entire entries for this data</a>
+                        <span class="caption-subject font-green bold uppercase">Add Details
+                            @if( Auth::user()->is_admin == 1)
+                                <a href="javascript:;" class="label label-sm label-danger small delete-all" data-student="{{$student->students}}" data-seat="{{$current_seat}}" data-room="{{$room}}" data-schedule="{{$schedule->schedule}}"> Delete entire entries for this data</a>
+                            @endif
                     </div>
                     <ul class="nav nav-tabs">
                         <li class="active">
@@ -89,7 +92,7 @@
                                     </div>
                                     <div class="form-actions">
                                         <button type="button" class="btn green addStudent-btn" data-student="{{$student->students}}">Submit</button>
-                                        <button type="button" class="btn red deleteStudent-btn" data-student="{{$student->students}}">Delete</button>
+                                       {{-- <button type="button" class="btn red deleteStudent-btn" data-student="{{$student->students}}">Delete</button>--}}
                                         <button type="button" class="btn default" data-dismiss="modal">Cancel</button>
                                     </div>
                                 </form>

@@ -290,9 +290,9 @@ class RoomController extends Controller
         $student = new Students();
         $student = $student->where('students', $request->students)->where('room', $request->room)->first();
         if($student){
-            $all_specs = Specifications::where('room', $student->students)->where('seat', $student->seat)->first();
-            $all_software = Software::where('room', $student->students)->where('seat', $student->seat)->get();
-            $all_device = Devices::where('room', $student->students)->where('seat', $student->seat)->get();
+            $all_specs = Specifications::where('room', $student->room)->where('seat', $student->seat)->first();
+            $all_software = Software::where('room', $student->room)->where('seat', $student->seat)->get();
+            $all_device = Devices::where('room', $student->room)->where('seat', $student->seat)->get();
             $student->specifications = $all_specs;
             $student->software = $all_software;
             $student->device = $all_device;
@@ -391,11 +391,19 @@ class RoomController extends Controller
     public function hard_delete(Request $request)
     {
 
-        $student = new Student();
+        $student = new Students();
         $schedule = new Schedule();
         $student = $student->where('students', $request->student)->first();
-        $schedule = $schedule->where('schedule', $request->schedule)->first();
-        $student->_schedule()->attach($schedule->schedule, ['status' => 'Active', 'schedule' => $request->schedule, 'student' => $student->students]);
+        $student->_schedule()->detach($schedule->where('schedule', $request->schedule)->first()['schedule']);
+        if($student){
+            Seat::where('room', $request->seat)->where('room', $request->room)->delete();
+            Devices::where('room', $request->room)->where('seat', $request->seat)->delete();
+            Software::where('room', $request->room)->where('seat', $request->seat)->delete();
+            Specifications::where('room', $request->room)->where('seat', $request->seat)->delete();
+        }
+        return ($student)
+            ? response(['status' => 'ok'])
+            : response(['status' => 'failed']);
 
     }
 }

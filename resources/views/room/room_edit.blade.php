@@ -263,7 +263,7 @@
                             setTimeout(function(){ $('.student-error').addClass('hide'); }, 2000);
                         }else if(result.status == 'ok'){
                             $('.student-success').removeClass('hide');
-                            $('.student-success .msg').html('Student Record is Updated Successfully');
+                            $('.student-success .msg').html('All Record pertaining to this student are deleted successfully');
                             setTimeout(function(){ location.reload(); }, 2000);
                         }
                     });
