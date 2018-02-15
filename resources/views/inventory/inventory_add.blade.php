@@ -6,12 +6,12 @@
             <i class="fa fa-circle"></i>
         </li>
         <li>
-            <span>Add Rooms</span>
+            <span>Add Inventory</span>
         </li>
     </ul>
 @endsection
 @section('content')
-    <h1 class="page-title"> Add Room </h1>
+    <h1 class="page-title"> Add Instock Inventory </h1>
     <div class="row">
         {{--<div class="col-md-6 offset-md-3">--}}
         <div class="col-md-12">
@@ -20,19 +20,9 @@
                 <div class="portlet-title">
                     <div class="caption">
                         <i class=" icon-layers font-green"></i>
-                        <span class="caption-subject font-green sbold uppercase">Add Room Details</span>
+                        <span class="caption-subject font-green sbold uppercase">Add Inventory Details</span>
                     </div>
-                   {{-- <div class="actions">
-                        <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
-                            <i class="icon-cloud-upload"></i>
-                        </a>
-                        <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
-                            <i class="icon-wrench"></i>
-                        </a>
-                        <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
-                            <i class="icon-trash"></i>
-                        </a>
-                    </div>--}}
+
                 </div>
                 <div class="portlet-body">
                     <!-- BEGIN FORM-->
@@ -110,25 +100,25 @@
                                 </div>
                             </div>
                             <div class="form-group form-md-checkboxes">
-                               {{--<label class="col-md-2 control-label" for="form_control_1">Status</label>
-                                <div class="col-md-8">
-                                    <div class="md-checkbox-inline">
-                                        <div class="md-checkbox">
-                                            <input type="checkbox" id="checkbox1_3" name="status" value="1" class="md-check">
-                                            <label for="checkbox1_3">
-                                                <span></span>
-                                                <span class="check"></span>
-                                                <span class="box"></span> Active</label>
-                                        </div>
-                                        <div class="md-checkbox">
-                                            <input type="checkbox" id="checkbox1_4" name="status" value="0" class="md-check">
-                                            <label for="checkbox1_4">
-                                                <span></span>
-                                                <span class="check"></span>
-                                                <span class="box"></span> Inactive </label>
-                                        </div>
-                                    </div>
-                                </div>--}}
+                                {{--<label class="col-md-2 control-label" for="form_control_1">Status</label>
+                                 <div class="col-md-8">
+                                     <div class="md-checkbox-inline">
+                                         <div class="md-checkbox">
+                                             <input type="checkbox" id="checkbox1_3" name="status" value="1" class="md-check">
+                                             <label for="checkbox1_3">
+                                                 <span></span>
+                                                 <span class="check"></span>
+                                                 <span class="box"></span> Active</label>
+                                         </div>
+                                         <div class="md-checkbox">
+                                             <input type="checkbox" id="checkbox1_4" name="status" value="0" class="md-check">
+                                             <label for="checkbox1_4">
+                                                 <span></span>
+                                                 <span class="check"></span>
+                                                 <span class="box"></span> Inactive </label>
+                                         </div>
+                                     </div>
+                                 </div>--}}
 
 
 
@@ -137,14 +127,14 @@
                                     <div class="col-md-8">
                                         <div class="mt-radio-inline">
                                             <label class="mt-radio">
-                                                <input type="radio" id="optionsRadios25" value="1" name="status" checked> Active
+                                                <input type="radio" id="optionsRadios25" value="1" name="status" checked=""> Active
                                                 <span></span>
                                             </label>
                                             <label class="mt-radio">
-                                                <input type="radio" id="optionsRadios26" value="0" name="status"> Inactive
+                                                <input type="radio" id="optionsRadios26" value="0" name="status" checked=""> Inactive
                                                 <span></span>
                                             </label>
-                                          </div>
+                                        </div>
                                     </div>
                                 </div>
 

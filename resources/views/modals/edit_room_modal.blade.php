@@ -95,11 +95,11 @@
                                     <div class="col-md-9">
                                         <div class="mt-radio-inline">
                                             <label class="mt-radio">
-                                                <input type="radio" id="optionsRadios25" value="1" name="status" checked="{{$room->status == 1 ? 'true' : 'false'}}"> Active
+                                                <input type="radio" id="optionsRadios25" value="1" name="status" {{$room->status == 1 ? 'checked' : ''}}> Active
                                                 <span></span>
                                             </label>
                                             <label class="mt-radio">
-                                                <input type="radio" id="optionsRadios26" value="0" name="status" checked="{{$room->status != 1 ? 'true' : 'false'}}"> Inactive
+                                                <input type="radio" id="optionsRadios26" value="0" name="status" {{$room->status != 1 ? 'checked' : ''}}> Inactive
                                                 <span></span>
                                             </label>
                                         </div>

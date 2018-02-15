@@ -42,6 +42,7 @@ Route::post('room/save-specification', 'RoomController@save_specification');//aj
 
 //Schedule
 Route::get('/schedule', 'RoomController@schedule')->name('schedule');
+Route::get('/schedule/add', 'RoomController@get_schedule');
 Route::post('/schedule/add', 'RoomController@post_schedule');
 
 //Users
@@ -59,6 +60,8 @@ Route::get('/inventory_list/specs/{room}', 'InventoryController@get_specificatio
 Route::get('/inventory_list/software/{room}', 'InventoryController@get_software');
 Route::get('/inventory_list/hardware/{room}', 'InventoryController@get_hardware');
 Route::post('/inventory_list/{room?}', 'InventoryController@search_student');
+Route::get('/inventory/add', 'InventoryController@add');
+Route::post('/inventory/add', 'InventoryController@post_add');
 
 //User
 Route::post('user/edit', 'UserController@get_user_data');
