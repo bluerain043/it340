@@ -6,6 +6,7 @@ use App\Room;
 use App\Schedule;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -77,6 +78,21 @@ class UserController extends Controller
         $user = User::where('id', $request->user)->first();
         $delete = $user->update(['status' => 0]);
         return ($delete)
+            ? response(['status' => 'ok'])
+            : response(['status' => 'failed']);
+    }
+
+    public function delete_by_id(Request $request)
+    {
+        $table = $request->table;
+        $table_field = ['devices', 'students', 'specifications', 'software'];
+        foreach ($table_field as $tf){
+            if($table == $tf){
+                $bDelete = DB::table($tf)->where($tf, $request->id)->delete();
+            }
+        }
+      /*  return back()->with('success', 'Entry deleted successfully!');*/
+        return ($bDelete)
             ? response(['status' => 'ok'])
             : response(['status' => 'failed']);
     }

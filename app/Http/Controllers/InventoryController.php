@@ -31,7 +31,6 @@ class InventoryController extends Controller
         $rooms->specs = Specifications::where('room', $rooms->room)->get();
         $rooms->softwares = Software::where('room', $rooms->room)->get();
         $rooms->devices =  Devices::where('room', $rooms->room)->get();
-
         return view('inventory/inventory_list', compact('rooms', 'allRooms', 'current_room'));
 
     }

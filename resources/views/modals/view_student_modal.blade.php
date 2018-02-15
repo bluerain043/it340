@@ -110,10 +110,11 @@
                                         </div>
 
 
-                                        <input type="hidden" name="students" value="{{$student->students}}">
+                                        {{--<input type="hidden" name="students" value="{{$student->students}}">
                                         <input type="hidden" name="seat" value="{{$current_seat}}">
-                                        <input type="hidden" name="room" value="{{$room}}">
+                                        <input type="hidden" name="room" value="{{$room}}">--}}
                                         <input type="hidden" name="in_used" value="yes">
+                                        <input type="hidden" name="specifications" value="{{$student->specifications->specifications}}">
 
                                         @if(isset($student->specifications))
                                             <div class="form-group form-md-line-input">

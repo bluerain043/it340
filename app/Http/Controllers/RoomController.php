@@ -151,7 +151,7 @@ class RoomController extends Controller
             return response()->json(['errors' => $validator->errors()]);
         }else{
             $new_specs = new Specifications();
-            $specs = $new_specs->where('room', $request->room)->where('seat', $request->seat)->first();
+            $specs = $new_specs->where('specifications', $request->specifications)->first();
             $request['end_of_life'] = Carbon::parse($request->end_of_life);
             $save = $specs ?  $specs->update($request->except(['_token', 'students', 'ajaxReturn'])) : $new_specs->create($request->except(['_token', 'ajaxReturn', 'students']));
             return ($save)
@@ -162,19 +162,24 @@ class RoomController extends Controller
 
     public function ajax_save_software(Request $request)
     {
-        /*$software = Software::where('students', $request->students)->where('seat_number', $request->seat_number)->delete();*/
-        Software::where('room', $request->room)->where('seat', $request->seat)->delete();
-        foreach ($request->software as $s){
-            $new_software = new Software();
-            $new_software->seat = $request->seat;
-            $new_software->room = $request->room;
-            $new_software->name = $s['name'];
-            $new_software->purchase_date = Carbon::parse($s['purchase_date']);
-            $new_software->end_of_life = Carbon::parse($s['end_of_life']);
-            $new_software->save();
-
+        if(isset($request->individual)){
+            $softwares = Software::where('software', $request->software)
+                ->update(['name' => $request->name, 'purchase_date' => Carbon::parse($request->purchase_date), 'end_of_life' => Carbon::parse($request->end_of_life)]);
+        }else{
+            Software::where('room', $request->room)->where('seat', $request->seat)->delete();
+            foreach ($request->software as $s){
+                $new_software = new Software();
+                $new_software->seat = $request->seat;
+                $new_software->room = $request->room;
+                $new_software->name = $s['name'];
+                $new_software->purchase_date = Carbon::parse($s['purchase_date']);
+                $new_software->end_of_life = Carbon::parse($s['end_of_life']);
+                $new_software->save();
+            }
+            $softwares = Software::where('room', $request->room)->where('seat', $request->seat)->get();
         }
-        $softwares = Software::where('room', $request->room)->where('seat', $request->seat)->get();
+
+
         return (count($softwares) > 0)
             ? response(['status' => 'ok', 'seat_number' => $request->seat])
             : response(['status' => 'failed']);
@@ -183,19 +188,24 @@ class RoomController extends Controller
 
     public function ajax_save_device(Request $request)
     {
-        Devices::where('room', $request->room)->where('seat', $request->seat)->delete();
-        foreach ($request->device as $s){
-            $new_device = new Devices();
-            $new_device->seat = $request->seat;
-            $new_device->room = $request->room;
-            $new_device->name = $s['name'];
-            $new_device->sticker = $s['sticker'];
-            $new_device->brand = $s['brand'];
-            $new_device->serial = $s['serial'];
-            $new_device->end_of_life = Carbon::parse($s['end_of_life']);
-            $new_device->save();
+        if(isset($request->individual)){
+            $devices = Devices::where('devices', $request->devices)
+                ->update(['name' => $request->name, 'brand' => $request->brand, 'sticker' => $request->sticker, 'serial' => $request->serial, 'end_of_life' => Carbon::parse($request->end_of_life)]);
+        }else {
+            Devices::where('room', $request->room)->where('seat', $request->seat)->delete();
+            foreach ($request->device as $s) {
+                $new_device = new Devices();
+                $new_device->seat = $request->seat;
+                $new_device->room = $request->room;
+                $new_device->name = $s['name'];
+                $new_device->sticker = $s['sticker'];
+                $new_device->brand = $s['brand'];
+                $new_device->serial = $s['serial'];
+                $new_device->end_of_life = Carbon::parse($s['end_of_life']);
+                $new_device->save();
+            }
+            $devices = Devices::where('room', $request->room)->where('seat', $request->seat)->get();
         }
-        $devices = Devices::where('room', $request->room)->where('seat', $request->seat)->get();
         return ($devices)
             ? response(['status' => 'ok', 'seat_number' => $request->seat])
             : response(['status' => 'failed']);
@@ -307,6 +317,40 @@ class RoomController extends Controller
         $current_seat = $request->seat;
 
         $view = \View::make('modals.view_student_modal', ['current_seat' => $current_seat, 'student' => $student, 'room' => ($request->room) ? $request->room : '']);
+        $html = $view->render();
+        return \Response::json(['html' => $html, 'data' => $student]);
+    }
+
+    public function get_individual_details(Request $request)
+    {
+        $student = new Students();
+        $tab = $request->tab;
+        $current_seat = $request->seat;
+        if($tab == 'student'){
+            $student = $student->where('students', $request->students)->first();
+            $view = \View::make('modals.edit_inventory_modal', ['current_seat' => $current_seat, 'student' => $student, 'room' => ($request->room) ? $request->room : '', 'tab' => $tab]);
+        }elseif ($tab == 'specification'){
+            $specs = Specifications::where('specifications', $request->specifications)->first();
+            $view = \View::make('modals.edit_inventory_modal', ['current_seat' => $current_seat, 'specs' => $specs, 'tab' => $tab]);
+        }elseif ($tab == 'software'){
+            $software = Software::where('software', $request->software)->first();
+            $view = \View::make('modals.edit_inventory_modal', ['current_seat' => $current_seat, 'software' => $software, 'tab' => $tab]);
+        }elseif ($tab == 'hardware'){
+            $device = Devices::where('devices', $request->device)->first();
+            $view = \View::make('modals.edit_inventory_modal', ['current_seat' => $current_seat, 'device' => $device, 'tab' => $tab]);
+        }
+
+
+        /*if($student){
+            $all_specs = ($tab == 'specification') ? Specifications::where('specifications', $request->specifications)->first() : '';
+            $all_software = Software::where('room', $student->students)->where('seat', $student->seat)->get();
+            $all_device = Devices::where('room', $student->students)->where('seat', $student->seat)->get();
+            $student->specifications = $all_specs;
+            $student->software = $all_software;
+            $student->device = $all_device;
+        }dd($all_specs);*/
+
+
         $html = $view->render();
         return \Response::json(['html' => $html, 'data' => $student]);
     }

@@ -52,6 +52,7 @@ Route::get('/user/list', 'UserController@user_list')->name('user_list');
 
 //Return with view
 Route::post('room/get_info_details', 'RoomController@get_info_details');
+Route::post('room/get_individual_details', 'RoomController@get_individual_details');
 
 //Inventory
 Route::get('/inventory_list/{room?}', 'InventoryController@view_list');
@@ -67,6 +68,7 @@ Route::post('/inventory/add', 'InventoryController@post_add');
 Route::post('user/edit', 'UserController@get_user_data');
 Route::post('user/edit/user', 'UserController@post_edit_user');
 Route::post('user/delete/', 'UserController@delete_user');
+Route::post('user/delete/inventory', 'UserController@delete_by_id');
 
 
 //Schedule Edit
