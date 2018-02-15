@@ -51,7 +51,7 @@
                                                                 <div class="list-datetime"> {{ Carbon\Carbon::parse($room->created_at)->format('j F Y') }}</div>
                                                                 <div class="list-item-content">
                                                                         <h3 class="uppercase bold">
-                                                                            <a href="{{action('RoomController@room_view_edit_schedule', compact('room', 'schedule'))}}">{{$room->room_name}} - {{$schedule->room}}</a>
+                                                                            <a href="{{action('RoomController@room_view_edit_schedule', compact('room', 'schedule'))}}">{{$room->room_name}}</a>
                                                                             {{--<a href="{{action('RoomController@room_view_edit', compact('room'))}}">{{$room->room_name}}</a>--}}
                                                                         </h3>
                                                                     <p>{{$room->facilitator}}</p>
