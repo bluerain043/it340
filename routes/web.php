@@ -69,6 +69,7 @@ Route::post('user/edit', 'UserController@get_user_data');
 Route::post('user/edit/user', 'UserController@post_edit_user');
 Route::post('user/delete/', 'UserController@delete_user');
 Route::post('user/delete/inventory', 'UserController@delete_by_id');
+Route::post('user/delete/{students?}', 'UserController@soft_delete');
 
 
 //Schedule Edit

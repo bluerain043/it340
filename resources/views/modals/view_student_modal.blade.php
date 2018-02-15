@@ -89,6 +89,7 @@
                                     </div>
                                     <div class="form-actions">
                                         <button type="button" class="btn green addStudent-btn" data-student="{{$student->students}}">Submit</button>
+                                        <button type="button" class="btn red deleteStudent-btn" data-student="{{$student->students}}">Delete</button>
                                         <button type="button" class="btn default" data-dismiss="modal">Cancel</button>
                                     </div>
                                 </form>

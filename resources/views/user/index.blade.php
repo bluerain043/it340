@@ -9,7 +9,7 @@
 @endsection
 @section('content')
             <!-- BEGIN PAGE TITLE-->
-            <h1 class="page-title"> Admin Dashboard
+            <h1 class="page-title"> {{ (Auth::user() != null) && (Auth::user()->is_admin == 1) ? 'Admin ' : '' }} Dashboard
                 <small>room, users, schedule, inventory</small>
             </h1>
             <!-- END PAGE TITLE-->

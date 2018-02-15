@@ -25,14 +25,6 @@ class RoomController extends Controller
 
     public function add_room()
     {
-       /* $loginUser = Auth::user();dd($loginUser);
-        if(!empty($loginUser)){
-            dd($loginUser);
-        }
-        dd('gale');*/
-        /*if(!empty($loginUser->roles[0]) && $current_user['roles'] == 'administrator') {
-
-        }*/
         $allRooms = Room::getAllRooms('room_name');
         $bActive = true;
         return view('room.add_room', compact('allRooms', 'bActive'));
@@ -40,21 +32,12 @@ class RoomController extends Controller
 
     public function post_add_room(Request $request)
     {
-       /* $this->validate($request, [
-           'room_name' => 'required',
-           'room_number' => 'required|numeric',
-           'facilitator' => 'required',
-           'seatplan_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:8000'
-        ]);*/
         $validator = \Validator::make($request->except(['_token']),[
                 'room_name' => 'required',
                 'room_number' => 'required|numeric',
                 'facilitator' => 'required'
-                /*'seatplan_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:8000'*/
             ]
         );
-        //check wla ni save sa pivot table
-
         if ($validator->fails()) {
             return back()->with(['errors' => $validator->errors()]);
         }else {

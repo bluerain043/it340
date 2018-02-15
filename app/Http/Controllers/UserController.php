@@ -96,4 +96,9 @@ class UserController extends Controller
             ? response(['status' => 'ok'])
             : response(['status' => 'failed']);
     }
+
+    public function soft_delete(Request $request)
+    {
+
+    }
 }
