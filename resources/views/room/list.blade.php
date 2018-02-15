@@ -72,7 +72,7 @@
                                         <td>
                                             <div class="btn-group actions">
                                                 <button type="button" class="btn btn-default edit-room" data-room="{{$room->room}}">Edit</button>
-                                                <button type="button" class="btn btn-default delete-room" id="room-text-{{$room->room}}" data-room="{{$room->room}}" data-status="{{$room->status}}">{{($room->status) ? 'Deactivate' : 'Activate'}}</button>
+                                                <button type="button" class="btn btn-default delete-room" id="room-text-{{$room->room}}" data-room="{{$room->room}}">Delete</button>
                                                 {{--<a href="{{action('RoomController@room_view_edit' ,compact('room'))}}" class="btn btn-default">View</a>--}}
                                             </div>
                                         </td>
@@ -229,14 +229,15 @@
                     <h4 class="modal-title">Confirmation</h4>
                 </div>
                 <div class="modal-body">
-                    <p> Would you like to change status this room? <br>NOTE: by changing status to inactive you cannot view/edit room unless you go back to active the status again!</p>
+                    <p> Would you like to delete this room? <br><br>
+                        NOTE: by delete you would delete all related data like student, specification, hardware, software and etc.!</p>
                     {{-- <form id="delete-schedule" action="{{ route('logout') }}" method="POST" style="display: none;">
                          {{ csrf_field() }}
                      </form>--}}
                 </div>
                 <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn dark btn-outline">No</button>
                     <button type="button" data-dismiss="modal" class="btn green confirm-delete" {{--onclick="event.preventDefault(); document.getElementById('delete-schedule').submit();"--}}>Yes</button>
+                    <button type="button" data-dismiss="modal" class="btn dark btn-outline">No</button>
                 </div>
             </div>
         </div>
@@ -246,7 +247,7 @@
 @section('page_script')
     <script type="application/x-javascript">
         $('document').ready(function () {
-            var room = '', status;
+            var room = '';
             setTimeout(function(){
                 $('.alert-danger').addClass('hide');
                 $('.alert-success').addClass('hide');
@@ -264,22 +265,23 @@
             $('.actions').on('click', '.delete-room', function(e){
                 e.preventDefault();
                 room = $(this).data('room');
-                status = $(this).data('status');
+                //status = $(this).data('status');
                 $('#static').modal('show');
             });
 
             $('#static').on('click', '.confirm-delete' ,function(e) {
                 e.preventDefault();
-                $.post("{{ action('RoomController@post_delete_room') }}", {_token:'{{ csrf_token() }}', room:room, status:status}, function(result){
-                    if(result.status == 'ok'){console.log(result.data.status);
-                        if(result.data.status == 1){ console.log('active');
+                $.post("{{ action('RoomController@post_delete_room') }}", {_token:'{{ csrf_token() }}', room:room}, function(result){
+                    if(result.status == 'ok'){
+                        $('tr.mt-room-'+room).remove();
+                        /*if(result.data.status == 1){ console.log('active');
                             html = '<span class="label label-sm label-info"> Active </span>';
-                            $('.actions').find('#room-text-'+room).html('Deactivate');
-                        }else{console.log('inactive');
-                            $('.actions').find('#room-text-'+room).html('Activate');
+                            $('td > .actions').find('#room-text-'+room).html('Deactivate').attr('data-status', result.data.status);
+                        }else{console.log('inactive ');
+                            $('td > .actions').find('#room-text-'+room).html('Activate').attr('data-status', result.data.status);
                             html = '<span class="label label-sm label-warning"> Inactive </span>'
                         }
-                        $('.room-status-'+room).html(html);
+                        $('.room-status-'+room).html(html);*/
                     }
                 });
             });

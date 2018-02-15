@@ -340,11 +340,17 @@ class RoomController extends Controller
 
     public function post_delete_room(Request $request)
     {
-        $status = ($request->status == 1) ? 0 : 1;
-        $room = Room::where('room', $request->room) ->first();
-        $delete = $room->update(['status' => $status]);
+        $delete = Room::where('room', $request->room) ->delete();
+        if($delete){
+            Seat::where('room', $request->room)->delete();
+            Devices::where('room', $request->room)->delete();
+            Schedule::where('room', $request->room)->delete();
+            Software::where('room', $request->room)->delete();
+            Specifications::where('room', $request->room)->delete();
+            Students::where('room', $request->room)->delete();
+        }
         return ($delete)
-            ? response(['status' => 'ok', 'data' => $room])
+            ? response(['status' => 'ok'])
             : response(['status' => 'failed']);
     }
 }
