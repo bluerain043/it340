@@ -18,9 +18,10 @@ class UserController extends Controller
     {
         $user = new User();
         $schedule = new Schedule();
-        $allRooms = Room::getAllRooms('room_name');
+        $allRooms = Room::getAllRooms('room_name');//dd($allRooms);
         $users = $user->where('status', 1)->get();
-        $schedules = $schedule->where('status', 1)->get();
+        $schedules = $schedule->where('status', 1)->get();//dd($schedules);
+
 
         return view('user.index', compact('allRooms', 'users', 'schedules'));
     }

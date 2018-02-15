@@ -52,7 +52,11 @@
                                         <td>{{ucwords($schedule->subject)}}</td>
                                         <td>{{\App\Schedule::$days[$schedule->day]}}</td>
                                         <td>{{\App\Schedule::$time[$schedule->time]}}</td>
-                                        <td> {{$schedule->room}} </td>
+                                        @foreach($allRooms as $room)
+                                            @if(($schedule->room == $room->room))
+                                                <td> {{$room->room_name}} </td>
+                                            @endif
+                                        @endforeach
                                         <td> {{$schedule->teacher}} </td>
                                         <td>
                                             <span class="label label-sm {{($schedule->status == 1) ? 'label-info' : 'label-warning'}}"> {{($schedule->status == 1) ? 'Active' : 'Inactive'}} </span>

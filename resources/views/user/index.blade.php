@@ -40,30 +40,41 @@
                                         <ul>
                                             @if(count($allRooms) > 0)
                                                 @foreach($allRooms as $room)
-                                                    <li class="mt-list-item">
-                                                        <div class="list-icon-container done">
-                                                            <a href="javascript:;">
-                                                                <i class="icon-check"></i>
-                                                            </a>
-                                                        </div>
-                                                        <div class="list-datetime"> {{ Carbon\Carbon::parse($room->created_at)->format('j F Y') }}
-                                                            {{--<br> 8 Nov--}} </div>
-                                                        <div class="list-item-content">
-                                                            @foreach ($allRooms as $room)
-                                                                @foreach ($schedules as $schedule)
-                                                                    @if($room->room == $schedule->room)
-                                                                    <h3 class="uppercase bold">
-                                                                        <a href="{{action('RoomController@room_view_edit_schedule', compact('room', 'schedule'))}}">{{$room->room_name}}</a>
-                                                                        {{--<a href="{{action('RoomController@room_view_edit', compact('room'))}}">{{$room->room_name}}</a>--}}
-                                                                    </h3>
+                                                    @foreach ($schedules as $schedule)
+                                                        @if($room->room == $schedule->room)
+                                                            <li class="mt-list-item">
+                                                                <div class="list-icon-container done">
+                                                                    <a href="javascript:;">
+                                                                        <i class="icon-check"></i>
+                                                                    </a>
+                                                                </div>
+                                                                <div class="list-datetime"> {{ Carbon\Carbon::parse($room->created_at)->format('j F Y') }}</div>
+                                                                <div class="list-item-content">
+                                                                        <h3 class="uppercase bold">
+                                                                            <a href="{{action('RoomController@room_view_edit_schedule', compact('room', 'schedule'))}}">{{$room->room_name}} - {{$schedule->room}}</a>
+                                                                            {{--<a href="{{action('RoomController@room_view_edit', compact('room'))}}">{{$room->room_name}}</a>--}}
+                                                                        </h3>
                                                                     <p>{{$room->facilitator}}</p>
-                                                                    @endif
-                                                                @endforeach
-                                                            @endforeach
-
-
-                                                        </div>
-                                                    </li>
+                                                                </div>
+                                                            </li>
+                                                        @else
+                                                            <li class="mt-list-item">
+                                                                <div class="list-icon-container done">
+                                                                    <a href="javascript:;">
+                                                                        <i class="icon-check"></i>
+                                                                    </a>
+                                                                </div>
+                                                                <div class="list-datetime"> {{ \Carbon\Carbon::now()->format('j F Y')}}</div>
+                                                                <div class="list-item-content">
+                                                                    <h3 class="uppercase bold">
+                                                                        {{--<a href="javascript:;">{{$room->room_name}}</a>--}}
+                                                                        <a href="{{action('RoomController@schedule')}}">{{$room->room_name}}</a>
+                                                                    </h3>
+                                                                    <p>This room has no schedule class. Please add a schedule</p>
+                                                                </div>
+                                                            </li>
+                                                        @endif
+                                                    @endforeach
                                                 @endforeach
                                             @else
                                                 <li class="mt-list-item">
