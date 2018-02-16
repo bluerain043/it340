@@ -42,7 +42,7 @@
                                 <th> Room </th>
                                 <th> Teacher </th>
                                 <th> Status </th>
-                                <th> Action </th>
+                                <th>  </th>
                             </tr>
                             </thead>
                             <tbody class="tschedule">
