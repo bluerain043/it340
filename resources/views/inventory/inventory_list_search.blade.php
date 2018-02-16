@@ -51,7 +51,7 @@
                 <div class="portlet-title tabbable-line">
                     <div class="caption">
                         <i class=" icon-layers font-green"></i>
-                        <span class="caption-subject font-green sbold uppercase">Search Result : </span>
+                        <span class="caption-subject font-green sbold uppercase">Search Result </span>
                     </div>
                     <ul class="nav nav-tabs">
                         <li class="active">
@@ -91,7 +91,7 @@
                                 <table class="table table-hover">
                                     <thead>
                                     <tr>
-                                        <th> Student Name </th>
+                                        <th> Student Name  {{Auth::user()->is_admin}}</th>
                                         <th> Seat Number </th>
                                         <th> Course </th>
                                         <th> Department </th>
@@ -117,8 +117,8 @@
                                                     @if(Auth::user()->is_admin == 1)
                                                     <td>
                                                         <div class="btn-group">
-                                                            <button type="button" class="btn btn-default inventory-edit-btn" data-tab="student" data-student="{{$student->students}}" data-seat="{{$student->seat}}">Edit</button>
-                                                            <button type="button" class="btn btn-default inventory-delete-btn" data-id="{{$student->students}}" data-table="students">Delete</button>
+                                                            <button type="button" class="btn btn-default inventory-edit-btn" data-tab="student" data-student="{{$student->students}}" data-seat="{{$student->seat}}">Edit Student</button>
+                                                            <button type="button" class="btn btn-default inventory-delete-btn" data-id="{{$student->students}}" data-table="students">Delete Student</button>
                                                         </div>
                                                     </td>
                                                     @endif
