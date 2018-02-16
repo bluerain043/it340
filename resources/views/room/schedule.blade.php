@@ -55,13 +55,14 @@
                                         @if(count($allRooms) > 0)
                                             @foreach($allRooms as $room)
                                                 @if(($schedule->room == $room->room))
-                                                    <td> {{$room->room_name}} </td>
+                                                    <td> {{$room->room_name}}g </td>
                                                 @else
-                                                    <td> No assign room yet </td>
+                                                    <td> No assign room yet g </td>
                                                 @endif
                                             @endforeach
+                                            <td> No assign room yet gal </td>
                                         @else
-                                            <td> No assign room yet </td>
+                                            <td> No assign room yet sdsd </td>
                                         @endif
 
                                         <td> {{$schedule->teacher}} </td>
