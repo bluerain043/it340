@@ -37,10 +37,22 @@ class ScheduleController extends Controller
         if ($validator->fails() && (isset($request->ajaxReturn) && $request->ajaxReturn == TRUE)) {
             return response()->json(['errors' => $validator->errors()]);
         }else{
-            $bUpdate = $schedule->update($request->except(['_token']));
+            $is_exists = $schedule->where('day', $request->day)->where('time', $request->time)
+                ->where('room', $request->room)->where('status', 1)
+                ->where('schedule', '!=', $request->schedule)->get();
+            if(count($is_exists) > 0){
+                return response()->json(['errors' => ['error' => 'Schedule already exist in this room, day and time!']]);
+            }else{
+                $bUpdate = $schedule->update($request->except(['_token']));
+                return ($bUpdate)
+                    ? response(['status' => 'ok', 'data' => $schedule])
+                    : response(['status' => 'failed']);
+            }
+
+            /*$bUpdate = $schedule->update($request->except(['_token']));
             return ($bUpdate)
                 ? response(['status' => 'ok', 'data' => $schedule])
-                : response(['status' => 'failed']);
+                : response(['status' => 'failed']);*/
         }
 
     }
