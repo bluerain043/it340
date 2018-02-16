@@ -55,9 +55,9 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-12 student-box">
+        <div class="col-md-12 student-box"> <div>Debug X:<span id="x-axis"></span> Y:<span id="y-axis"></span></div>
             <!-- BEGIN VALIDATION STATES-->
-            <div class="portlet light portlet-fit portlet-form bordered vertical-center classroom-plan" style="z-index:1;" onClick="deselectEmployee();">
+            <div class="portlet light portlet-fit portlet-form bordered vertical-center classroom-plan" style="z-index: 1; width: 22.6875px;" onClick="deselectEmployee();">
             {{--<div class="seatplan_img" style="z-index:1;">--}}
                 <img src="{{asset($room->seatplan_image)}}" alt="#" class="seat-image">
 
@@ -91,7 +91,8 @@
     var schedule = '{{$current_schedule}}';
     $('document').ready(function(){
 
-        $('body').mousemove(function( event ) {
+        /*$('body').mousemove(function( event ) {*/
+        $('.student-box').mousemove(function( event ) {
             x_axis = event.pageX;
             y_axis = event.pageY;
             $('#x-axis').html(event.pageX);
@@ -144,22 +145,24 @@
             },
             _ajxAddStudent: function(){
                 $('.add-student-btn').on('click', function(e){
-                    e.preventDefault();
+                    e.preventDefault();console.log('x_axis ',x_axis);console.log('y_axis ',y_axis);
                     total_draggable++;
                    /* div_pos_x = x_axis - 15;
                     div_pos_y = y_axis + 35;*/
-                    div_pos_x = x_axis - 250;
-                    div_pos_y = y_axis + 35;
+                    div_pos_x = x_axis - 257; //257
+                    div_pos_y = y_axis + 192;console.log('div_x ',div_pos_x);console.log('div_y ',div_pos_y); //192
+
                     //cRoom = $(this).data('room');
                     //cSchedule = $(this).data('schedule');
-                    $.post("{{action('RoomController@save_new_student')}}", {_token:'{{ csrf_token() }}', pos_x:div_pos_x, pos_y:div_pos_y, room:room,
+                    var x = div_pos_x -
+                    $.post("{{action('RoomController@save_new_student')}}", {_token:'{{ csrf_token() }}', pos_x:div_pos_x - 240, pos_y:div_pos_y - 150, room:room,
                         schedule:schedule, status: 1}, function(result){
                         if(result.status == 'ok'){
                             temp_student_id = result.data.students;
                             fnScript._addChair(result.data.students, result.data.room, result.schedule.schedule, result.data.seat);
                             fnScript.init();
                             $('#jquery-draggable-'+result.data.students).draggable({
-                                stop:function() {fnScript.saveData();
+                                stop:function() {fnScript.saveData(); console.log('save me ',result.data.students);}
                             });
                         }
 
@@ -187,10 +190,10 @@
                 $('#jquery-draggable-'+student_id).css('top', div_pos_y);
                 $('#jquery-draggable-'+student_id).css('left', div_pos_x);
             },
-            saveData: function(){
-                if(temp_student_id != -1){
+            saveData: function(){console.log('saveData');
+                if(temp_student_id != -1){ console.log('temp_student_id ', temp_student_id);
                     temp_div = $('#jquery-draggable-'+temp_student_id);
-                    seat = $('#jquery-draggable-'+temp_student_id).attr('data-seat');
+                    seat = $('#jquery-draggable-'+temp_student_id).attr('data-seat'); console.log('drag x', temp_div.position().left); console.log('drag y ', temp_div.position().top)
                     $.post("{{ action('RoomController@save_new_student') }}", {_token:'{{ csrf_token() }}', student:temp_student_id, pos_x:temp_div.position().left,
                         pos_y:temp_div.position().top, room:room, seat: seat}, function(result){
                         $('#jquery-draggable-'+total_draggable).data('student_id', result.data.students);
@@ -223,6 +226,7 @@
                             $('.student-success .msg').html('Student Record is Updated Successfully');
                             setTimeout(function(){ location.reload(); }, 2000);
                         }
+                        console.log(result.errors);
                     });
                 });
 
@@ -277,7 +281,7 @@
                     $form = $('#addSpecs');
                     url = $form.attr('action');
                     data = $form.serialize()  + '&ajaxReturn=TRUE';
-                    $.post(url, data, function(result){
+                    $.post(url, data, function(result){console.log(result);
                         if(result.errors){
                             $('.specs-error').removeClass('hide');
                             html = '';
@@ -314,6 +318,7 @@
                             $('.software-success .msg').html('System Software is Updated Successfully');
                             setTimeout(function(){ location.reload(); }, 2000);
                         }
+                        console.log(result.errors);
                     });
                 });
             },
@@ -336,7 +341,7 @@
                             $('.device-success .msg').html('System Software is Updated Successfully');
                             setTimeout(function(){ location.reload(); }, 2000);
                         }
-
+                        console.log(result.errors);
                     });
                 });
             },
@@ -360,7 +365,7 @@
         fnScript.onLoad();
 
         /*$('.student-chair').on('click', function(){*/
-        $('.student-box').on('click', '.student-chair', function(){
+        $('.student-box').on('click', '.student-chair', function(){ console.log('h');
             cStudent = $(this).data('student');
             cRoom = $(this).data('room');
             cSchedule = $(this).data('schedule');
@@ -381,6 +386,19 @@
     function hideStudentInfo(student_id){
         $('#student-info-'+student_id).hide();
     }
+    /*function getInfoDetails_(student_id, room_id, schedule_id){
+        temp_student_id = student_id;
+        $.post("{{ action('RoomController@get_info_details') }}", {_token:'{{ csrf_token() }}', student_id:temp_student_id,
+            room:room_id, schedule: schedule_id}, function(result){//console.log(result.html);
+            $('#full-new').html(result.html);
+            $('#full-new').modal('show');
+            FormRepeater.init();
+
+        });
+
+        $('.student-chair').css('box-shadow', '');
+        $('#jquery-draggable-'+temp_student_id).css('box-shadow', '0px 0px 3px 3px '+glow_color);
+    }*/
     function deselectEmployee() {
         temp_student_id = -1;
         $('#edit-delete-container').hide();
