@@ -54,7 +54,7 @@
                                                                             <a href="{{action('RoomController@room_view_edit_schedule', compact('room', 'schedule'))}}">{{$room->room_name}}</a>
                                                                             {{--<a href="{{action('RoomController@room_view_edit', compact('room'))}}">{{$room->room_name}}</a>--}}
                                                                         </h3>
-                                                                    <p>{{$room->facilitator}}</p>
+                                                                    <p>Teacher: {{$schedule->teacher}}</p>
                                                                 </div>
                                                             </li>
                                                         @else
