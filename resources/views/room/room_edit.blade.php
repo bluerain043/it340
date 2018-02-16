@@ -67,7 +67,7 @@
                          data-student="{{$student->students}}" data-room="{{$student->room}}" data-schedule="{{$schedule->schedule}}" data-seat="{{$student->seat}}"
                          onClick="setInfo({{$student->students}});" class="student-chair jquery-draggable department-{{str_replace(['/', ' '],'-',$student->department)}}"
                          style="left:{{$student->pos_x}}px;top:{{$student->pos_y}}px;z-index:1;">
-                        <div id="student-info-{{$student->students}}" class="student-info">{{$student->student_name}} - {{$student->seat}}</div>
+                        <div id="student-info-{{$student->students}}" class="student-info">{{!empty($student->student_name) ? $student->student_name : 'Click to add student'}} - {{$student->seat}}</div>
                     </div>
                 @endforeach
             </div>
@@ -123,7 +123,7 @@
                         fnScript.showModalOnStudentClick(cStudent, room, schedule, cSeat);
                     });
              },
-            dragSeat: function(){ console.log('sdgsdgsg');
+            dragSeat: function(){
                 $('.jquery-draggable').draggable({
                     stop: function(event, ui) {
                         var student_div_id_arr = ui.helper[0].id.split('-');
@@ -159,7 +159,7 @@
                             fnScript._addChair(result.data.students, result.data.room, result.schedule.schedule, result.data.seat);
                             fnScript.init();
                             $('#jquery-draggable-'+result.data.students).draggable({
-                                stop:function() {fnScript.saveData(); console.log('save me ',result.data.students);}
+                                stop:function() {fnScript.saveData();
                             });
                         }
 
@@ -172,7 +172,7 @@
                     'class="student-info"></div></div>';
                 $('body').append(htmlChair);
                 $('#jquery-draggable-'+student_id).draggable({
-                    stop:function() {fnScript.saveData();console.log('addchair');}
+                    stop:function() {fnScript.saveData();}
 
                 });
 
@@ -193,11 +193,12 @@
                     seat = $('#jquery-draggable-'+temp_student_id).attr('data-seat');
                     $.post("{{ action('RoomController@save_new_student') }}", {_token:'{{ csrf_token() }}', student:temp_student_id, pos_x:temp_div.position().left,
                         pos_y:temp_div.position().top, room:room, seat: seat}, function(result){
-                        $('#jquery-draggable-'+total_draggable).data('student_id', result.id);
-                        if(result.seat_number == null){
-                            $('#student-info-'+result.id).html("");
+                        $('#jquery-draggable-'+total_draggable).data('student_id', result.data.students);
+                        if(result.seat == null){
+                            $('#student-info-'+result.data.students).html("");
                         }else{
-                            $('#student-info-'+result.id).html(result.seat_number + " - " + result.name);
+                            s_name = (result.data.student_name != null) ? result.data.student_name : 'Click to add student';
+                            $('#student-info-'+result.data.students).html(s_name+ " - " +result.seat );
                         }
                     });
                 }
@@ -222,7 +223,6 @@
                             $('.student-success .msg').html('Student Record is Updated Successfully');
                             setTimeout(function(){ location.reload(); }, 2000);
                         }
-                        console.log(result.errors);
                     });
                 });
 
@@ -277,7 +277,7 @@
                     $form = $('#addSpecs');
                     url = $form.attr('action');
                     data = $form.serialize()  + '&ajaxReturn=TRUE';
-                    $.post(url, data, function(result){console.log(result);
+                    $.post(url, data, function(result){
                         if(result.errors){
                             $('.specs-error').removeClass('hide');
                             html = '';
@@ -314,7 +314,6 @@
                             $('.software-success .msg').html('System Software is Updated Successfully');
                             setTimeout(function(){ location.reload(); }, 2000);
                         }
-                        console.log(result.errors);
                     });
                 });
             },
@@ -337,7 +336,7 @@
                             $('.device-success .msg').html('System Software is Updated Successfully');
                             setTimeout(function(){ location.reload(); }, 2000);
                         }
-                        console.log(result.errors);
+
                     });
                 });
             },
@@ -361,7 +360,7 @@
         fnScript.onLoad();
 
         /*$('.student-chair').on('click', function(){*/
-        $('.student-box').on('click', '.student-chair', function(){ console.log('h');
+        $('.student-box').on('click', '.student-chair', function(){
             cStudent = $(this).data('student');
             cRoom = $(this).data('room');
             cSchedule = $(this).data('schedule');
@@ -382,19 +381,6 @@
     function hideStudentInfo(student_id){
         $('#student-info-'+student_id).hide();
     }
-    /*function getInfoDetails_(student_id, room_id, schedule_id){
-        temp_student_id = student_id;
-        $.post("{{ action('RoomController@get_info_details') }}", {_token:'{{ csrf_token() }}', student_id:temp_student_id,
-            room:room_id, schedule: schedule_id}, function(result){//console.log(result.html);
-            $('#full-new').html(result.html);
-            $('#full-new').modal('show');
-            FormRepeater.init();
-
-        });
-
-        $('.student-chair').css('box-shadow', '');
-        $('#jquery-draggable-'+temp_student_id).css('box-shadow', '0px 0px 3px 3px '+glow_color);
-    }*/
     function deselectEmployee() {
         temp_student_id = -1;
         $('#edit-delete-container').hide();

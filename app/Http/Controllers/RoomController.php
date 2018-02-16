@@ -202,7 +202,8 @@ class RoomController extends Controller
         $seat = new Seat();
         $schedule = $schedule->where('schedule', $request->schedule)->first();
         if(!isset($request->student)){
-            $seat = $seat->create($request->except(['_token', 'schedule','pos_x', 'pos_y']));
+            /*$seat = $seat->create($request->except(['_token', 'schedule','pos_x', 'pos_y']));*/
+            $seat = $seat->create($request->except(['_token', 'schedule']));
             $request['seat'] = $seat->seat;
             $student = $student->create($request->except(['_token', 'pos_x', 'pos_y']));
             $student->_schedule()->attach($schedule->schedule, ['status' => 'Active', 'schedule' => $request->schedule, 'student' => $student->students]);
@@ -210,9 +211,9 @@ class RoomController extends Controller
         }else{
             $seat = $seat->where('room', $request->room)->where('seat', $request->seat)->first();
             $seat->update($request->except(['_token', 'student', 'seat']));
-            $student = $student->where('students', $request->student_id);
-            $student = $student->update($request->except(['_token', 'student', 'pos_x', 'pos_y']));
-            return response(['status' => 'ok', 'data' => $student, 'schedule' => $schedule , 'seat' => $seat->number]);
+            $student = Students::where('students', $request->student)->first();
+            $student->update($request->except(['_token', 'student', 'pos_x', 'pos_y']));
+            return response(['status' => 'ok', 'data' => $student, 'schedule' => $schedule , 'seat' => $seat->seat]);
         }
 
     }
