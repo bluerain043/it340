@@ -2,7 +2,7 @@
 @section('breadcrumbs')
     <ul class="page-breadcrumb">
         <li>
-            <a href="javascript;">Inventory</a>
+            <a href="javascript;">Dashboard</a>
             <i class="fa fa-circle"></i>
         </li>
         <li>
@@ -51,7 +51,7 @@
                 <div class="portlet-title tabbable-line">
                     <div class="caption">
                         <i class=" icon-layers font-green"></i>
-                        <span class="caption-subject font-green sbold uppercase">List of Inventory</span>
+                        <span class="caption-subject font-green sbold uppercase">Search Result {{var_dump($rooms->room)}}</span>
                     </div>
                     <ul class="nav nav-tabs">
                         <li class="active">
@@ -98,35 +98,40 @@
                                         <th> Year </th>
                                         <th> Room </th>
                                         <th> Status </th>
-                                        <th>  </th>
+                                        @if(Auth::user()->is_admin == 1)
+                                            <th>  </th>
+                                        @endif
                                     </tr>
                                     </thead>
-                                    <tbody>
-                                    @if(count($rooms) > 0)
-                                        @foreach($rooms->students as $student)
+                                    <tbody class="inventory-tr">
+                                        @if(count($rooms) > 0)
+                                            @foreach($rooms->students as $student)
+                                                <tr id="tr-students-{{$student->students}}">
+                                                    <td>{{ucwords($student->student_name)}}</td>
+                                                    <td> {{$student->seat}} </td>
+                                                    <td> {{$student->course}} </td>
+                                                    <td> {{$student->department}} </td>
+                                                    <td> {{$student->year}} </td>
+                                                    <td>{{ucwords($room->room_name)}} </td>
+                                                    <td> <span class="label label-sm {{($student->status == 1) ? 'label-info' : 'label-warning'}}"> {{($student->status == 1) ? 'Active' : 'Inactive'}} </span> </td>
+                                                    <td>
+                                                        <div class="btn-group">
+                                                            <button type="button" class="btn btn-default inventory-edit-btn" data-tab="student" data-student="{{$student->students}}" data-seat="{{$student->seat}}">Edit</button>
+                                                            <button type="button" class="btn btn-default inventory-delete-btn" data-id="{{$student->students}}" data-table="students">Delete</button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
 
-                                            <tr>
-                                                <td>{{ucwords($student->student_name)}}</td>
-                                                <td> {{$student->seat_number}} </td>
-                                                <td> {{$student->course}} </td>
-                                                <td> {{$student->department}} </td>
-                                                <td> {{$student->year}} </td>
-                                                <td>{{ucwords($room->room_name)}} </td>
-                                                <td> {{$student->status == 1 ? 'Active' : 'Inactive'}} </td>
-                                                <td>
-                                                    <div class="btn-group">
-                                                        <button type="button" class="btn btn-default">Edit</button>
-                                                        <button type="button" class="btn btn-default">Delete</button>
-                                                    </div>
-                                                </td>
+                                            @endforeach
+                                        @else
+                                            <tr style="text-align: center">
+                                                @if(Auth::user()->is_admin == 1)
+                                                    <td colspan="7"> No Data to Display</td>
+                                                @else
+                                                    <td colspan="6"> No Data to Display</td>
+                                                @endif
                                             </tr>
-
-                                        @endforeach
-                                    @else
-                                        <tr style="text-align: center">
-                                            <td colspan="7"> No Data to Display</td>
-                                        </tr>
-                                    @endif
+                                        @endif
                                     </tbody>
                                 </table>
                             </div>
@@ -167,36 +172,44 @@
                                         <th> In Use </th>
                                         <th> In Stock </th>
                                         <th> End of Life </th>
-                                        <th>  </th>
+                                        @if(Auth::user()->is_admin == 1)
+                                            <th>  </th>
+                                        @endif
                                     </tr>
                                     </thead>
-                                    <tbody>
-                                    @if(count($rooms) > 0)
-                                        @foreach($rooms->specs as $specs)
-                                                <tr>
-                                                    <td>{{ucwords($room->room_name)}}</td>
-                                                    <td>{{ucwords($specs->unit_type)}}</td>
-                                                    <td> {{$specs->process}} </td>
-                                                    <td> {{$specs->memory}} </td>
-                                                    <td> {{$specs->board}} </td>
-                                                    <td> {{$specs->hdd}} </td>
-                                                    <td> {{$specs->graphics_card}} </td>
-                                                    <td> {{$specs->in_used == 'yes' ? 1 : ''}} </td>
-                                                    <td> {{$specs->in_used == 'no' ? 1 : ''}} </td>
-                                                    <td> {{ Carbon\Carbon::parse($specs->created_at)->format('d-m-Y') }}  </td>
-                                                    <td>
-                                                        <div class="btn-group">
-                                                            <button type="button" class="btn btn-default">Edit</button>
-                                                            <button type="button" class="btn btn-default">Delete</button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                        @endforeach
-                                    @else
-                                        <tr style="text-align: center">
-                                            <td colspan="7"> No Data to Display</td>
-                                        </tr>
-                                    @endif
+                                    <tbody class="inventory-tr">
+                                        @if(count($rooms) > 0)
+                                            @foreach($rooms->specs as $specs)
+                                                <tr id="tr-specifications-{{$specs->specifications}}">
+                                                        <td>{{ucwords($room->room_name)}}</td>
+                                                        <td>{{ucwords($specs->unit_type)}}</td>
+                                                        <td> {{$specs->process}} </td>
+                                                        <td> {{$specs->memory}} </td>
+                                                        <td> {{$specs->board}} </td>
+                                                        <td> {{$specs->hdd}} </td>
+                                                        <td> {{$specs->graphics_card}} </td>
+                                                        <td> {{$specs->in_used == 'yes' ? 1 : ''}} </td>
+                                                        <td> {{$specs->in_used == 'no' ? 1 : ''}} </td>
+                                                        <td> {{ Carbon\Carbon::parse($specs->created_at)->format('d-m-Y') }}  </td>
+                                                        @if(Auth::user()->is_admin == 1)
+                                                            <td>
+                                                                <div class="btn-group">
+                                                                    <button type="button" class="btn btn-default inventory-edit-btn" data-tab="specification" data-specification="{{$specs->specifications}}">Edit</button>
+                                                                    <button type="button" class="btn btn-default inventory-delete-btn" data-id="{{$specs->specifications}}" data-table="specifications">Delete</button>
+                                                                </div>
+                                                            </td>
+                                                        @endif
+                                                    </tr>
+                                            @endforeach
+                                        @else
+                                            <tr style="text-align: center">
+                                                @if(Auth::user()->is_admin == 1)
+                                                    <td colspan="9"> No Data to Display</td>
+                                                @else
+                                                    <td colspan="8"> No Data to Display</td>
+                                                @endif
+                                            </tr>
+                                        @endif
                                     </tbody>
                                 </table>
                             </div>
@@ -221,30 +234,38 @@
                                         <th> Room </th>
                                         <th> Purchase Date </th>
                                         <th> End of Life </th>
-                                        <th>  </th>
+                                        @if(Auth::user()->is_admin == 1)
+                                            <th>  </th>
+                                        @endif
                                     </tr>
                                     </thead>
-                                    <tbody>
-                                    @if(count($rooms) > 0)
-                                        @foreach($rooms->softwares as $software)
-                                            <tr>
-                                                <td>{{ucwords($software->name)}}</td>
-                                                <td>{{ucwords($room->room_name)}}</td>
-                                                <td> {{ Carbon\Carbon::parse($software->purchase_date)->format('d-m-Y') }}  </td>
-                                                <td> {{ Carbon\Carbon::parse($software->end_of_life)->format('d-m-Y') }}  </td>
-                                                <td>
-                                                    <div class="btn-group">
-                                                        <button type="button" class="btn btn-default">Edit</button>
-                                                        <button type="button" class="btn btn-default">Delete</button>
-                                                    </div>
-                                                </td>
+                                    <tbody class="inventory-tr">
+                                        @if(count($rooms) > 0)
+                                            @foreach($rooms->softwares as $software)
+                                                <tr id="tr-software-{{$software->software}}">
+                                                    <td>{{ucwords($software->name)}}</td>
+                                                    <td>{{ucwords($room->room_name)}}</td>
+                                                    <td> {{ Carbon\Carbon::parse($software->purchase_date)->format('d-m-Y') }}  </td>
+                                                    <td> {{ Carbon\Carbon::parse($software->end_of_life)->format('d-m-Y') }}  </td>
+                                                    @if(Auth::user()->is_admin == 1)
+                                                        <td>
+                                                            <div class="btn-group">
+                                                                <button type="button" class="btn btn-default inventory-edit-btn" data-tab="software" data-software="{{$software->software}}">Edit</button>
+                                                                <button type="button" class="btn btn-default inventory-delete-btn" data-id="{{$software->software}}" data-table="software">Delete</button>
+                                                            </div>
+                                                        </td>
+                                                    @endif
+                                                </tr>
+                                            @endforeach
+                                        @else
+                                            <tr style="text-align: center">
+                                                @if(Auth::user()->is_admin == 1)
+                                                    <td colspan="4"> No Data to Display</td>
+                                                @else
+                                                    <td colspan="3"> No Data to Display</td>
+                                                @endif
                                             </tr>
-                                        @endforeach
-                                    @else
-                                        <tr style="text-align: center">
-                                            <td colspan="7"> No Data to Display</td>
-                                        </tr>
-                                    @endif
+                                        @endif
                                     </tbody>
                                 </table>
                             </div>
@@ -274,31 +295,37 @@
                                         <th> Sticker </th>
                                         <th> Brand </th>
                                         <th> Serial </th>
-                                        <th>  </th>
+                                        @if(Auth::user()->is_admin == 1)
+                                            <th>  </th>
+                                        @endif
                                     </tr>
                                     </thead>
-                                    <tbody>
-                                    @if(count($rooms) > 0)
-                                        @foreach($rooms->devices as $device)
-                                            <tr>
-                                                <td>{{ucwords($room->room_name)}}</td>
-                                                <td>{{ucwords($device->name)}}</td>
-                                                <td> {{$device->sticker}} </td>
-                                                <td> {{$device->brand}} </td>
-                                                <td> {{$device->serial}} </td>
-                                                <td>
-                                                    <div class="btn-group">
-                                                        <button type="button" class="btn btn-default">Edit</button>
-                                                        <button type="button" class="btn btn-default">Delete</button>
-                                                    </div>
-                                                </td>
+                                    <tbody class="inventory-tr">
+                                        @if(count($rooms) > 0)
+                                            @foreach($rooms->devices as $device)
+                                                <tr id="tr-devices-{{$device->devices}}">
+                                                    <td>{{ucwords($room->room_name)}}</td>
+                                                    <td>{{ucwords($device->name)}}</td>
+                                                    <td> {{$device->sticker}} </td>
+                                                    <td> {{$device->brand}} </td>
+                                                    <td> {{$device->serial}} </td>
+                                                    <td>
+                                                        <div class="btn-group">
+                                                            <button type="button" class="btn btn-default inventory-edit-btn" data-tab="hardware" data-device="{{$device->devices}}">Edit</button>
+                                                            <button type="button" class="btn btn-default inventory-delete-btn" data-id="{{$device->devices}}" data-table="devices">Delete</button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        @else
+                                            <tr style="text-align: center">
+                                                @if(Auth::user()->is_admin == 1)
+                                                    <td colspan="5"> No Data to Display</td>
+                                                @else
+                                                    <td colspan="4"> No Data to Display</td>
+                                                @endif
                                             </tr>
-                                        @endforeach
-                                    @else
-                                        <tr style="text-align: center">
-                                            <td colspan="7"> No Data to Display</td>
-                                        </tr>
-                                    @endif
+                                        @endif
                                     </tbody>
                                 </table>
                             </div>
@@ -312,9 +339,36 @@
         </div>
     </div>
 
-@endsection
 
+@include('modals/add_inventory_modal')
+
+<div class="modal fade" id="full-new" tabindex="-1" role="dialog" aria-hidden="true">
+    {{-- @include('modals/edit_inventory_modal')--}}
+</div>
+
+<div id="static" class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h4 class="modal-title">Confirmation</h4>
+            </div>
+            <div class="modal-body">
+                <p> Would you like to delete this entry? </p>
+                {{-- <form id="delete-schedule" action="{{ route('logout') }}" method="POST" style="display: none;">
+                     {{ csrf_field() }}
+                 </form>--}}
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn dark btn-outline">No</button>
+                <button type="button" data-dismiss="modal" class="btn green confirm-delete" {{--onclick="event.preventDefault(); document.getElementById('delete-schedule').submit();"--}}>Yes</button>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
 @section('page_script')
+    @include('script/inventory_script')
     <script>
         $('document').ready(function(){
             $active_tab = "{{$current_tab}}";
@@ -332,7 +386,6 @@
                 $('.nav-tabs a[href="#software"]').tab('show');
                 $('.nav-tabs a[href="#software"]').closest('li').addClass('active');
             }
-
            $('.tab-pane').on('click', '#refresh-btn', function(){
                 window.location = "/inventory_list/"+$current_room;
             });

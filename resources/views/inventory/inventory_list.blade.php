@@ -387,31 +387,7 @@
                 window.location = "/inventory_list/"+$current_room;
             });
 
-           $('.add-inventory-btn').on('click', function(){
-               $('#full-new').modal('show');
-           })
 
-            $('#full-new').on('click', '.addSpecification-btn', function(){
-                $form = $('#addSpecs');
-                url = $form.attr('action');
-                data = $form.serialize()  + '&ajaxReturn=TRUE';
-                $.post(url, data, function(result){console.log(result);
-                    if(result.errors){
-                        $('.specs-error').removeClass('hide');
-                        html = '';
-                        $.each(result.errors, function (index, data) {
-                            html += '<li>'+data+'</li>';
-                        });
-                        $('.specs-error ul').html(html);
-                        setTimeout(function(){ $('.specs-error').addClass('hide'); }, 2000);
-                    }else if(result.status == 'ok'){
-                        $('.specs-success').removeClass('hide');
-                        $('.specs-success .msg').html('System Specification is Updated Successfully');
-                        setTimeout(function(){ location.reload(); }, 2000);
-                    }
-
-                });
-            });
         });
     </script>
 @endsection

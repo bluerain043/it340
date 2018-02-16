@@ -72,7 +72,7 @@ class InventoryController extends Controller
         $allRooms = Room::getAllRooms('room_name');
         $current_room = $request->room;
         if(isset($request->room)){
-            $room->room = $room->where('room', $request->room)->where('status', 1)->first();
+            $room->room = $room->where('room', $request->room)->where('status', 1)->first()['room'];
             $room->students = ($request->table == 'Students') ?  (new StudentListQuery($request))->get() : Students::where('room', $current_room)->get();
             $room->specs = ($request->table == 'specification') ? (new SpecificationListQuery($request))->get() : Specifications::where('room', $current_room)->get();
             $room->softwares = ($request->table == 'software') ? (new SoftwareListQuery($request))->get() : Software::where('room', $current_room)->get();

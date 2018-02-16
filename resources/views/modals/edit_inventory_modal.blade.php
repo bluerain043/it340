@@ -242,7 +242,7 @@
                                             @if(count($software) > 0)
                                                 <div class="mt-repeater-item">
                                                     <div class="mt-repeater-input">
-                                                        <label class="control-label">Softwareiii</label>
+                                                        <label class="control-label">Software</label>
                                                         <br>
                                                         <input type="text" name="name" class="form-control" value="{{$software->name}}">
                                                     </div>
