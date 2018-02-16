@@ -114,12 +114,14 @@
                                                     <td> {{$student->year}} </td>
                                                     <td>{{ucwords($room->room_name)}} </td>
                                                     <td> <span class="label label-sm {{($student->status == 1) ? 'label-info' : 'label-warning'}}"> {{($student->status == 1) ? 'Active' : 'Inactive'}} </span> </td>
+                                                    @if(Auth::user()->is_admin == 1)
                                                     <td>
                                                         <div class="btn-group">
                                                             <button type="button" class="btn btn-default inventory-edit-btn" data-tab="student" data-student="{{$student->students}}" data-seat="{{$student->seat}}">Edit</button>
                                                             <button type="button" class="btn btn-default inventory-delete-btn" data-id="{{$student->students}}" data-table="students">Delete</button>
                                                         </div>
                                                     </td>
+                                                    @endif
                                                 </tr>
 
                                             @endforeach
@@ -309,12 +311,14 @@
                                                     <td> {{$device->sticker}} </td>
                                                     <td> {{$device->brand}} </td>
                                                     <td> {{$device->serial}} </td>
+                                                    @if(Auth::user()->is_admin == 1)
                                                     <td>
                                                         <div class="btn-group">
                                                             <button type="button" class="btn btn-default inventory-edit-btn" data-tab="hardware" data-device="{{$device->devices}}">Edit</button>
                                                             <button type="button" class="btn btn-default inventory-delete-btn" data-id="{{$device->devices}}" data-table="devices">Delete</button>
                                                         </div>
                                                     </td>
+                                                    @endif
                                                 </tr>
                                             @endforeach
                                         @else
