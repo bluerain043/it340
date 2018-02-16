@@ -219,7 +219,7 @@ class RoomController extends Controller
     }
     public function schedule()
     {
-        $allRooms = Room::getAllRooms('room_name');
+        $allRooms = Room::where('status', 1)->get();
         $schedules = Schedule::query()->orderBy('created_at')->get();
         return view('room.schedule', compact('allRooms', 'schedules'));
     }
@@ -232,16 +232,38 @@ class RoomController extends Controller
 
     public function post_schedule(Request $request)
     {
-        $this->validate($request, [
+       /* $this->validate($request, [
             'subject' => 'required',
             'day' => 'required',
             'room' => 'required',
             'teacher' => 'required',
             'status' => 'required'
-        ]);
+        ]);*/
         $schedule = new Schedule();
-        $schedule->create($request->except(['_token']));
-        return back()->with('success', 'Schedule added successfully!');
+        $validator = \Validator::make($request->except(['_token']),[
+                'subject' => 'required',
+                'day' => 'required',
+                'room' => 'required',
+                'teacher' => 'required',
+                'status' => 'required'
+            ]
+        );//dd($validator->errors());
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()]);
+        }else{
+            $is_exists = $schedule->where('day', $request->day)->where('time', $request->time)->where('room', $request->room)->where('status', 1)->get();
+            if(count($is_exists) > 0){
+                return response()->json(['errors' => ['error' => 'Schedule already exist in this room, day and time!']]);
+            }else{
+                $schedule->create($request->except(['_token']));
+                return response()->json('success', 'Schedule successfully!');
+            }
+        }
+
+
+
+
+
     }
 
 

@@ -14,8 +14,8 @@
     <div class="room-title-box">
         <h1 class="page-title"> Add Schedule</h1>
         <div class="actions">
-            <a class="btn btn-circle btn-icon-only btn-default add-student-btn popovers" data-container="body" data-trigger="hover" data-placement="left"
-               data-content="Add schedule" data-original-title="Schedule" data-toggle="modal" href="#addSchedule">
+            <a class="btn btn-circle btn-icon-only btn-default add-student-btn popovers" data-container="body" data-trigger="hover" data-placement="left" id="add-schedule"
+               data-content="Add schedule" data-original-title="Schedule" href="javascript:;">
                 <i class="fa fa-plus"></i>
             </a>
         </div>
@@ -52,11 +52,18 @@
                                         <td>{{ucwords($schedule->subject)}}</td>
                                         <td>{{\App\Schedule::$days[$schedule->day]}}</td>
                                         <td>{{\App\Schedule::$time[$schedule->time]}}</td>
-                                        @foreach($allRooms as $room)
-                                            @if(($schedule->room == $room->room))
-                                                <td> {{$room->room_name}} </td>
-                                            @endif
-                                        @endforeach
+                                        @if(count($allRooms) > 0)
+                                            @foreach($allRooms as $room)
+                                                @if(($schedule->room == $room->room))
+                                                    <td> {{$room->room_name}} </td>
+                                                @else
+                                                    <td> No assign room yet </td>
+                                                @endif
+                                            @endforeach
+                                        @else
+                                            <td> No assign room yet </td>
+                                        @endif
+
                                         <td> {{$schedule->teacher}} </td>
                                         <td>
                                             <span class="label label-sm {{($schedule->status == 1) ? 'label-info' : 'label-warning'}}"> {{($schedule->status == 1) ? 'Active' : 'Inactive'}} </span>
@@ -84,7 +91,7 @@
         </div>
     </div>
 
-    <div class="modal fade bs-modal-lg" id="addSchedule" tabindex="-1" role="dialog" aria-hidden="true">
+     <div class="modal fade" id="addSchedule" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-body">
@@ -98,24 +105,18 @@
                         </div>
                         <div class="portlet-body">
                             <!-- BEGIN FORM-->
-                            <form action="{{action('RoomController@post_schedule')}}" class="form-horizontal" id="form_sample_1" novalidate="novalidate" method="POST">
+                            <form action="{{action('RoomController@post_schedule')}}" class="form-horizontal" id="add-schedule-form" novalidate="novalidate" method="POST">
                                 {{ csrf_field() }}
                                 <div class="form-body">
-                                    @if (count($errors) > 0)
-                                        <div class="alert alert-danger">
+                                        <div class="alert alert-danger hide">
                                             <button class="close" data-close="alert"></button> You have some form errors. Please check below. <br/>
-                                            <ul>
-                                                @foreach ($errors->all() as $error)
-                                                    <li>{{ $error }}</li>
-                                                @endforeach
+                                            <ul class="slist">
+
                                             </ul>
                                         </div>
-                                    @endif
-                                    @if ($message = Session::get('success'))
-                                        <div class="alert alert-success">
-                                            <button class="close" data-close="alert"></button> {{ $message }}
+                                        <div class="alert alert-success hide">
+                                            <button class="close" data-close="alert"></button> <p class="msg"></p>
                                         </div>
-                                    @endif
                                     <div class="form-group form-md-line-input">
                                         <label class="col-md-2 control-label" for="form_control_1">Subject
                                             <span class="required" aria-required="true">*</span>
@@ -202,7 +203,7 @@
                                     <div class="row">
                                         <div class="col-md-offset-4 col-md-8">
                                             <button type="button" class="btn dark btn-outline" data-dismiss="modal">Close</button>
-                                            <button type="submit" class="btn green">Add</button>
+                                            <button type="button" class="btn green submit-btn">Add</button>
                                         </div>
                                     </div>
                                 </div>
@@ -295,6 +296,49 @@
                }
            });
        });
+
+        $('.actions').on('click', '#add-schedule', function(){
+            $('#addSchedule').modal('show');
+            /*$.post(url, data, function(result){
+                if(result.errors){
+                    $('.student-error').removeClass('hide');
+                    html = '';
+                    $.each(result.errors, function (index, data) {
+                        html += '<li>'+data+'</li>';
+                    });
+                    $('.student-error ul').html(html);
+                    setTimeout(function(){ $('.student-error').addClass('hide'); }, 2000);
+                }else if(result.status == 'ok'){
+                    $('.student-success').removeClass('hide');
+                    $('.student-success .msg').html('Student Record is Updated Successfully');
+                    setTimeout(function(){ location.reload(); }, 2000);
+                }
+                console.log(result.errors);
+            });*/
+        });
+        $('#addSchedule').on('click', '.submit-btn', function(){
+            $form = $('#add-schedule-form');
+            url = $form.attr('action');
+            data = $form.serialize();
+            $.post(url, data, function(result){
+                if(result.errors){
+                    $('.alert-danger ul').html('');
+                    $('.alert-danger').removeClass('hide');
+                    html = '';
+                    $.each(result.errors, function (index, data) {
+                        html += '<li>'+data+'</li>';
+                    });
+                    $('.alert-danger ul').html(html);
+                    setTimeout(function(){ $('.alert-danger').addClass('hide'); }, 2000);
+                }else if(result.status == 'ok'){
+                    $('.alert-success').removeClass('hide');
+                    $('.alert-success .msg').html('System Software is Updated Successfully');
+                    setTimeout(function(){ location.reload(); }, 2000);
+                }
+                console.log(result.errors);
+            });
+        });
+
     });
 </script>
 @endsection
