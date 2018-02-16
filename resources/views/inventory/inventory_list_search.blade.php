@@ -2,7 +2,7 @@
 @section('breadcrumbs')
     <ul class="page-breadcrumb">
         <li>
-            <a href="javascript;">Dashboard</a>
+            <a href="/">Dashboard</a>
             <i class="fa fa-circle"></i>
         </li>
         <li>
@@ -51,7 +51,7 @@
                 <div class="portlet-title tabbable-line">
                     <div class="caption">
                         <i class=" icon-layers font-green"></i>
-                        <span class="caption-subject font-green sbold uppercase">Search Result {{var_dump($rooms->room)}}</span>
+                        <span class="caption-subject font-green sbold uppercase">Search Result : </span>
                     </div>
                     <ul class="nav nav-tabs">
                         <li class="active">
