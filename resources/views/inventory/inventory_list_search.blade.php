@@ -176,11 +176,11 @@
                                     <thead>
                                     <tr>
                                         <th> Room </th>
-                                        <th> Item </th>
+                                        <th> Unit Type </th>
                                         <th> Processor </th>
                                         <th> Memory </th>
                                         <th> Board </th>
-                                        <th> Hdd </th>
+                                        <th> HDD </th>
                                         <th> Graphics </th>
                                         <th> In Use </th>
                                         <th> In Stock </th>
@@ -196,7 +196,7 @@
                                                 <tr id="tr-specifications-{{$specs->specifications}}">
                                                         <td>{{ucwords($room->room_name)}}</td>
                                                         <td>{{ucwords($specs->unit_type)}}</td>
-                                                        <td> {{$specs->process}} </td>
+                                                        <td> {{$specs->processor}} </td>
                                                         <td> {{$specs->memory}} </td>
                                                         <td> {{$specs->board}} </td>
                                                         <td> {{$specs->hdd}} </td>
